@@ -1,0 +1,17 @@
+target/
+.idea/
+
+node_modules
+
+# Terraform
+*.tfstate
+*.tfstate.*.backup
+*.tfstate.backup
+*.tfstate.lock.info
+.terraform.lock.hcl
+.terraform/
+
+infrastructure/terraform/ca.csr
+infrastructure/terraform/cert.pem
+infrastructure/terraform/tfplan
+terraform.log
