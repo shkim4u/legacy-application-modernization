@@ -27,7 +27,8 @@ spec:
 {{/*    - host: {{ .Values.service.name }}.{{ .Values.namespace.name }}.cluster.local*/}}
     - http:
         paths:
-          - path: /travelbuddy/hotelspecials
+{{/*          - path: /travelbuddy/hotelspecials*/}}
+          - path: /travelbuddy/
             pathType: Prefix
             backend:
               service:
