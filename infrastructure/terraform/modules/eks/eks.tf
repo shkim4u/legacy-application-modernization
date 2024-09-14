@@ -101,7 +101,7 @@ module "eks" {
 
   # Lis of Amazon EKS add-ons to enable.
   # Refer to: https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html#workloads-add-ons-available-eks
-  # aws eks describe-addon-versions --kubernetes-version 1.29 --query 'addons[].{MarketplaceProductUrl: marketplaceInformation.productUrl, Name: addonName, Owner: owner Publisher: publisher, Type: type}' --output table
+  # aws eks describe-addon-versions --kubernetes-version 1.30 --query 'addons[].{MarketplaceProductUrl: marketplaceInformation.productUrl, Name: addonName, Owner: owner Publisher: publisher, Type: type}' --output table
   # coredns, kube-proxy, vpc-cni, aws-ebs-csi-driver, aws-efs-csi-driver, amazon-cloudwatch-observability, eks-pod-identity-agent
   cluster_addons = {
     # [2024-02-24] Why the hell this has gone?

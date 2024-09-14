@@ -4,7 +4,7 @@ variable "cluster_name" {
 
 variable "cluster_version" {
   description = "The version of EKS cluster"
-  default = "1.29"
+  default = "1.30"
 }
 
 variable "region" {}
