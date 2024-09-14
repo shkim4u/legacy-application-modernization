@@ -1,7 +1,7 @@
 apiVersion: karpenter.sh/v1
 kind: NodePool
 metadata:
-  name: java
+  name: large-memory-java
 spec:
   disruption:
     consolidateAfter: 30s
