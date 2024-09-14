@@ -160,7 +160,8 @@ module "eks" {
 
   // Managed node group.
   eks_managed_node_group_defaults = {
-    ami_type = "AL2_x86_64"
+#     ami_type = "AL2_x86_64"
+    ami_type = "AL2023_x86_64_STANDARD"
     disk_size = 100
     iam_role_additional_policies = {
       AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
