@@ -1,0 +1,5 @@
+{
+  "config": {
+    "api_endpoint_url_prefix": "http://<여기를 프론트엔드가 접속할 주소:포트 형식으로 바꿔주세요>/travelbuddy"
+  }
+}

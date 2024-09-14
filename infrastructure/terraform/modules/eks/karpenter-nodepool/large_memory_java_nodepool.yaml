@@ -1,0 +1,55 @@
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: java
+spec:
+  disruption:
+    consolidateAfter: 30s
+    consolidationPolicy: WhenEmpty
+    expireAfter: 2h0m0s
+  limits:
+    cpu: 1k
+    mem: 6000Gi
+  template:
+    metadata:
+      labels:
+        billing: aws-proserve
+        cluster-name: ${cluster_name}
+        workload-type/large-memory-java: "true"
+    spec:
+      nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
+        name: aws-node-template
+      requirements:
+        - key: karpenter.k8s.aws/instance-category
+          operator: In
+          values:
+          - r
+        - key: karpenter.k8s.aws/instance-family
+          operator: In
+          values: ["r7i"]
+        - key: karpenter.k8s.aws/instance-cpu
+          operator: In
+          values: ["32"]
+        - key: karpenter.k8s.aws/instance-hypervisor
+          operator: In
+          values:
+          - nitro
+        - key: karpenter.k8s.aws/instance-generation
+          operator: Gt
+          values:
+          - "7"
+        - key: kubernetes.io/arch
+          operator: In
+          values: ["amd64"]
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["on-demand", "spot"]
+        - key: kubernetes.io/os
+          operator: In
+          values: ["linux"]
+      taints:
+        - effect: NoSchedule
+          key: workload-type/large-memory-java
+          value: "true"
