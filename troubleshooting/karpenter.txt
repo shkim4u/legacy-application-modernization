@@ -1,0 +1,151 @@
+---
+amiFamily: AL2
+╷
+│ Error: aws-node-template failed to run apply: error when creating "/tmp/4176736065kubectl_manifest.yaml": EC2NodeClass.karpenter.k8s.aws "aws-node-template" is invalid: [spec.amiSelectorTerms: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_production.kubectl_manifest.nodeclass["/apis/karpenter.k8s.aws/v1/ec2nodeclasses/aws-node-template"],
+│   on modules/eks/eks.tf line 443, in resource "kubectl_manifest" "nodeclass":
+│  443: resource "kubectl_manifest" "nodeclass" {
+│
+╵
+╷
+│ Error: aws-node-template failed to run apply: error when creating "/tmp/218955463kubectl_manifest.yaml": EC2NodeClass.karpenter.k8s.aws "aws-node-template" is invalid: [spec.amiSelectorTerms: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_staging.kubectl_manifest.nodeclass["/apis/karpenter.k8s.aws/v1/ec2nodeclasses/aws-node-template"],
+│   on modules/eks/eks.tf line 443, in resource "kubectl_manifest" "nodeclass":
+│  443: resource "kubectl_manifest" "nodeclass" {
+│
+╵
+╷
+│ Error: java failed to run apply: error when creating "/tmp/3667001731kubectl_manifest.yaml": NodePool.karpenter.sh "java" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_staging.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/java"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│
+╵
+╷
+│ Error: general failed to run apply: error when creating "/tmp/698471586kubectl_manifest.yaml": NodePool.karpenter.sh "general" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_production.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/general"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│
+╵
+╷
+│ Error: gpu failed to run apply: error when creating "/tmp/1390544615kubectl_manifest.yaml": NodePool.karpenter.sh "gpu" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_staging.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/gpu"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│
+╵
+╷
+│ Error: general failed to run apply: error when creating "/tmp/3950484300kubectl_manifest.yaml": NodePool.karpenter.sh "general" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_staging.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/general"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│
+╵
+╷
+│ Error: java failed to run apply: error when creating "/tmp/156920565kubectl_manifest.yaml": NodePool.karpenter.sh "java" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_production.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/java"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│
+╵
+╷
+│ Error: golang failed to run apply: error when creating "/tmp/322424282kubectl_manifest.yaml": NodePool.karpenter.sh "golang" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_production.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/golang"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│
+╵
+╷
+│ Error: golang failed to run apply: error when creating "/tmp/2611514564kubectl_manifest.yaml": NodePool.karpenter.sh "golang" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_staging.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/golang"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│
+╵
+╷
+│ Error: gpu failed to run apply: error when creating "/tmp/2581510867kubectl_manifest.yaml": NodePool.karpenter.sh "gpu" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_production.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/gpu"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+
+
+---
+
+amiSelectorTerms:
+- alias: al2023@latest
+
+
+╷
+│ Error: golang failed to run apply: error when creating "/tmp/1759487273kubectl_manifest.yaml": NodePool.karpenter.sh "golang" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_production.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/golang"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│
+╵
+╷
+│ Error: golang failed to run apply: error when creating "/tmp/3000580476kubectl_manifest.yaml": NodePool.karpenter.sh "golang" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_staging.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/golang"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│
+╵
+╷
+│ Error: gpu failed to run apply: error when creating "/tmp/2156997824kubectl_manifest.yaml": NodePool.karpenter.sh "gpu" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_staging.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/gpu"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│
+╵
+╷
+│ Error: general failed to run apply: error when creating "/tmp/1391895743kubectl_manifest.yaml": NodePool.karpenter.sh "general" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_production.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/general"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│
+╵
+╷
+│ Error: gpu failed to run apply: error when creating "/tmp/1557567974kubectl_manifest.yaml": NodePool.karpenter.sh "gpu" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_production.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/gpu"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│
+╵
+╷
+│ Error: general failed to run apply: error when creating "/tmp/962104061kubectl_manifest.yaml": NodePool.karpenter.sh "general" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_staging.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/general"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│
+╵
+╷
+│ Error: java failed to run apply: error when creating "/tmp/2150696804kubectl_manifest.yaml": NodePool.karpenter.sh "java" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]
+│
+│   with module.eks_cluster_staging.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/java"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│
+╵
+╷
+│ Error: java failed to run apply: error when creating "/tmp/2131221273kubectl_manifest.yaml": NodePool.karpenter.sh "java" is invalid: [spec.template.spec.nodeClassRef.group: Required value, spec.template.spec.nodeClassRef.kind: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing erro s to complete validation]
+│
+│   with module.eks_cluster_production.kubectl_manifest.nodepool["/apis/karpenter.sh/v1/nodepools/java"],
+│   on modules/eks/eks.tf line 449, in resource "kubectl_manifest" "nodepool":
+│  449: resource "kubectl_manifest" "nodepool" {
+│

@@ -18,6 +18,8 @@ spec:
         workload-type/gpu: "true"
     spec:
       nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
         name: aws-node-template
       requirements:
       - key: kubernetes.io/arch

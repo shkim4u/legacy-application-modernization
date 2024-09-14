@@ -18,6 +18,8 @@ spec:
         workload-type/general: "true"
     spec:
       nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
         name: aws-node-template
       requirements:
       - key: karpenter.k8s.aws/instance-category
