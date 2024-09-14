@@ -3,7 +3,9 @@ kind: EC2NodeClass
 metadata:
   name: aws-node-template
 spec:
-  amiFamily: AL2
+#  amiFamily: AL2
+  amiSelectorTerms:
+    - alias: al2023@latest
   role: ${node_role}
   securityGroupSelectorTerms:
   - tags:
