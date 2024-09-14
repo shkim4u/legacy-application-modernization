@@ -34,16 +34,16 @@ module "vpc" {
 }
 
 # Create the Transit Gateway Attachment
-resource "aws_ec2_transit_gateway_vpc_attachment" "dms_tgw_vpc_attachment" {
-#   subnet_ids         = aws_subnet.public[*].id
-  subnet_ids         = module.vpc.private_subnets
-  transit_gateway_id = data.aws_ec2_transit_gateway.dms_tgw.id
-  vpc_id             = module.vpc.vpc_id
-
-  tags = {
-    Name = "DMS-TGW-Workload-VPC-Attachment"
-  }
-}
+# resource "aws_ec2_transit_gateway_vpc_attachment" "dms_tgw_vpc_attachment" {
+# #   subnet_ids         = aws_subnet.public[*].id
+#   subnet_ids         = module.vpc.private_subnets
+#   transit_gateway_id = data.aws_ec2_transit_gateway.dms_tgw.id
+#   vpc_id             = module.vpc.vpc_id
+#
+#   tags = {
+#     Name = "DMS-TGW-Workload-VPC-Attachment"
+#   }
+# }
 
 # TODO: Fix this.
 # # Add a route to the public subnets' route tables

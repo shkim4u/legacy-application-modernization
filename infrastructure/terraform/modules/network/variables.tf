@@ -22,11 +22,11 @@ variable "private_subnets" {
   default = ["10.21.1.0/24", "10.21.3.0/24"]
 }
 
-variable "dms_tgw_name" {
-  description = "The name of the Transit Gateway for migrating data from on-premises to AWS"
-  type = string
-  default = "DMS-TGW"
-}
+# variable "dms_tgw_name" {
+#   description = "The name of the Transit Gateway for migrating data from on-premises to AWS"
+#   type = string
+#   default = "DMS-TGW"
+# }
 
 variable "dms_tgw_route" {
   description = "The CIDR block for the route to the Transit Gateway"
