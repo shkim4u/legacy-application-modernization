@@ -7,7 +7,8 @@ data "kubectl_path_documents" "nodeclass_manifests" {
   vars = {
     cluster_name = module.eks.cluster_name
     cluster_name_prefix = "M2M-EksCluster"
-    node_role = "Karpenter-NodeRole-${module.eks.cluster_name}"
+#     node_role = "Karpenter-NodeRole-${module.eks.cluster_name}"
+    node_role = "Karpenter-${module.eks.cluster_name}"
   }
 }
 

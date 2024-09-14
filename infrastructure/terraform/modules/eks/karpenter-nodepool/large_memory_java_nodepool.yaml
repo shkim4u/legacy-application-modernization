@@ -17,6 +17,7 @@ spec:
         cluster-name: ${cluster_name}
         workload-type/large-memory-java: "true"
     spec:
+      # See for instance types: https://karpenter.sh/docs/reference/instance-types/
       nodeClassRef:
         group: karpenter.k8s.aws
         kind: EC2NodeClass
@@ -31,7 +32,10 @@ spec:
           values: ["r7i"]
         - key: karpenter.k8s.aws/instance-cpu
           operator: In
-          values: ["32"]
+          values: ["32", "48", "64"]
+        - key: karpenter.k8s.aws/instance-memory
+          operator: In
+          values: ["262144", "393216", "524288"]
         - key: karpenter.k8s.aws/instance-hypervisor
           operator: In
           values:
@@ -39,7 +43,7 @@ spec:
         - key: karpenter.k8s.aws/instance-generation
           operator: Gt
           values:
-          - "7"
+          - "6"
         - key: kubernetes.io/arch
           operator: In
           values: ["amd64"]

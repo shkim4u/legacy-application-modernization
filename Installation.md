@@ -328,11 +328,11 @@ quit;
 
 ## `TravelBuddy` `GitOps` 리포지터리 (`Helm`) 설정
 ```bash
-cd ~/environment/aws-database-migration
+cd ~/environment/samsung-fire-eks-evaluation
 rm -rf .git
 
 # 1. 어플리케이션 Helm Artifact 경로로 이동
-cd ~/environment/aws-database-migration/legacy/applications/TravelBuddy/helm
+cd ~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/helm
 
 # 2. git 연결
 git init
@@ -348,6 +348,84 @@ git remote add origin $HELM_CODECOMMIT_URL
 git add .
 
 # 4. Commit 및 배포 리포지터리에 Push합니다.
+git commit -am "First commit."
+git push --set-upstream origin main
+```
+
+## `GitOps` 배포 설정 (`ArgoCD`)
+1. `ArgoCD` 접속 주소 확인
+```bash
+# ArgoCD 접속 주소 확인
+kcp
+export ARGOCD_SERVER=`kubectl get ingress/argocd-server -n argocd -o json | jq --raw-output '.status.loadBalancer.ingress[0].hostname'`
+echo https://$ARGOCD_SERVER
+```
+
+2. `ArgoCD` Helm 리포지터리 사용자 생성
+```bash
+# IAM User 생성
+aws iam create-user --user-name argocd 
+
+# AWSCodeCommitPowerUser 관리형 권한 정책 연결 (arn:aws:iam::aws:policy/AWSCodeCommitPowerUser)
+aws iam attach-user-policy --user-name argocd --policy-arn arn:aws:iam::aws:policy/AWSCodeCommitPowerUser
+
+# CodeCommit 접근을 위한 Specific Credential 생성
+# (중요) 결과로서 반환되는 "ServiceUserName"과 "ServicePassword"를 기록해 둡니다.
+aws iam create-service-specific-credential --user-name argocd --service-name codecommit.amazonaws.com
+```
+
+3. `ArgoCD` Helm 리포지터리 URL 확인
+```bash
+export HELM_CODECOMMIT_URL=$(aws codecommit get-repository --repository-name hotelspecials-configuration --region ap-northeast-2 | grep -o '"cloneUrlHttp": "[^"]*'|grep -o '[^"]*$')
+echo $HELM_CODECOMMIT_URL
+```
+
+4. `ArgoCD` Helm 리포지터리 생성
+5. `ArgoCD` Application 생성
+
+    * Application Name: hotelspecials
+    * Project: default
+    * Sync Policy: Manual
+    * Repository URL: 앞서 설정한 배포 리포지터리
+    * PATH: .
+    * Destination 섹션 > Cluster URL: https://kubernetes.default.svc
+    * Destination 섹션 > Namespace: hotelspecials를 입력하고 상단의 Create를 클릭합니다.
+
+## `HotelSpecials` 서비스 빌드
+
+1. `servlet-context.xml` 파일 수정
+
+```bash
+cd ~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/build
+c9 open src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml
+```
+
+  * 40번째 줄 근처에 주석처리된 MySQL 드라이버 사용 구문을 주석 해제합니다. (사용)
+  * 그 다음 줄에 Oracle 드라이버 사용 구문을 주석 처리합니다. (미사용)
+  * 50번째 줄의 select 1 from dual 쿼리를 select 1로 변경합니다. 
+  * 66, 67번째 줄 주석 처리 각각 스위치: MySQL Dialect 주석 해제, Hibernate의 Oracle Dialect 주석 처리.
+
+2. 빌드
+
+```bash
+# 1. 어플리케이션 소스 경로로 이동
+cd ~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/build/
+
+# 2. git 연결
+git init
+git branch -M main
+
+export BUILD_CODECOMMIT_URL=$(aws codecommit get-repository --repository-name hotelspecials-application --region ap-northeast-2 | grep -o '"cloneUrlHttp": "[^"]*'|grep -o '[^"]*$')
+echo $BUILD_CODECOMMIT_URL
+
+git remote add origin $BUILD_CODECOMMIT_URL
+# (예)
+# git remote add origin https://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/M2M-BuildAndDeliveryStack-SourceRepository
+
+# 3. Git 스테이징 영역에 파일을 추가합니다.
+git add .
+
+# 4. Commit 및 Push합니다.
 git commit -am "First commit."
 git push --set-upstream origin main
 ```

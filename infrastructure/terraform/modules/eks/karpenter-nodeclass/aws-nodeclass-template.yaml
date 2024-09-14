@@ -11,9 +11,9 @@ spec:
   - tags:
       Name: ${cluster_name}-node
 #      karpenter.sh/discovery/${cluster_name}: owned
-      kubernetes,io/cluster/${cluster_name}: owned
+      kubernetes.io/cluster/${cluster_name}: owned
   subnetSelectorTerms:
   - tags:
-      karpenter.sh/discovery/$cluster_name_prefix}: '*'
+      karpenter.sh/discovery/${cluster_name_prefix}: '*'
   tags:
     karpenter.sh/discovery: ${cluster_name}

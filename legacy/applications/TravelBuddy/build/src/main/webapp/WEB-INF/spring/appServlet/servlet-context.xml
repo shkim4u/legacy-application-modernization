@@ -37,8 +37,8 @@
 	 -->
 	<beans:bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource"
 		destroy-method="close">
-<!--		<beans:property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />-->
-		<beans:property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+		<beans:property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+<!--		<beans:property name="driverClassName" value="oracle.jdbc.OracleDriver" />-->
 		<beans:property name="url" value="${JDBC_CONNECTION_STRING}" />
 		<beans:property name="username" value="${JDBC_UID}" />
 		<beans:property name="password" value="${JDBC_PWD}" />
@@ -47,7 +47,7 @@
 		<beans:property name="maxIdle" value="5" />
 		<beans:property name="minIdle" value="2" />
 		<beans:property name="testOnBorrow" value="true" />
-		<beans:property name="validationQuery" value="select 1 from dual" />
+		<beans:property name="validationQuery" value="select 1" />
 		<beans:property name="validationInterval" value="30000" />
 	</beans:bean>
 
@@ -63,8 +63,8 @@
 		</beans:property>
 		<beans:property name="hibernateProperties">
 			<beans:props>
-<!--				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</beans:prop>-->
-				<beans:prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</beans:prop>
+				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</beans:prop>
+<!--				<beans:prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</beans:prop>-->
 				<beans:prop key="hibernate.show_sql">true</beans:prop>
 			</beans:props>
 		</beans:property>
