@@ -380,6 +380,7 @@ module "karpenter" {
 
 # Karpenter controller
 # Refer to: https://karpenter.sh/docs/getting-started/getting-started-with-karpenter/
+# [2024-09-14] Karpenter 1.0.2: https://gallery.ecr.aws/karpenter/karpenter
 resource "helm_release" "karpenter" {
   # (참고) karpenter v0.34.0 버전에서는 karpenter-controller-manager가 아닌 karpenter-controller로 변경되었습니다.
   # (주의) 만약 "not found" 메시지가 나오면 "helm registry logout public.ecr.aws" 명령어를 실행하고 다시 실행해보세요.
