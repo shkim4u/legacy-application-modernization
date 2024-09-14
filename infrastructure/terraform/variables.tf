@@ -37,7 +37,7 @@ variable "create_msk" {
   description = "True or False to exclude Amazon MSK cluster for its longer time to create"
   default = false
 }
-variable "create_rds" {default = false}
+variable "create_rds" {default = true}
 variable "create_frontend" {default = true}
 variable "create_karpenter" {default = true}
 variable "create_documentdb" {default = false}

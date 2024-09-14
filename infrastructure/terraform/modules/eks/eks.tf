@@ -388,7 +388,7 @@ resource "helm_release" "karpenter" {
   repository = "oci://public.ecr.aws/karpenter"
   chart = "karpenter"
 #   version = "v0.34.0"
-  version = "v1.0.2"
+  version = "1.0.2"
   name  = "karpenter"
   namespace = "karpenter"
   create_namespace = true
