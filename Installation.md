@@ -429,3 +429,30 @@ git add .
 git commit -am "First commit."
 git push --set-upstream origin main
 ```
+
+## `eks-node-viewer` 설치
+
+https://github.com/awslabs/eks-node-viewer
+
+```bash
+go install github.com/awslabs/eks-node-viewer/cmd/eks-node-viewer@latest
+cd ~/go/bin/eks-node-viewer
+```
+
+## `Pod` 리플리카 수 조정
+
+```bash
+kubectl scale deployment hotelspecials --replicas=6
+```
+
+## `JVM Heap` 메모리 상태 추척
+
+https://chatgpt.com/share/66e6f3fa-191c-800c-93ba-0b0f0fc35bf6
+
+https://velog.io/@cks8483/Kubernetes-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-JVM-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0
+
+
+
+```bash
+
+```

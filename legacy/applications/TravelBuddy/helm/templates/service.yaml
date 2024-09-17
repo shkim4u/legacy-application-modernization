@@ -9,6 +9,15 @@ spec:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.container.port }}
       protocol: TCP
+      name: hotelspecials-service
+    - port: 9000
+      targetPort: 9000
+      protocol: TCP
+      name: jmx
+    - port: 9404
+      targetPort: 9404
+      protocol: TCP
+      name: prometheus-exporter
   selector:
     app.kubernetes.io/name: {{ .Values.app.name }}
   sessionAffinity: ClientIP

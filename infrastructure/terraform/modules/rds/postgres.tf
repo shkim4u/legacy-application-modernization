@@ -88,7 +88,9 @@ resource "aws_db_instance" "flightspecials" {
   identifier = "${local.flightspecials_service_name}-test-postgres-db"
   db_name = "dso"
   engine = "postgres"
-  engine_version = "14.10"
+  engine_version = "14.12"
+  allow_major_version_upgrade = false
+  auto_minor_version_upgrade = false
   instance_class = "db.m5.xlarge"
   manage_master_user_password = true
   username = "postgres"

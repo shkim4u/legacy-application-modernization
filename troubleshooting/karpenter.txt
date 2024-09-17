@@ -1,4 +1,22 @@
 ---
+Spot Instance
+{"level":"ERROR","time":"2024-09-15T07:09:15.502Z","logger":"controller","message":"Reconciler error","commit":"b897114","controller":"nodeclaim.lifecycle","controllerGroup":"karpenter.sh","controllerKind":"NodeClaim","NodeClaim":{"name":"large-memory-java-9cdpg"
+│ },"namespace":"","name":"large-memory-java-9cdpg","reconcileID":"710bbf79-2d58-4bd1-b780-3453d55dae1c","error":"launching nodeclaim, creating instance, with fleet error(s), AuthFailure.ServiceLinkedRoleCreationNotPermitted: The provided credentials do not have pe
+│ rmission to create the service-linked role for EC2 Spot Instances."}
+
+https://karpenter.sh/docs/troubleshooting/#missing-service-linked-role
+
+Missing Service Linked Role
+Unless your AWS account has already onboarded to EC2 Spot, you will need to create the service linked role to avoid ServiceLinkedRoleCreationNotPermitted.
+
+AuthFailure.ServiceLinkedRoleCreationNotPermitted: The provided credentials do not have permission to create the service-linked role for EC2 Spot Instances
+This can be resolved by creating the Service Linked Role.
+
+aws iam create-service-linked-role --aws-service-name spot.amazonaws.com
+
+
+
+---
 amiFamily: AL2
 ╷
 │ Error: aws-node-template failed to run apply: error when creating "/tmp/4176736065kubectl_manifest.yaml": EC2NodeClass.karpenter.k8s.aws "aws-node-template" is invalid: [spec.amiSelectorTerms: Required value, <nil>: Invalid value: "null": some validation rules were not checked because the object was invalid; correct the existing errors to complete validation]

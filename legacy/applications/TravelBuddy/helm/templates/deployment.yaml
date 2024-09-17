@@ -45,8 +45,8 @@ spec:
                 configMapKeyRef:
                   key: environment
                   name: hotelspecials-configmap
-            - name: JAVA_OPTIONS
-              value: "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}"
+            - name: JAVA_OPTS
+              value: "-Xms131012M -Xmx163840M -Djava.awt.headless=true -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}"
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:

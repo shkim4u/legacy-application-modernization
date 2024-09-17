@@ -40,15 +40,18 @@ spec:
           operator: In
           values:
           - nitro
-        - key: karpenter.k8s.aws/instance-generation
-          operator: Gt
-          values:
-          - "6"
+#        - key: karpenter.k8s.aws/instance-generation
+#          operator: Gt
+#          values:
+#          - "6"
         - key: kubernetes.io/arch
           operator: In
           values: ["amd64"]
         - key: karpenter.sh/capacity-type
           operator: In
+          # Spot instances requires additional permission to attach service-linked roles.
+          # See: https://karpenter.sh/docs/troubleshooting/#missing-service-linked-role
+          # aws iam create-service-linked-role --aws-service-name spot.amazonaws.com
           values: ["on-demand", "spot"]
         - key: kubernetes.io/os
           operator: In
