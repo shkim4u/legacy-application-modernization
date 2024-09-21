@@ -4,9 +4,16 @@ metadata:
   name: large-memory-java
 spec:
   disruption:
-    consolidateAfter: 30s
-    consolidationPolicy: WhenEmpty
-    expireAfter: 2h0m0s
+    consolidateAfter: 60m
+    # To test consolidation, use the following steps:
+    # 1. Deploy hotelspecials pod with replicas=2 and consolidationPolicy "WhenEmpty".
+    # 2. kubectl scale deployment hotelspecials --replicas=6 -n hotelspecials
+    # 3. And configure the consolidationPolicy to "WhenEmptyOrUnderutilized" in the nodepool.
+    # See: https://karpenter.sh/v1.0/concepts/nodepools/
+#    consolidationPolicy: WhenEmpty
+    consolidationPolicy: WhenEmptyOrUnderutilized
+#    expireAfter: 2h0m0s
+    expireAfter: 720h
   limits:
     cpu: 1k
     mem: 6000Gi
@@ -32,10 +39,12 @@ spec:
           values: ["r7i"]
         - key: karpenter.k8s.aws/instance-cpu
           operator: In
-          values: ["32", "48", "64"]
+#          values: ["32", "48", "64"]
+          values: ["64"]
         - key: karpenter.k8s.aws/instance-memory
           operator: In
-          values: ["262144", "393216", "524288"]
+#          values: ["262144", "393216", "524288"]
+          values: ["524288"]
         - key: karpenter.k8s.aws/instance-hypervisor
           operator: In
           values:
@@ -52,7 +61,8 @@ spec:
           # Spot instances requires additional permission to attach service-linked roles.
           # See: https://karpenter.sh/docs/troubleshooting/#missing-service-linked-role
           # aws iam create-service-linked-role --aws-service-name spot.amazonaws.com
-          values: ["on-demand", "spot"]
+#          values: ["on-demand", "spot"]
+          values: ["on-demand"] # Only consider on-demand instances for the real customer projects.
         - key: kubernetes.io/os
           operator: In
           values: ["linux"]

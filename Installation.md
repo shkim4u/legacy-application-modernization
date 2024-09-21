@@ -1,10 +1,37 @@
+## 1. `AWS Cloud9` 환경 설치
+```bash
+export AWS_PAGER=''
+curl -fsSL https://raw.githubusercontent.com/shkim4u/m2m-travelbuddy/main/cloud9/bootstrap-v2-with-admin-user-trust.sh | bash -s -- c5.9xlarge
+```
+
+## 2. `AWS Cloud9` 환경 설정
+```bash
+cd ~/environment/
+
+export AWS_PAGER=''
+# Cloud9 환경 설정
+curl -fsSL https://raw.githubusercontent.com/shkim4u/m2m-travelbuddy/main/cloud9/cloud9.sh | bash
+
+# Amazon Corretto Headless 17 설치
+sudo yum install -y java-17-amazon-corretto-headless
+
+# Docker 빌드를 위한 Docker Compose 설치
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.29.2/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+
+# JWT CLI 설치
+sudo npm install -g jwt-cli
+```
+
+## 3. 프로젝트 소스 다운로드
 ```bash
 cd ~/environment/
 git clone https://github.com/shkim4u/samsung-fire-eks-evaluation
 cd samsung-fire-eks-evaluation
 ```
 
-
+## 4. 자원 생성을 위한 환경 설정
 ```bash
 hash -d aws
 
@@ -22,6 +49,7 @@ eks_cluster_staging_name = "${TF_VAR_eks_cluster_staging_name}"
 EOF
 ```
 
+## 5. `Terraform`을 이용한 자원 생성
 ```bash
 # 1. IaC 디렉토리로 이동
 cd ~/environment/samsung-fire-eks-evaluation/infrastructure/terraform
@@ -67,14 +95,16 @@ echo $ARGOCD_ADMIN_INITIAL_PASSWORD
 ./set-argocd-admin-password-secrets-manager.sh "Abraca00#1" flightspecials-ci-argocd-admin-password
 ```
 
-## MySQL 설정
+## 6. (RDS Bastion) MySQL 설정
+1. MySQL 설치
 ```bash
 bash
 sudo yum update -y
 sudo yum -y install mysql
 sudo yum install -y jq
 ```
-## MySQL 접속 (RDS Bastion)
+
+2. MySQL 접속
 ```bash
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output=text) && echo $AWS_ACCOUNT_ID
 export AWS_DEFAULT_REGION=ap-northeast-2
@@ -85,7 +115,7 @@ export DATABASE_PASSWORD=$(echo $DATABASE_CREDENTIALS | jq -r '.password') && ec
 mysql -u ${DATABASE_USERNAME} --password="${DATABASE_PASSWORD}" -h `aws rds describe-db-clusters --db-cluster-identifier m2m-general-aurora-mysql --query "DBClusters[0].Endpoint" --output text`
 ```
 
-## MySQL 데이터베이스 생성
+3. MySQL 데이터베이스 생성
 ```sql
 -- Database 생성
 CREATE DATABASE travelbuddy;
@@ -94,7 +124,7 @@ CREATE DATABASE travelbuddy;
 SHOW DATABASES;
 ```
 
-## MySQL 데이터베이스 초기화
+4. MySQL 데이터베이스 초기화
 ```sql
 USE travelbuddy;
 
@@ -312,7 +342,7 @@ VALUES (
 'Melbourne');
 ```
 
-## MySQL 데이터베이스 조회
+5. MySQL 데이터베이스 조회
 ```sql
 -- Hotel Special 테이블 확인
 SELECT * FROM hotelspecial;
@@ -321,12 +351,12 @@ SELECT * FROM hotelspecial;
 SELECT * FROM flightspecial;
 ```
 
-## MySQL 데이터베이스 종료
+7. MySQL 데이터베이스 종료
 ```sql
 quit;
 ```
 
-## `TravelBuddy` `GitOps` 리포지터리 (`Helm`) 설정
+## 7. `TravelBuddy` `GitOps` 리포지터리 (`Helm`) 설정
 ```bash
 cd ~/environment/samsung-fire-eks-evaluation
 rm -rf .git
@@ -352,7 +382,7 @@ git commit -am "First commit."
 git push --set-upstream origin main
 ```
 
-## `GitOps` 배포 설정 (`ArgoCD`)
+## 8. `GitOps` 배포 설정 (`ArgoCD`)
 1. `ArgoCD` 접속 주소 확인
 ```bash
 # ArgoCD 접속 주소 확인
@@ -381,19 +411,36 @@ echo $HELM_CODECOMMIT_URL
 ```
 
 4. `ArgoCD` Helm 리포지터리 생성
+
 5. `ArgoCD` Application 생성
 
-    * Application Name: hotelspecials
-    * Project: default
+    * Application Name: `hotelspecials`
+    * Project: `default`
     * Sync Policy: Manual
     * Repository URL: 앞서 설정한 배포 리포지터리
-    * PATH: .
+    * PATH: `.`
     * Destination 섹션 > Cluster URL: https://kubernetes.default.svc
-    * Destination 섹션 > Namespace: hotelspecials를 입력하고 상단의 Create를 클릭합니다.
+    * Destination 섹션 > Namespace: `hotelspecials`를 입력하고 상단의 Create를 클릭합니다.
 
-## `HotelSpecials` 서비스 빌드
+## 9. `eks-node-viewer` 설치
 
-1. `servlet-context.xml` 파일 수정
+https://github.com/awslabs/eks-node-viewer
+
+```bash
+go install github.com/awslabs/eks-node-viewer/cmd/eks-node-viewer@latest
+# ~/go/bin/eks-node-viewer -resources cpu,memory
+~/go/bin/eks-node-viewer -resources cpu,memory -node-sort=eks-node-viewer/node-memory-usage=asc
+```
+
+## 10. Karpenter가 Spot 인스턴스 생성 시 `spot.amazonaws.com`가 사용하는 `Service-Linked Role` 생성
+
+```bash
+aws iam create-service-linked-role --aws-service-name spot.amazonaws.com
+```
+
+## 11. `HotelSpecials` 서비스 빌드
+
+1. (Optional) `servlet-context.xml` 파일 수정
 
 ```bash
 cd ~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/build
@@ -430,27 +477,32 @@ git commit -am "First commit."
 git push --set-upstream origin main
 ```
 
-## `eks-node-viewer` 설치
-
-https://github.com/awslabs/eks-node-viewer
+## 12. (Test) `Pod` 리플리카 수 조정
 
 ```bash
-go install github.com/awslabs/eks-node-viewer/cmd/eks-node-viewer@latest
-cd ~/go/bin/eks-node-viewer
+kubectl scale deployment hotelspecials --replicas=6 -n hotelspecials
 ```
 
-## `Pod` 리플리카 수 조정
+## 13. (기타) `JVM Heap` 메모리 상태 추척
+1. `Grafana` Metrics 설정
+`jvm_memory_bytes_used{instance="hotelspecials-service.hotelspecials.svc.cluster.local:9404",job="hotelspecials-jmx"}`
 
-```bash
-kubectl scale deployment hotelspecials --replicas=6
-```
+   * Grafana Dashboard: [](./legacy/applications/TravelBuddy/observability/(Large) JVM Memory Usage.json)
 
-## `JVM Heap` 메모리 상태 추척
+2. `Karpenter` Dashboad
+
+   * [Cluster Capacity](https://grafana.com/grafana/dashboards/16237-cluster-capacity/): `16237`
+     * Not working
+   * [Pod Statistics](https://grafana.com/grafana/dashboards/16236-pod-statistic/): `16236`
+     * Not working
+   * [Karpenter](https://grafana.com/grafana/dashboards/18862-karpenter/): `18862`
+     * Partly working
+   * [Karpenter](https://grafana.com/grafana/dashboards/20398-karpenter/): `20398`
+     * Not working
 
 https://chatgpt.com/share/66e6f3fa-191c-800c-93ba-0b0f0fc35bf6
 
 https://velog.io/@cks8483/Kubernetes-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-JVM-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0
-
 
 
 ```bash

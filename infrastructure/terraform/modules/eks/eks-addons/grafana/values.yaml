@@ -22,8 +22,8 @@ ingress:
     "alb.ingress.kubernetes.io/group.name": "grafana"
     "alb.ingress.kubernetes.io/group.order": "1"
     # Needed when using TLS.
-#    "alb.ingress.kubernetes.io/backend-protocol": "HTTPS"
-#    "alb.ingress.kubernetes.io/healthcheck-protocol": "HTTPS"
+    #    "alb.ingress.kubernetes.io/backend-protocol": "HTTPS"
+    #    "alb.ingress.kubernetes.io/healthcheck-protocol": "HTTPS"
     # Refer to: https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.1/guide/ingress/annotations/
     "alb.ingress.kubernetes.io/success-codes": "200,404,301,302"
     "alb.ingress.kubernetes.io/listen-ports": '[{"HTTP": 80}, {"HTTPS": 443}]'
@@ -69,11 +69,12 @@ datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
-    - name: Prometheus
-      type: prometheus
-      url: http://prometheus-server.istio-system
-      access: proxy
-      isDefault: true
+      - name: Prometheus
+        type: prometheus
+        # url: http://prometheus-server.istio-system
+        url: http://prometheus-kube-prometheus-prometheus.istio-system:9090
+        access: proxy
+        isDefault: true
 
 # Use an existing secret for the admin user.
 admin:

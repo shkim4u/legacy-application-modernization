@@ -13,3 +13,7 @@ output "aws_ebs_csi_driver" {
 output "aws_ebs_csi_driver_id" {
   value = module.aws_ebs_csi_driver.ebs_csi_driver_id
 }
+
+output "prometheus_helm_id" {
+  value = module.prometheus.id
+}

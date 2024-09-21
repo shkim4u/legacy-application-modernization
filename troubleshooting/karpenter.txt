@@ -1,4 +1,15 @@
 ---
+Node Disruption
+
+Events:
+│   Type    Reason             Age                  From       Message
+│   ----    ------             ----                 ----       -------
+│   Normal  DisruptionBlocked  56m                  karpenter  Cannot disrupt NodeClaim: state node is nominated for a pending pod
+│   Normal  Unconsolidatable   2m44s (x4 over 48m)  karpenter  SpotToSpotConsolidation is disabled, can't replace a spot node with a spot node
+
+---
+
+---
 Spot Instance
 {"level":"ERROR","time":"2024-09-15T07:09:15.502Z","logger":"controller","message":"Reconciler error","commit":"b897114","controller":"nodeclaim.lifecycle","controllerGroup":"karpenter.sh","controllerKind":"NodeClaim","NodeClaim":{"name":"large-memory-java-9cdpg"
 │ },"namespace":"","name":"large-memory-java-9cdpg","reconcileID":"710bbf79-2d58-4bd1-b780-3453d55dae1c","error":"launching nodeclaim, creating instance, with fleet error(s), AuthFailure.ServiceLinkedRoleCreationNotPermitted: The provided credentials do not have pe

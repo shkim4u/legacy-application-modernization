@@ -439,10 +439,15 @@ resource "helm_release" "karpenter" {
     value = module.karpenter.queue_name
   }
 
+  set {
+    name = "serviceMonitor.enabled"
+    value = true
+  }
+
   timeout = 1200
 
   #  depends_on = [module.karpenter, module.karpenter.queue_arn]
-  depends_on = [module.karpenter.queue_arn]
+  depends_on = [module.karpenter.queue_arn, module.eks_addons.prometheus_helm_id]
 }
 
 # Following resources have template file upgrded with "karpenter_converter" tool.

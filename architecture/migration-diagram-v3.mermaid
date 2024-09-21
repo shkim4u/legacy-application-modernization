@@ -1,0 +1,23 @@
+graph TB
+    subgraph OnPremise["온프레미스 환경"]
+        A[서버 1] --- B[서버 2]
+        B --- C[...]
+        C --- D[서버 N]
+    end
+    OnPremise --> P[워크로드 별 \nUtilization 메트릭 수집]
+    P --> Q["용량 특성이 다른 \n워크로드 분리 및 최적화"]
+    Q --> R[리팩터/리플랫폼]
+    R --> |"(예시) 높은 메모리 Utilization"| AWSCloud
+    subgraph AWSCloud["AWS 클라우드"]
+        E[EC2 r7i.16xlarge 1] --- F[EC2 r7i.16xlarge 2]
+        F --- G[...]
+        G --- H[EC2 r7i.16xlarge N-X]
+    end
+%%    subgraph Benefits["마이그레이션 이점"]
+%%        I[리소스 최적화] --> J[비용 효율성]
+%%        J --> K[확장성]
+%%        K --> L[관리 용이성]
+%%        L --> M[성능 향상]
+%%        M --> N[Utilization 개선]
+%%        N --> I
+%%    end

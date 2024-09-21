@@ -1,0 +1,31 @@
+%%//{init: {'theme': 'base', 'themeVariables': { 'background': '#ffffff' }}}%%
+
+graph LR
+    subgraph OnPremise["온프레미스 환경"]
+        A["서버 1 (1TB)"] --- B["서버 2 (1TB)"]
+        B --- C[...]
+        C --- |"(Utilization 메트릭)"| D["서버 N (1TB)"]
+    end
+    subgraph AWSCloud["AWS 클라우드"]
+        E["EC2 1 (r7i.16xlarge, 512BB)"] --- F["EC2 2 (r7i.16xlarge, 512GB)"]
+        F --- G[...]
+        G --- H["EC2 N-𝞭 (r7i.16xlarge, 512GB)"]
+    end
+    OnPremise --> P[워크로드 별 <br>Utilization 메트릭 수집]
+    P --> Q["용량 특성이 다른 <br>워크로드 분리 및 최적화"]
+    Q --> R[리팩터/리플랫폼]
+    R --> |"(예시) <br>메모리 집중 워크로드"| AWSCloud
+
+    style P fill:#FFA07A,stroke:#FF6347,stroke-width:2px,color:#000000
+    style Q fill:#98FB98,stroke:#32CD32,stroke-width:2px,color:#000000
+    style AWSCloud fill:#FF9900,stroke:#32CD32,stroke-width:2px,color:#000000
+
+
+%%    subgraph Benefits["마이그레이션 이점"]
+%%        I[리소스 최적화] --> J[비용 효율성]
+%%        J --> K[확장성]
+%%        K --> L[관리 용이성]
+%%        L --> M[성능 향상]
+%%        M --> N[Utilization 개선]
+%%        N --> I
+%%    end

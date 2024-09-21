@@ -1,0 +1,18 @@
+graph LR
+    subgraph OnPremise["온프레미스 환경"]
+        A[베어메탈 서버 1] --> |낮은 메모리 Utilization| B[베어메탈 서버 2]
+        B --> C[...]
+        C --> D[베어메탈 서버 20]
+    end
+    subgraph AWSCloud["AWS 클라우드"]
+        E[EC2 r7i.16xlarge 1] --> |높은 메모리 Utilization| F[EC2 r7i.16xlarge 2]
+        F --> G[...]
+        G --> H[EC2 r7i.16xlarge 11]
+    end
+    OnPremise --> |마이그레이션| AWSCloud
+    I[리소스 최적화] --> J[비용 효율성]
+    J --> K[확장성]
+    K --> L[관리 용이성]
+    L --> M[성능 향상]
+    M --> N[Utilization 개선]
+    N --> I
