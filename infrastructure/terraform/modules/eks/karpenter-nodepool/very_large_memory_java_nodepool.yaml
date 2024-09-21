@@ -1,0 +1,70 @@
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: very-large-memory-java
+spec:
+  disruption:
+    consolidateAfter: 60m
+    # To test consolidation, use the following steps:
+    # 1. Deploy hotelspecials pod with replicas=2 and consolidationPolicy "WhenEmpty".
+    # 2. kubectl scale deployment hotelspecials --replicas=6 -n hotelspecials
+    # 3. And configure the consolidationPolicy to "WhenEmptyOrUnderutilized" in the nodepool.
+    # See: https://karpenter.sh/v1.0/concepts/nodepools/
+#    consolidationPolicy: WhenEmpty
+    consolidationPolicy: WhenEmptyOrUnderutilized
+#    expireAfter: 2h0m0s
+    expireAfter: 720h
+  limits:
+    cpu: 1k
+    mem: 6000Gi
+  template:
+    metadata:
+      labels:
+        billing: aws-proserve
+        cluster-name: ${cluster_name}
+        workload-type/very-large-memory-java: "true"
+    spec:
+      # See for instance types: https://karpenter.sh/docs/reference/instance-types/
+      nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
+        name: aws-node-template
+      requirements:
+        - key: karpenter.k8s.aws/instance-category
+          operator: In
+          values:
+          - r
+        - key: karpenter.k8s.aws/instance-family
+          operator: In
+          values: ["r7i"]
+        - key: karpenter.k8s.aws/instance-cpu
+          operator: In
+          values: ["96", "192"]
+        - key: karpenter.k8s.aws/instance-memory
+          operator: In
+          values: ["786432", "1572864"] # 768GiB, 1536GiB
+        - key: karpenter.k8s.aws/instance-hypervisor
+          operator: In
+          values:
+          - nitro
+#        - key: karpenter.k8s.aws/instance-generation
+#          operator: Gt
+#          values:
+#          - "6"
+        - key: kubernetes.io/arch
+          operator: In
+          values: ["amd64"]
+        - key: karpenter.sh/capacity-type
+          operator: In
+          # Spot instances requires additional permission to attach service-linked roles.
+          # See: https://karpenter.sh/docs/troubleshooting/#missing-service-linked-role
+          # aws iam create-service-linked-role --aws-service-name spot.amazonaws.com
+#          values: ["on-demand", "spot"]
+          values: ["on-demand"] # Only consider on-demand instances for the real customer projects.
+        - key: kubernetes.io/os
+          operator: In
+          values: ["linux"]
+      taints:
+        - effect: NoSchedule
+          key: workload-type/very-large-memory-java
+          value: "true"
