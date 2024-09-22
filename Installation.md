@@ -2,6 +2,10 @@
 ```bash
 export AWS_PAGER=''
 curl -fsSL https://raw.githubusercontent.com/shkim4u/m2m-travelbuddy/main/cloud9/bootstrap-v2-with-admin-user-trust.sh | bash -s -- c5.9xlarge
+
+# 기본 VPC 이외의 VPC를 사용하는 경우 아래 명령을 수행합니다.
+# VPC ID를 적절하게 수정합니다.
+# curl -fsSL https://raw.githubusercontent.com/shkim4u/m2m-travelbuddy/main/cloud9/bootstrap-v2-with-admin-user-trust.sh | bash -s -- c5.9xlarge vpc-02c4febfa59951834
 ```
 
 ## 2. `AWS Cloud9` 환경 설정

@@ -6,7 +6,7 @@ app:
   build_number: ${CODEBUILD_BUILD_NUMBER}
 deployment:
   name: hotelspecials
-  replicas: 2
+  replicas: 10
 image:
   repository: ${ECR_REPO_URI}
   tag: ${IMAGE_TAG}

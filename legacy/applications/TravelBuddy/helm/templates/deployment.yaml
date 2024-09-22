@@ -34,11 +34,11 @@ spec:
               protocol: TCP
           resources:
             requests:
-              memory: "128Gi"
-              cpu: "1000m"
+              memory: "155Gi"
+              cpu: "10000m"
             limits:
-              memory: "192Gi"
-              cpu: "8000m"
+              memory: "155Gi"
+              cpu: "20000m"
           env:
             - name: PROFILE
               valueFrom:
@@ -46,7 +46,7 @@ spec:
                   key: environment
                   name: hotelspecials-configmap
             - name: JAVA_OPTS
-              value: "-Xms131012M -Xmx163840M -Djava.awt.headless=true -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}"
+              value: "-Xms20480M -Xmx148480M -Djava.awt.headless=true -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}"
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:
