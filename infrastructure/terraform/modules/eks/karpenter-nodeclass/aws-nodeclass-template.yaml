@@ -3,17 +3,17 @@ kind: EC2NodeClass
 metadata:
   name: aws-node-template
 spec:
-#  amiFamily: AL2
   amiSelectorTerms:
     - alias: al2023@latest
   role: ${node_role}
   securityGroupSelectorTerms:
   - tags:
       Name: ${cluster_name}-node
-#      karpenter.sh/discovery/${cluster_name}: owned
       kubernetes.io/cluster/${cluster_name}: owned
   subnetSelectorTerms:
   - tags:
       karpenter.sh/discovery/${cluster_name_prefix}: '*'
   tags:
     karpenter.sh/discovery: ${cluster_name}
+  metadataOptions:
+    httpPutResponseHopLimit: 2

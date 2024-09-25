@@ -32,7 +32,6 @@ sudo npm install -g jwt-cli
 ```bash
 cd ~/environment/
 git clone https://github.com/shkim4u/samsung-fire-eks-evaluation
-cd samsung-fire-eks-evaluation
 ```
 
 ## 4. 자원 생성을 위한 환경 설정

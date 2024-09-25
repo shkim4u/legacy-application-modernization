@@ -4,7 +4,7 @@ metadata:
   name: very-large-memory-java
 spec:
   disruption:
-    consolidateAfter: 60m
+    consolidateAfter: 1m
     # To test consolidation, use the following steps:
     # 1. Deploy hotelspecials pod with replicas=2 and consolidationPolicy "WhenEmpty".
     # 2. kubectl scale deployment hotelspecials --replicas=6 -n hotelspecials
@@ -30,21 +30,6 @@ spec:
         kind: EC2NodeClass
         name: aws-node-template
       requirements:
-#        - key: karpenter.k8s.aws/instance-category
-#          operator: In
-#          values:
-#          - r
-#        - key: karpenter.k8s.aws/instance-family
-#          operator: In
-#          values: ["r7i"]
-#        - key: karpenter.k8s.aws/instance-cpu
-#          operator: In
-##          values: ["96", "192"]
-#          values: ["192"]
-#        - key: karpenter.k8s.aws/instance-memory
-#          operator: In
-##          values: ["786432", "1572864"] # 768GiB, 1536GiB
-#          values: ["1572864"] # 768GiB, 1536GiB
         - key: node.kubernetes.io/instance-type
           operator: In
           values: ["r7i.48xlarge"]
@@ -52,10 +37,6 @@ spec:
           operator: In
           values:
           - nitro
-#        - key: karpenter.k8s.aws/instance-generation
-#          operator: Gt
-#          values:
-#          - "6"
         - key: kubernetes.io/arch
           operator: In
           values: ["amd64"]
@@ -73,3 +54,34 @@ spec:
         - effect: NoSchedule
           key: workload-type/very-large-memory-java
           value: "true"
+      kubelet:
+        kubeReserved:
+          cpu: 200m
+          memory: 100Mi
+          ephemeral-storage: 3Gi
+        systemReserved:
+          cpu: 100m
+          memory: 100Mi
+          ephemeral-storage: 1Gi
+        evictionSoft:
+          memory.available: 1Gi
+          nodefs.available: 15%
+          nodefs.inodesFree: 15%
+          imagefs.available: 10%
+          imagefs.inodesFree: 10%
+          pid.available: 10%
+        evictionHard:
+          memory.available: 500Mi
+          nodefs.available: 10%
+          nodefs.inodesFree: 10%
+          imagefs.available: 5%
+          imagefs.inodesFree: 5%
+          pid.available: 7%
+        imageGCHighThresholdPercent: 85
+        imageGCLowThresholdPercent: 60
+        cpuCFSQuota: true
+        # Lower values from below will be used.
+        # [podsPerCore * # of Core, maxPods]
+        podsPerCore: 2
+        maxPods: 40
+  weight: 100

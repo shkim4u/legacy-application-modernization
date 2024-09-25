@@ -1515,8 +1515,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Karpenter Capacity v1",
-  "uid": "ta8I9Q67Z",
+  "title": "Karpenter Capacity v1 with Larage Memory Java JVM Metrics",
+  "uid": "ks8I9Q67Z",
   "version": 2,
   "weekStart": ""
 }

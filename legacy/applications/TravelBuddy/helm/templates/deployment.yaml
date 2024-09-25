@@ -15,6 +15,9 @@ spec:
       labels:
         app.kubernetes.io/name: {{ .Values.app.name }}
     spec:
+      nodeSelector:
+        billing: aws-proserve
+        workload-type/very-large-memory-java: "true"
       tolerations:
         - key: workload-type/very-large-memory-java
           operator: Equal
