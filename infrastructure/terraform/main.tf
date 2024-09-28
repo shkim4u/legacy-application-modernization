@@ -36,22 +36,22 @@ module "eks_cluster_production" {
   additional_iam_policy_arns = concat(local.additinal_eks_iam_policy_arns, var.create_msk ? [module.msk.0.msk_cluster_access_policy_arn] : [])
 }
 
-module "eks_cluster_staging" {
-  source = "./modules/eks"
-  region = var.region
-  vpc_id = module.network.vpc_id
-  private_subnet_ids = module.network.private_subnets
-  certificate_authority_arn = var.ca_arn
-  grafana_admin_password = var.grafana_admin_password
-  cluster_name = var.eks_cluster_staging_name
-  create_karpenter = var.create_karpenter
-
-  defectdojo_admin_password = var.defectdojo_admin_password
-
-  # Additional IAM policy ARNs to be used by the workloads in EKS cluster.
-  # Add the ARN of MSK cluster access policy if "create_msk" is true.
-  additional_iam_policy_arns = concat(local.additinal_eks_iam_policy_arns, var.create_msk ? [module.msk.0.msk_cluster_access_policy_arn] : [])
-}
+# module "eks_cluster_staging" {
+#   source = "./modules/eks"
+#   region = var.region
+#   vpc_id = module.network.vpc_id
+#   private_subnet_ids = module.network.private_subnets
+#   certificate_authority_arn = var.ca_arn
+#   grafana_admin_password = var.grafana_admin_password
+#   cluster_name = var.eks_cluster_staging_name
+#   create_karpenter = var.create_karpenter
+#
+#   defectdojo_admin_password = var.defectdojo_admin_password
+#
+#   # Additional IAM policy ARNs to be used by the workloads in EKS cluster.
+#   # Add the ARN of MSK cluster access policy if "create_msk" is true.
+#   additional_iam_policy_arns = concat(local.additinal_eks_iam_policy_arns, var.create_msk ? [module.msk.0.msk_cluster_access_policy_arn] : [])
+# }
 
 ###
 ### CI/CD

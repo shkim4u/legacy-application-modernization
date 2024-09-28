@@ -213,6 +213,30 @@ module "eks" {
     #        throughput            = 125
     #      }
     #    ]
+
+    "SamsungFire" = {
+      capacity_type  = "ON_DEMAND"
+      instance_types = ["x2idn.16xlarge"]  # 삼성화재 제안용 인스턴스 타입
+      min_size       = 1
+      max_size       = 1
+      desired_size   = 1
+      labels         = {
+        billing = "aws-proserve"
+        purpose = "samsungfire-underwriting-system"
+      }
+      taints = [
+        {
+          key    = "workload-type/x2idn-16xlarge-java"
+          value  = "true"
+          effect = "NO_SCHEDULE"
+        }
+      ]
+      update_config = {
+        "max_unavailable_percentage": 100  # 노드가 1개뿐이므로 100%로 설정
+      }
+      force_update_version = true
+    }
+
   }
 
   node_security_group_additional_rules = {
@@ -397,7 +421,7 @@ resource "helm_release" "karpenter" {
   repository = "oci://public.ecr.aws/karpenter"
   chart = "karpenter"
 #   version = "v0.34.0"
-  version = "1.0.2"
+  version = "1.0.3"
   name  = "karpenter"
   namespace = "karpenter"
   create_namespace = true

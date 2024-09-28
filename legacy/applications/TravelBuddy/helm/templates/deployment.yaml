@@ -6,7 +6,9 @@ metadata:
   namespace: {{ .Values.namespace.name }}
   name: {{ .Values.deployment.name }}
 spec:
+  {{- if not .Values.hpa.enabled }}
   replicas: {{ .Values.deployment.replicas }}
+  {{- end }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ .Values.app.name }}
@@ -17,9 +19,9 @@ spec:
     spec:
       nodeSelector:
         billing: aws-proserve
-        workload-type/very-large-memory-java: "true"
+        purpose: samsungfire-underwriting-system
       tolerations:
-        - key: workload-type/very-large-memory-java
+        - key: workload-type/x2idn-16xlarge-java
           operator: Equal
           value: "true"
           effect: NoSchedule
@@ -41,7 +43,7 @@ spec:
               cpu: "10000m"
             limits:
               memory: "155Gi"
-              cpu: "20000m"
+              cpu: "15000m"
           env:
             - name: PROFILE
               valueFrom:
@@ -111,7 +113,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: xray-config
-  namespace: hotelspecials
+  namespace: {{ .Values.namespace.name }}
 data:
   config.yaml: |-
     TotalBufferSizeMB: 24

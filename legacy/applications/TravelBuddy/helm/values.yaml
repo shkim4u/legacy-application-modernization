@@ -6,7 +6,7 @@ app:
   build_number: 0
 deployment:
   name: hotelspecials
-  replicas: 10
+  replicas: 6
 image:
   repository: ${ECR_REPO_URI}
   tag: ${IMAGE_TAG}
@@ -27,3 +27,8 @@ configmap:
   database_port: ${DATABASE_PORT}
   database_username: ${DATABASE_USERNAME}
   database_password: ${DATABASE_PASSWORD}
+hpa:
+  enabled: true
+  minReplicas: 6
+  maxReplicas: 12
+  targetCPUUtilizationPercentage: 30

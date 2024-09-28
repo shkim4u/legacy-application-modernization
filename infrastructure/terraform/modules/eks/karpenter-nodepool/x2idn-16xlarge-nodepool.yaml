@@ -21,9 +21,12 @@ spec:
     metadata:
       labels:
         billing: aws-proserve
-        cluster-name: ${cluster_name}
-        workload-type/x2idn-16xlarge-java: "true"
+        purpose: samsungfire-underwriting-system
     spec:
+      taints:
+        - key: workload-type/x2idn-16xlarge-java
+          value: "true"
+          effect: NoSchedule
       # See for instance types: https://karpenter.sh/docs/reference/instance-types/
       nodeClassRef:
         group: karpenter.k8s.aws
@@ -50,10 +53,6 @@ spec:
         - key: kubernetes.io/os
           operator: In
           values: ["linux"]
-      taints:
-        - effect: NoSchedule
-          key: workload-type/x2idn-16xlarge-java
-          value: "true"
       kubelet:
         kubeReserved:
           cpu: 200m
