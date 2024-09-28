@@ -24,6 +24,8 @@ variable "eks_cluster_production_name" {
   description = "The name of EKS cluster to be created for production"
 }
 
+variable "create_staging_eks_cluster" {default = false}
+
 variable "eks_cluster_staging_name" {
   description = "The name of EKS cluster to be created for staging"
 }
