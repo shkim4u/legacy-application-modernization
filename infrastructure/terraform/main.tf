@@ -39,7 +39,6 @@ module "eks_cluster_production" {
 }
 
 module "eks_cluster_staging" {
-  count = var.create_staging_eks_cluster ? 1 : 0
   source = "./modules/eks"
   region = var.region
   vpc_id = module.network.vpc_id
