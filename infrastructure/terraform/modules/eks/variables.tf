@@ -29,3 +29,8 @@ variable "additional_iam_policy_arns" {
   type = list(string)
   default = []
 }
+
+variable "number_of_x2idn_16xlarge_instances" {
+  description = "Number of x2idn.16xlarge instances used for large instance testing"
+  default = 1
+}

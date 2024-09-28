@@ -217,9 +217,9 @@ module "eks" {
     "SamsungFire" = {
       capacity_type  = "ON_DEMAND"
       instance_types = ["x2idn.16xlarge"]  # 삼성화재 제안용 인스턴스 타입
-      min_size       = 1
-      max_size       = 1
-      desired_size   = 1
+      min_size       = var.number_of_x2idn_16xlarge_instances
+      max_size       = var.number_of_x2idn_16xlarge_instances
+      desired_size   = var.number_of_x2idn_16xlarge_instances
       labels         = {
         billing = "aws-proserve"
         purpose = "samsungfire-underwriting-system"
