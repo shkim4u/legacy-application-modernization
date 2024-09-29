@@ -480,17 +480,36 @@ git commit -am "First commit."
 git push --set-upstream origin main
 ```
 
-## 12. (Test) `Pod` 리플리카 수 조정 (`HPA`)
+## 12. (Test) `Pod` 리플리카 수 조정 (`HPA`와 `Keda`)
+### 12.1. `HPA`
 1. `HPA`의 `minReplicas` 수를 `12`로 늘리면 `x2idn.16xlarge` 인스턴스가 `Karpenter`에 의해 생성되어 `Pod`가 스케쥴링 되는 것을 확인합니다.
 
     ```bash
     kubectl patch hpa hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"minReplicas": 12}}'
+   kubectl patch hpa hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"maxReplicas": 12}}'
     ```
 
 2. 다시 `HPA`의 `minReplicas` 수를 `6`으로 원복하면 잠시 후 `x2idn.16xlarge` 인스턴스가 `Karpenter`에 의해 회수 (`Consolidation`)되어 노드가 삭제되며 비용을 줄일 수 있음을 확인합니다.
 
     ```bash
     kubectl patch hpa hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"minReplicas": 6}}'
+    kubectl patch hpa hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"maxReplicas": 6}}'
+    ```
+
+### 12.2. `Keda`
+
+1. `Keda`의 `minReplicaCount` 수를 `12`로 늘리면 `x2idn.16xlarge` 인스턴스가 `Karpenter`에 의해 생성되어 `Pod`가 스케쥴링 되는 것을 확인합니다.
+
+    ```bash
+    kubectl patch scaledobjects hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"minReplicaCount": 12}}'
+    kubectl patch scaledobjects hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"maxReplicaCount": 12}}'
+    ```
+
+2. 다시 `HPA`의 `minReplicas` 수를 `6`으로 원복하면 잠시 후 `x2idn.16xlarge` 인스턴스가 `Karpenter`에 의해 회수 (`Consolidation`)되어 노드가 삭제되며 비용을 줄일 수 있음을 확인합니다.
+
+    ```bash
+    kubectl patch scaledobjects hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"minReplicaCount": 6}}'
+    kubectl patch scaledobjects hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"maxReplicaCount": 6}}'
     ```
 
 ## 13. `Grafana` 대시보드 확인

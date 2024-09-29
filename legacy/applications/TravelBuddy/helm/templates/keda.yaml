@@ -4,16 +4,16 @@ kind: ScaledObject
 metadata:
   name: {{ .Values.app.name }}
   namespace: {{ .Values.namespace.name }}
-  {{- if .Values.hpa.enabled }}
-  annotations:
-    scaledobject.keda.sh/transfer-hpa-ownership: "true"
-  {{- end }}
+  # {{- if .Values.hpa.enabled }}
+  # annotations:
+  #   scaledobject.keda.sh/transfer-hpa-ownership: "true"
+  # {{- end }}
 spec:
-  {{- if .Values.hpa.enabled }}
-  advanced:
-    horizontalPodAutoscalerConfig:
-      name: {{ .Values.app.name }}
-  {{- end }}
+  # {{- if .Values.hpa.enabled }}
+  # advanced:
+  #   horizontalPodAutoscalerConfig:
+  #     name: {{ .Values.app.name }}
+  # {{- end }}
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
@@ -21,12 +21,12 @@ spec:
   minReplicaCount: {{ .Values.keda.minReplicaCount }}
   maxReplicaCount: {{ .Values.keda.maxReplicaCount }}
   triggers:
-    {{- if not .Values.hpa.enabled }}
+    # {{- if not .Values.hpa.enabled }}
     - type: cpu
       metricType: Utilization
       metadata:
-        value: 30
-    {{- end }}
+        value: "30"
+    # {{- end }}
     - type: cron
       metadata:
         timezone: Asia/Seoul
