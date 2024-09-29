@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Values.namespace.name }}
   name: {{ .Values.deployment.name }}
 spec:
-  {{- if not .Values.hpa.enabled }}
+  {{- if and (not .Values.hpa.enabled) (not .Values.keda.enabled) }}
   replicas: {{ .Values.deployment.replicas }}
   {{- end }}
   selector:

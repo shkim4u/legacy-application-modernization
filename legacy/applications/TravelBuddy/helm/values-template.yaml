@@ -30,5 +30,10 @@ configmap:
 hpa:
   enabled: true
   minReplicas: 6
-  maxReplicas: 12
+  maxReplicas: 18
   targetCPUUtilizationPercentage: 30
+keda:
+  enabled: true
+  minReplicaCount: 6
+  maxReplicaCount: 18
+  desiredReplicaCountAtPeek: 12

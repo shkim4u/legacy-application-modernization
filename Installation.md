@@ -480,13 +480,53 @@ git commit -am "First commit."
 git push --set-upstream origin main
 ```
 
-## 12. (Test) `Pod` 리플리카 수 조정
+## 12. (Test) `Pod` 리플리카 수 조정 (`HPA`)
+1. `HPA`의 `minReplicas` 수를 `12`로 늘리면 `x2idn.16xlarge` 인스턴스가 `Karpenter`에 의해 생성되어 `Pod`가 스케쥴링 되는 것을 확인합니다.
+
+    ```bash
+    kubectl patch hpa hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"minReplicas": 12}}'
+    ```
+
+2. 다시 `HPA`의 `minReplicas` 수를 `6`으로 원복하면 잠시 후 `x2idn.16xlarge` 인스턴스가 `Karpenter`에 의해 회수 (`Consolidation`)되어 노드가 삭제되며 비용을 줄일 수 있음을 확인합니다.
+
+    ```bash
+    kubectl patch hpa hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"minReplicas": 6}}'
+    ```
+
+## 13. `Grafana` 대시보드 확인
+
+1. `Grafana` 대시보드 URL 확인
+
+```bash
+GRAFANA_SERVER=`kubectl get ingress/grafana -n grafana -o json | jq --raw-output '.status.loadBalancer.ingress[0].hostname'`
+echo "GRAFANA_SERVER: https://${GRAFANA_SERVER}"
+```
+
+2. `Grafana` 로그인
+
+   * `Username`
+     * `admin`
+   * `Password`
+     * `P@$$w0rd00#1`
+
+3. 필요한 대시보드 임포트
+
+    * 자바 애플리케이션 힙 메모리 대시보드
+      * `~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/observability/grafana/(Large Memory Java) JVM Metrics.json`
+    * `Karpenter` 용량 대시보드
+      * `~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/observability/grafana/Karpenter Capacity v1 and JVM Memory Pool Bytes Committed.json`
+    * `Karpenter Controllers` 대시보드
+      * `~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/observability/grafana/karpenter-controllers.json`
+    * `Karpenter Performance` 대시보드
+      * `~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/observability/grafana/karpenter-performance-dashboard.json`
+
+## 14. (Test) `Pod` 리플리카 수 조정 (`Deployment`)
 
 ```bash
 kubectl scale deployment hotelspecials --replicas=6 -n hotelspecials
 ```
 
-## 13. (기타) `JVM Heap` 메모리 상태 추척
+## 15. (기타) `JVM Heap` 메모리 상태 추척
 1. `Grafana` Metrics 설정
 `jvm_memory_bytes_used{instance="hotelspecials-service.hotelspecials.svc.cluster.local:9404",job="hotelspecials-jmx"}`
 
