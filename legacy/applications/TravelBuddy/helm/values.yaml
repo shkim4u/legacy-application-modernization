@@ -36,4 +36,4 @@ keda:
   enabled: false
   minReplicaCount: 6
   maxReplicaCount: 18
-  desiredReplicaCountAtPeek: 12
+  desiredReplicaCountAtPeak: 12
