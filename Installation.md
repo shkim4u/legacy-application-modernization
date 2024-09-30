@@ -541,13 +541,52 @@ echo "GRAFANA_SERVER: https://${GRAFANA_SERVER}"
     * `Karpenter Performance` 대시보드
       * `~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/observability/grafana/karpenter-performance-dashboard.json`
 
-## 14. (Test) `Pod` 리플리카 수 조정 (`Deployment`)
+## 14. 부하 테스트
+1. 부하 생성 (`Hey` 사용)
+   * (참고) `Hey` GitHub URL
+     * https://github.com/William-Yeh/docker-hey.git
+   * 아래 명령은 다음과 같은 형태의 부하를 생성합니다.
+     * 동시 사용자 100
+     * 초당 20번 요청
+     * 10분간 실행
+
+      ```bash
+      export ALB_HOSTNAME=$(kubectl get ingress hotelspecials-ingress -n hotelspecials -o yaml | yq .status.loadBalancer.ingress[0].hostname) && echo $ALB_HOSTNAME
+      kubectl run load-generator --image=williamyeh/hey:latest --restart=Never -- -c 1000 -q 20 -z 10m http://$ALB_HOSTNAME/travelbuddy/hotelspecials
+      ```
+
+2. `Keda`에 의해 생성된 `HPA` 모니터링
+   * `CPU` 상태만 보기
+
+      ```bash
+      kubectl get hpa keda-hpa-hotelspecials -n hotelspecials --watch -o custom-columns="NAME:.metadata.name,CPU TARGET:.spec.metrics[?(@.resource.name=='cpu')].resource.target.averageUtilization,CPU CURRENT:.status.currentMetrics[?(@.resource.name=='cpu')].resource.current.averageUtilization"
+      ```
+
+   * Cron 트리거를 포함한 전체 보기
+ 
+      ```bash
+      kubectl get hpa keda-hpa-hotelspecials -n hotelspecials --watch
+      ```
+
+[//]: # (   ```bash)
+
+[//]: # (   kubectl get hpa keda-hpa-hotelspecials -n hotelspecials -o jsonpath="{.metadata.name}: CPU Target: {.spec.metrics[?&#40;@.resource.name=='cpu'&#41;].resource.target.averageUtilization}%, CPU Current: {.status.currentMetrics[?&#40;@.resource.name=='cpu'&#41;].resource.current.averageUtilization}%" --watch)
+
+[//]: # (   ```)
+
+3. 테스트가 끝나면 Pod 삭제
+
+   ```bash
+   kubectl delete pod load-generator
+   ```
+
+## 15. (Test) `Pod` 리플리카 수 조정 (`Deployment`)
 
 ```bash
 kubectl scale deployment hotelspecials --replicas=6 -n hotelspecials
 ```
 
-## 15. (기타) `JVM Heap` 메모리 상태 추척
+## 99. (기타) `JVM Heap` 메모리 상태 추척
 1. `Grafana` Metrics 설정
 `jvm_memory_bytes_used{instance="hotelspecials-service.hotelspecials.svc.cluster.local:9404",job="hotelspecials-jmx"}`
 
