@@ -19,26 +19,45 @@ resource "aws_iam_role" "cluster_admin" {
   })
 
   # This is IAM Policy with Full Access to EKS Configuration
-  inline_policy {
-    name = "eks-full-access-policy"
-
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Action   = [
-            "eks:*"
-          ]
-          Effect   = "Allow"
-          Resource = "*"
-        },
-      ]
-    })
-  }
+  # [2024-10-01] "inline_policy" deprecated.
+  # inline_policy {
+  #   name = "eks-full-access-policy"
+  #
+  #   policy = jsonencode({
+  #     Version = "2012-10-17"
+  #     Statement = [
+  #       {
+  #         Action   = [
+  #           "eks:*"
+  #         ]
+  #         Effect   = "Allow"
+  #         Resource = "*"
+  #       },
+  #     ]
+  #   })
+  # }
 
   tags = {
     description = "Administrator role for EKS cluster"
   }
+}
+
+resource "aws_iam_role_policy" "cluster_admin_policy" {
+  name = "cluster-admin-policy"
+  role = aws_iam_role.cluster_admin.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "eks:*"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
 }
 
 ###
@@ -62,26 +81,44 @@ resource "aws_iam_role" "cluster_deploy" {
   })
 
   # This is IAM Policy with Full Access to EKS Configuration
-  inline_policy {
-    name = "AdministratorAccess"
-
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Action   = [
-            "*"
-          ]
-          Effect   = "Allow"
-          Resource = "*"
-        },
-      ]
-    })
-  }
+  # inline_policy {
+  #   name = "AdministratorAccess"
+  #
+  #   policy = jsonencode({
+  #     Version = "2012-10-17"
+  #     Statement = [
+  #       {
+  #         Action   = [
+  #           "*"
+  #         ]
+  #         Effect   = "Allow"
+  #         Resource = "*"
+  #       },
+  #     ]
+  #   })
+  # }
 
   tags = {
     description = "Role for deployment pipeline toward EKS cluster. Restrict to least-privileged when ready."
   }
+}
+
+resource "aws_iam_role_policy" "cluster_deploy_policy" {
+  name = "cluster-deploy-policy"
+  role = aws_iam_role.cluster_deploy.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "*"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
 }
 
 ###
