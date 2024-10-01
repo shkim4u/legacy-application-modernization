@@ -546,7 +546,7 @@ echo "GRAFANA_SERVER: https://${GRAFANA_SERVER}"
    * (참고) `Hey` GitHub URL
      * https://github.com/William-Yeh/docker-hey.git
    * 아래 명령은 다음과 같은 형태의 부하를 생성합니다.
-     * 동시 사용자 100
+     * 동시 사용자 1000
      * 초당 20번 요청
      * 10분간 실행
 
@@ -602,6 +602,12 @@ kubectl scale deployment hotelspecials --replicas=6 -n hotelspecials
      * Partly working
    * [Karpenter](https://grafana.com/grafana/dashboards/20398-karpenter/): `20398`
      * Not working
+   * https://grafana.com/grafana/dashboards/10257-kubernetes-horizontal-pod-autoscaler/
+   * https://grafana.com/grafana/dashboards/16698-pods-improved/
+   * https://grafana.com/grafana/dashboards/7249-kubernetes-cluster/
+   * https://grafana.com/grafana/dashboards/13125-kubernetes-capacity-planning-limits/
+   * https://grafana.com/grafana/dashboards/8685-k8s-cluster-summary/
+   * https://grafana.com/grafana/dashboards/741-deployment-metrics/
 
 https://chatgpt.com/share/66e6f3fa-191c-800c-93ba-0b0f0fc35bf6
 

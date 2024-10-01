@@ -358,5 +358,5 @@ module "flightspecials" {
 
 module "keda" {
   source = "./keda"
-  depends_on = [null_resource.wait_for_cluster]
+  depends_on = [null_resource.wait_for_cluster, module.prometheus]
 }

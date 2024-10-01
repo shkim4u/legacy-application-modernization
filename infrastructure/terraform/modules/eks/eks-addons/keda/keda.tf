@@ -6,5 +6,25 @@ resource "helm_release" "keda" {
   namespace = "keda"
   create_namespace = true
 
+  set {
+    name = "prometheus.metricServer.enabled"
+    value = true
+  }
+
+  set {
+    name = "prometheus.metricServer.serviceMonitor.enabled"
+    value = true
+  }
+
+  set {
+    name = "prometheus.operator.enabled"
+    value = true
+  }
+
+  set {
+    name = "prometheus.operator.serviceMonitor.enabled"
+    value = true
+  }
+
   timeout = 1200
 }
