@@ -1,0 +1,31 @@
+- job_name: 'hotelspecials-jmx'
+  kubernetes_sd_configs:
+    - role: pod
+      namespaces:
+        names:
+          - hotelspecials
+  relabel_configs:
+    - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+      action: keep
+      regex: hotelspecials
+    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+      action: keep
+      regex: true
+    - source_labels:
+      - __meta_kubernetes_pod_ip
+      - __meta_kubernetes_pod_annotation_prometheus_io_port
+      separator: ":"
+      target_label: __address__
+  scheme: http
+- job_name: 'karpenter'
+  kubernetes_sd_configs:
+    - role: endpoints
+      namespaces:
+        names:
+          - karpenter
+  relabel_configs:
+    - source_labels:
+        - __meta_kubernetes_endpoints_name
+        - __meta_kubernetes_endpoint_port_name
+      action: keep
+      regex: karpenter;http-metrics

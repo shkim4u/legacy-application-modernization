@@ -48,25 +48,31 @@ resource "helm_release" "prometheus" {
 #     - targets: ['karpenter.karpenter.svc.cluster.local:8080']
 # EOF
 #   }
+
+#   set {
+#     name  = "prometheus.prometheusSpec.additionalScrapeConfigs"
+#     value = <<EOF
+# - job_name: 'hotelspecials-jmx'
+#   static_configs:
+#     - targets: ['hotelspecials-service.hotelspecials.svc.cluster.local:9404']
+# - job_name: 'karpenter'
+#   kubernetes_sd_configs:
+#   - role: endpoints
+#     namespaces:
+#       names:
+#       - karpenter
+#   relabel_configs:
+#   - source_labels:
+#     - __meta_kubernetes_endpoints_name
+#     - __meta_kubernetes_endpoint_port_name
+#     action: keep
+#     regex: karpenter;http-metrics
+# EOF
+#   }
+
   set {
     name  = "prometheus.prometheusSpec.additionalScrapeConfigs"
-    value = <<EOF
-- job_name: 'hotelspecials-jmx'
-  static_configs:
-    - targets: ['hotelspecials-service.hotelspecials.svc.cluster.local:9404']
-- job_name: 'karpenter'
-  kubernetes_sd_configs:
-  - role: endpoints
-    namespaces:
-      names:
-      - karpenter
-  relabel_configs:
-  - source_labels:
-    - __meta_kubernetes_endpoints_name
-    - __meta_kubernetes_endpoint_port_name
-    action: keep
-    regex: karpenter;http-metrics
-EOF
+    value = file("${path.module}/prometheus-additional-scrape-configs.yaml")
   }
 
   timeout = 3600

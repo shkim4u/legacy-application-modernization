@@ -11,7 +11,7 @@ metadata:
   # (IMPORTANT): Uncomment the following when you need to scale-in the pods to 0 for moeney saving.
 {{/*  annotations:*/}}
 {{/*    autoscaling.keda.sh/paused-replicas: "0"*/}}
-{{/*    autoscaling.keda.sh/paused: "true"*/}}
+{{/*    autoscaling.keda.sh/paused: "false"*/}}
 spec:
   # {{- if .Values.hpa.enabled }}
   # advanced:

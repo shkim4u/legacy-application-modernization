@@ -99,7 +99,13 @@ echo $ARGOCD_ADMIN_INITIAL_PASSWORD
 ```
 
 ## 6. (RDS Bastion) MySQL 설정
-1. MySQL 설치
+1. `RDS-Bastion` 인스턴스에 접속
+```bash
+export RDS_BASTION_INSTANCE_ID=`aws ec2 describe-instances --filters "Name=tag:Name,Values=RDS-Bastion" --query 'Reservations[*].Instances[*].[InstanceId]' --output text` && echo $RDS_BASTION_INSTANCE_ID
+aws ssm start-session --target $RDS_BASTION_INSTANCE_ID
+```
+
+2. MySQL 설치
 ```bash
 bash
 sudo yum update -y
@@ -107,7 +113,7 @@ sudo yum -y install mysql
 sudo yum install -y jq
 ```
 
-2. MySQL 접속
+3. MySQL 접속
 ```bash
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output=text) && echo $AWS_ACCOUNT_ID
 export AWS_DEFAULT_REGION=ap-northeast-2
@@ -118,7 +124,7 @@ export DATABASE_PASSWORD=$(echo $DATABASE_CREDENTIALS | jq -r '.password') && ec
 mysql -u ${DATABASE_USERNAME} --password="${DATABASE_PASSWORD}" -h `aws rds describe-db-clusters --db-cluster-identifier m2m-general-aurora-mysql --query "DBClusters[0].Endpoint" --output text`
 ```
 
-3. MySQL 데이터베이스 생성
+4. MySQL 데이터베이스 생성
 ```sql
 -- Database 생성
 CREATE DATABASE travelbuddy;
@@ -127,7 +133,7 @@ CREATE DATABASE travelbuddy;
 SHOW DATABASES;
 ```
 
-4. MySQL 데이터베이스 초기화
+5. MySQL 데이터베이스 초기화
 ```sql
 USE travelbuddy;
 
@@ -345,7 +351,7 @@ VALUES (
 'Melbourne');
 ```
 
-5. MySQL 데이터베이스 조회
+6. MySQL 데이터베이스 조회
 ```sql
 -- Hotel Special 테이블 확인
 SELECT * FROM hotelspecial;
@@ -357,6 +363,13 @@ SELECT * FROM flightspecial;
 7. MySQL 데이터베이스 종료
 ```sql
 quit;
+```
+8. `RDS-Basion` SSM 세션 종료
+```bash
+# Bash 쉘 종료
+exit
+# Shell 종료
+exit
 ```
 
 ## 7. `TravelBuddy` `GitOps` 리포지터리 (`Helm`) 설정
@@ -486,10 +499,9 @@ git push --set-upstream origin main
 
     ```bash
     kubectl patch hpa hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"minReplicas": 12}}'
-   kubectl patch hpa hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"maxReplicas": 12}}'
     ```
 
-2. 다시 `HPA`의 `minReplicas` 수를 `6`으로 원복하면 잠시 후 `x2idn.16xlarge` 인스턴스가 `Karpenter`에 의해 회수 (`Consolidation`)되어 노드가 삭제되며 비용을 줄일 수 있음을 확인합니다.
+2. 다시 `HPA`의 `minReplicas`와 `maxReplicas` 수를 `6`으로 줄이면 잠시 후 `x2idn.16xlarge` 인스턴스가 `Karpenter`에 의해 회수 (`Consolidation`)되어 노드가 삭제되며 비용을 줄일 수 있음을 확인합니다.
 
     ```bash
     kubectl patch hpa hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"minReplicas": 6}}'
@@ -503,16 +515,43 @@ git push --set-upstream origin main
    * (참고) Cron 트리거에 의한 확장 영역 실행 시에는 기본 Quota 내에서 스케일 아웃되므로 아래를 실행할 필요가 없습니다. 
 
    ```bash
-   kubectl patch scaledobjects hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"minReplicaCount": 12}}'
-   kubectl patch scaledobjects hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"maxReplicaCount": 12}}'
+   kubectl patch scaledobjects hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"minReplicaCount": 18}}'
+   kubectl patch scaledobjects hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"maxReplicaCount": 18}}'
    ```
 
 2. 다시 `HPA`의 `minReplicas` 수를 `6`으로 원복하면 잠시 후 `x2idn.16xlarge` 인스턴스가 `Karpenter`에 의해 회수 (`Consolidation`)되어 노드가 삭제되며 비용을 줄일 수 있음을 확인합니다.
 
    ```bash
-   #kubectl patch scaledobjects hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"minReplicaCount": 6}}'
-   kubectl patch scaledobjects hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"maxReplicaCount": 6}}'
+   kubectl patch scaledobjects hotelspecials -n hotelspecials --type='merge' -p '{"spec": {"minReplicaCount": 6}}'
    ```
+
+3. (Optional) `Keda ScaledObject`의 `Replica`수를 0으로 하려면 `Keda.yaml` 파일에서 다음을 설정 (주석 처리) 하면 됩니다.
+
+    ```yaml
+    metadata:
+      name: {{ .Values.app.name }}
+      namespace: {{ .Values.namespace.name }}
+    # {{- if .Values.hpa.enabled }}
+    # annotations:
+    #   scaledobject.keda.sh/transfer-hpa-ownership: "true"
+    # {{- end }}
+    # (IMPORTANT): Uncomment the following when you need to scale-in the pods to 0 for moeney saving.
+      annotations:
+        autoscaling.keda.sh/paused-replicas: "0"
+        autoscaling.keda.sh/paused: "true"
+    ```
+
+    혹은 아래와 같이 명령어를 입력합니다.
+
+    ```bash
+   kubectl annotate scaledobject hotelspecials -n hotelspecials autoscaling.keda.sh/paused-replicas="0" autoscaling.keda.sh/paused="false" --overwrite
+    ```
+
+    또한 원복 (해당 Annotations 제거)하는 명령어는 아래와 같습니다.
+
+    ```bash
+   kubectl annotate scaledobject hotelspecials -n hotelspecials autoscaling.keda.sh/paused-replicas- autoscaling.keda.sh/paused-
+    ```
 
 ## 13. `Grafana` 대시보드 확인
 
@@ -550,10 +589,21 @@ echo "GRAFANA_SERVER: https://${GRAFANA_SERVER}"
      * 초당 20번 요청
      * 10분간 실행
 
-      ```bash
-      export ALB_HOSTNAME=$(kubectl get ingress hotelspecials-ingress -n hotelspecials -o yaml | yq .status.loadBalancer.ingress[0].hostname) && echo $ALB_HOSTNAME
-      kubectl run load-generator --image=williamyeh/hey:latest --restart=Never -- -c 1000 -q 20 -z 10m http://$ALB_HOSTNAME/travelbuddy/hotelspecials
-      ```
+     ```bash
+     export ALB_HOSTNAME=$(kubectl get ingress hotelspecials-ingress -n hotelspecials -o yaml | yq '.status.loadBalancer.ingress[0].hostname') && echo $ALB_HOSTNAME
+     ```
+
+     ```bash
+     kubectl run load-generator --image=williamyeh/hey:latest --restart=Never -- -c 1000 -q 20 -z 10m http://$ALB_HOSTNAME/travelbuddy/hotelspecials
+     ```
+
+     ```bash
+     chmod +x ~/environment/samsung-fire-eks-evaluation/check-load-generator.sh
+     ```
+
+     ```bash
+     ~/environment/samsung-fire-eks-evaluation/check-load-generator.sh
+     ``` 
 
 2. `Keda`에 의해 생성된 `HPA` 모니터링
    * `CPU` 상태만 보기
@@ -579,6 +629,9 @@ echo "GRAFANA_SERVER: https://${GRAFANA_SERVER}"
    ```bash
    kubectl delete pod load-generator
    ```
+
+4. (참고) `Keda`의 `ScaledObject`의 Replica를 0으로 설정하기
+* https://github.com/kedacore/keda/issues/5570
 
 ## 15. (Test) `Pod` 리플리카 수 조정 (`Deployment`)
 
@@ -608,6 +661,18 @@ kubectl scale deployment hotelspecials --replicas=6 -n hotelspecials
    * https://grafana.com/grafana/dashboards/13125-kubernetes-capacity-planning-limits/
    * https://grafana.com/grafana/dashboards/8685-k8s-cluster-summary/
    * https://grafana.com/grafana/dashboards/741-deployment-metrics/
+   * Kubernetes / Views / Pods
+     * https://grafana.com/grafana/dashboards/15760-kubernetes-views-pods/
+   * Kubernetes Dashboards
+     * https://github.com/dotdc/grafana-dashboards-kubernetes
+     * k8s-addons-prometheus.json: `19105` 
+     * k8s-addons-trivy-operator.json: `16337` 
+     * k8s-system-api-server.json: `15761`
+     * k8s-system-coredns.json: `15762` 
+     * k8s-views-global.json: `15757` 
+     * k8s-views-namespaces.json: `15758` 
+     * k8s-views-nodes.json: `15759` 
+     * k8s-views-pods.json: `15760`
 
 https://chatgpt.com/share/66e6f3fa-191c-800c-93ba-0b0f0fc35bf6
 

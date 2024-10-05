@@ -505,10 +505,10 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "sum(jvm_memory_pool_bytes_committed{instance=\"hotelspecials-service.hotelspecials.svc.cluster.local:9404\",job=\"hotelspecials-jmx\"})",
-          "instant": true,
+          "expr": "sum(jvm_memory_pool_bytes_committed{job=\"hotelspecials-jmx\"})",
+          "instant": false,
           "interval": "",
-          "legendFormat": "${metric} (sum)",
+          "legendFormat": "JVM 메모리 풀 (합계)",
           "range": true,
           "refId": "A"
         }

@@ -16,6 +16,9 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: {{ .Values.app.name }}
+      annotations:
+        prometheus.io/port: "9404"
+        prometheus.io/scrape: "true"
     spec:
       nodeSelector:
         billing: aws-proserve
@@ -39,10 +42,10 @@ spec:
               protocol: TCP
           resources:
             requests:
-              memory: "155Gi"
+              memory: "154Gi"
               cpu: "10000m"
             limits:
-              memory: "155Gi"
+              memory: "154Gi"
               cpu: "15000m"
           env:
             - name: PROFILE
@@ -97,11 +100,11 @@ spec:
               protocol: TCP
           resources:
             requests:
-              memory: "128Mi"
-              cpu: "100m"
+              memory: "1Gi"
+              cpu: "400m"
             limits:
-              memory: "256Mi"
-              cpu: "200m"
+              memory: "1Gi"
+              cpu: "1000m"
           # Volume mount for X-Ray Configuration.
           volumeMounts:
             - name: config-volume
