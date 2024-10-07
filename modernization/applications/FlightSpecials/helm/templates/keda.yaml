@@ -1,0 +1,55 @@
+{{- if .Values.keda.enabled }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ .Values.app.name }}
+  namespace: {{ .Values.namespace.name }}
+  # {{- if .Values.hpa.enabled }}
+  # annotations:
+  #   scaledobject.keda.sh/transfer-hpa-ownership: "true"
+  # {{- end }}
+  # (IMPORTANT): Uncomment the following when you need to scale-in the pods to 0 for moeney saving.
+{{/*  annotations:*/}}
+{{/*    autoscaling.keda.sh/paused-replicas: "0"*/}}
+{{/*    autoscaling.keda.sh/paused: "false"*/}}
+spec:
+  # {{- if .Values.hpa.enabled }}
+  # advanced:
+  #   horizontalPodAutoscalerConfig:
+  #     name: {{ .Values.app.name }}
+  # {{- end }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.deployment.name }}
+  minReplicaCount: {{ .Values.keda.minReplicaCount }}
+  maxReplicaCount: {{ .Values.keda.maxReplicaCount }}
+  triggers:
+    # {{- if not .Values.hpa.enabled }}
+    - type: cpu
+      metricType: Utilization
+      metadata:
+        value: "30"
+    # {{- end }}
+    - type: cron
+      metadata:
+        timezone: Asia/Seoul
+        # 2월은 윤달 여부에 상관없이 20일에 스케일링 시작 - 다음 달 1일 새벽 1시에 종료
+        start: 0 1 22 2 *
+        end: 0 1 1 3 *
+        desiredReplicas: "{{ .Values.keda.desiredReplicaCountAtPeak }}"
+    - type: cron
+      metadata:
+        timezone: Asia/Seoul
+        # 30일 달은 22일에 스케일링 시작 - 다음 달 1일 새벽 1시에 종료
+        start: 0 1 24 4,6,9,11 *
+        end: 0 1 1 5,7,10,12 *
+        desiredReplicas: "{{ .Values.keda.desiredReplicaCountAtPeak }}"
+    - type: cron
+      metadata:
+        timezone: Asia/Seoul
+        # 31일 달은 23일 새벽 1시에 스케일링 시작 - 다음 달 1일 새벽 1시에 종료
+        start: 0 1 25 1,3,5,7,8,10,12 *
+        end: 0 1 1 1,2,4,6,8,9,11 *
+        desiredReplicas: "{{ .Values.keda.desiredReplicaCountAtPeak }}"
+  {{- end }}

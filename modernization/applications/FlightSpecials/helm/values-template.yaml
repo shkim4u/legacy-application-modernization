@@ -26,3 +26,13 @@ configmap:
   database_endpoint: ${DATABASE_ENDPOINT}
   database_port: ${DATABASE_PORT}
   database_username: "${DATABASE_USERNAME}"
+hpa:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 30
+keda:
+  enabled: true
+  minReplicaCount: 2
+  maxReplicaCount: 4
+  desiredReplicaCountAtPeak: 4

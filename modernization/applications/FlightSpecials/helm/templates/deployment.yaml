@@ -6,7 +6,9 @@ metadata:
   namespace: {{ .Values.namespace.name }}
   name: {{ .Values.deployment.name }}
 spec:
+  {{- if and (not .Values.hpa.enabled) (not .Values.keda.enabled) }}
   replicas: {{ .Values.deployment.replicas }}
+  {{- end }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ .Values.app.name }}

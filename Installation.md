@@ -639,6 +639,29 @@ echo "GRAFANA_SERVER: https://${GRAFANA_SERVER}"
 kubectl scale deployment hotelspecials --replicas=6 -n hotelspecials
 ```
 
+## 16. `FlightSpecials` `GitOps` 리포지터리 (`Helm`) 설정
+```bash
+# 1. 어플리케이션 Helm Artifact 경로로 이동
+cd ~/environment/aws-database-migration/modernization/applications/FlightSpecials/helm
+
+# 2. git 연결
+git init
+git branch -M main
+
+export HELM_CODECOMMIT_URL=$(aws codecommit get-repository --repository-name flightspecials-configuration --region ap-northeast-2 | grep -o '"cloneUrlHttp": "[^"]*' | grep -o '[^"]*$')
+echo $HELM_CODECOMMIT_URL
+
+# CodeCommit 배포 리포지터리와 연결
+git remote add origin $HELM_CODECOMMIT_URL
+
+# 3. Git 스테이징 영역에 파일을 추가합니다.
+git add .
+
+# 4. Commit 및 배포 리포지터리에 Push합니다.
+git commit -am "First commit."
+git push --set-upstream origin main
+```
+
 ## 99. (기타) `JVM Heap` 메모리 상태 추척
 1. `Grafana` Metrics 설정
 `jvm_memory_bytes_used{instance="hotelspecials-service.hotelspecials.svc.cluster.local:9404",job="hotelspecials-jmx"}`
@@ -679,6 +702,3 @@ https://chatgpt.com/share/66e6f3fa-191c-800c-93ba-0b0f0fc35bf6
 https://velog.io/@cks8483/Kubernetes-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-JVM-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0
 
 
-```bash
-
-```

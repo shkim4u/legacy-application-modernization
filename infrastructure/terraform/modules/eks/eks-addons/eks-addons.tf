@@ -360,3 +360,9 @@ module "keda" {
   source = "./keda"
   depends_on = [null_resource.wait_for_cluster, module.prometheus]
 }
+
+module "opentelemetry" {
+  source = "./opentelemetry"
+  depends_on = [null_resource.wait_for_cluster]
+  certificate_arn = var.aws_acm_certificate_arn
+}
