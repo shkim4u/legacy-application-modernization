@@ -38,7 +38,7 @@ tasks.named('test') {
 openapi3 {
 	servers = [
 			{ url = 'http://localhost:8080' },
-			{ url = 'http://restdoc-openapi' }
+			{ url = 'http://restdoc-openapi:8080' }
 	]
 	title = 'Post service API'
 	description = 'Post service API description'

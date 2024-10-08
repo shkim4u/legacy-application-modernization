@@ -67,8 +67,22 @@ phases:
         git status
         git config user.email "anyone@example.com"
         git config user.name "${APP_NAME} Developer"
+        # openapi3.json 파일 경로 (예시, 실제 경로에 맞게 수정 필요)
+        OPENAPI_FILE="build/api-spec/openapi3.json"
+        # OpenAPI Spec (OAS) ConfigMap 템플릿 파일 생성
+        cat << EOF > templates/swagger-configmap.yaml
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: swagger-config
+          namespace: {{ .Values.namespace.name }}
+        data:
+          openapi3.json: |
+        EOF
+        # openapi3.json 내용을 ConfigMap 템플릿에 추가 (with leading 4 spaces)
+        sed 's/^/    /' $OPENAPI_FILE >> templates/swagger-configmap.yaml
         git add .
-        git commit -m "Updated image tag to $IMAGE_TAG"
+        git commit -m "Updated image tag to $IMAGE_TAG and added swagger configmap file"
         git log --oneline
         git remote -v
         git push -u origin main

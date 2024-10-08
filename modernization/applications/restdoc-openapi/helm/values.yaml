@@ -1,0 +1,35 @@
+namespace:
+  create: true
+  name: restdoc-openapi
+app:
+  name: restdoc-openapi
+  build_number: ${CODEBUILD_BUILD_NUMBER}
+deployment:
+  name: restdoc-openapi
+  replicas: 2
+image:
+  repository: ${ECR_REPO_URI}
+  tag: ${IMAGE_TAG}
+container:
+  port: 8080
+service:
+  name: restdoc-openapi-service
+  type: NodePort
+  port: 80
+ingress:
+  enabled: ${INGRESS_ENABLED}
+  name: restdoc-openapi-ingress
+  certificate_arn: ${CERTIFICATE_ARN}
+configmap:
+  name: restdoc-openapi-configmap
+  environment: test
+hpa:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 30
+keda:
+  enabled: true
+  minReplicaCount: 2
+  maxReplicaCount: 4
+  desiredReplicaCountAtPeak: 4

@@ -1,3 +1,8 @@
+## 클라우드 빌드
+1. 빌드
+
+## 로컬 빌드
+
 1. 소스 빌드
 ```bash
 ./gradlew clean copyOasToSwagger
