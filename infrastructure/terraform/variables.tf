@@ -50,6 +50,7 @@ variable "cicd_services" {
   default = {
     "cicd-flightspecials" = "flightspecials"
     "cicd-hotelspecials" = "hotelspecials"
+    "cicd-restdoc-openapi" = "restdoc-openapi"
   }
 }
 

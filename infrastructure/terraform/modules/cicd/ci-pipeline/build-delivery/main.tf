@@ -173,6 +173,10 @@ resource "aws_codebuild_project" "build" {
       name  = "NVS_THRESHOLD"
       value = "10"
     }
+    environment_variable {
+      name  = "APP_NAME"
+      value = var.name
+    }
   }
 
   source {

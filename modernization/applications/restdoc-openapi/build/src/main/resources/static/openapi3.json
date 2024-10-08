@@ -1,0 +1,391 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Post Service API",
+    "description" : "Post Service API description",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:8080"
+  }, {
+    "url" : "http://production-api-server-url.com"
+  } ],
+  "tags" : [ ],
+  "paths" : {
+    "/posts" : {
+      "get" : {
+        "tags" : [ "posts" ],
+        "operationId" : "get-posts",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "페이지 번호",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "description" : "한 페이지의 데이터 개수",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "정렬 파라미터,오름차순 또는 내림차순 +\nex) +\ncreatedDate,asc(작성일 오름차순) +\ncreatedDate,desc(작성일 내림차순)",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/posts-1056458637"
+                },
+                "examples" : {
+                  "get-posts" : {
+                    "value" : "{\n  \"code\" : 0,\n  \"message\" : \"성공\",\n  \"data\" : {\n    \"totalPages\" : 1,\n    \"pageNumber\" : 1,\n    \"pageSize\" : 10,\n    \"totalElements\" : 1,\n    \"posts\" : [ {\n      \"id\" : 1,\n      \"title\" : \"title1\",\n      \"author\" : \"author1\",\n      \"createdTime\" : \"2023-10-09 12:00:00\"\n    } ]\n  }\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "posts" ],
+        "operationId" : "create-posts",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "AccessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "Bearer {AccessToken}"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/posts-id27737830"
+              },
+              "examples" : {
+                "create-posts" : {
+                  "value" : "{\n  \"title\" : \"title\",\n  \"content\" : \"content\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/posts-1349496598"
+                },
+                "examples" : {
+                  "create-posts" : {
+                    "value" : "{\n  \"code\" : 0,\n  \"message\" : \"성공\",\n  \"data\" : {\n    \"id\" : 1\n  }\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/{id}" : {
+      "get" : {
+        "tags" : [ "posts" ],
+        "operationId" : "get-post",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "게시글 ID",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/posts-id1070811564"
+                },
+                "examples" : {
+                  "get-post" : {
+                    "value" : "{\n  \"code\" : 0,\n  \"message\" : \"성공\",\n  \"data\" : {\n    \"id\" : 1,\n    \"title\" : \"title\",\n    \"content\" : \"content\",\n    \"author\" : \"author\",\n    \"createdTime\" : \"2023-10-09 12:00:00\"\n  }\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "posts" ],
+        "operationId" : "update-posts",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "게시글 ID",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "AccessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "Bearer {AccessToken}"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/posts-id27737830"
+              },
+              "examples" : {
+                "update-posts" : {
+                  "value" : "{\n  \"title\" : \"title\",\n  \"content\" : \"content\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/posts-id1650436776"
+                },
+                "examples" : {
+                  "update-posts" : {
+                    "value" : "{\n  \"code\" : 0,\n  \"message\" : \"성공\",\n  \"data\" : null\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "posts" ],
+        "operationId" : "delete-posts",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "게시글 ID",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "AccessToken",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "Bearer {AccessToken}"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/posts-id1650436776"
+                },
+                "examples" : {
+                  "delete-posts" : {
+                    "value" : "{\n  \"code\" : 0,\n  \"message\" : \"성공\",\n  \"data\" : null\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "posts-id27737830" : {
+        "required" : [ "content", "title" ],
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string",
+            "description" : "게시글 제목"
+          },
+          "content" : {
+            "type" : "string",
+            "description" : "게시글 내용"
+          }
+        }
+      },
+      "posts-1056458637" : {
+        "required" : [ "code", "message" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "상태 코드"
+          },
+          "data" : {
+            "required" : [ "pageNumber", "pageSize", "posts", "totalElements", "totalPages" ],
+            "type" : "object",
+            "properties" : {
+              "pageNumber" : {
+                "type" : "number",
+                "description" : "현재 페이지 번호"
+              },
+              "totalPages" : {
+                "type" : "number",
+                "description" : "검색 페이지 수"
+              },
+              "pageSize" : {
+                "type" : "number",
+                "description" : "한 페이지의 데이터 개수"
+              },
+              "posts" : {
+                "type" : "array",
+                "description" : "게시글 목록",
+                "items" : {
+                  "required" : [ "author", "createdTime", "id", "title" ],
+                  "type" : "object",
+                  "properties" : {
+                    "author" : {
+                      "type" : "string",
+                      "description" : "게시글 작성자"
+                    },
+                    "createdTime" : {
+                      "type" : "string",
+                      "description" : "게시글 생성일"
+                    },
+                    "id" : {
+                      "type" : "number",
+                      "description" : "게시글 ID"
+                    },
+                    "title" : {
+                      "type" : "string",
+                      "description" : "게시글 제목"
+                    }
+                  }
+                }
+              },
+              "totalElements" : {
+                "type" : "number",
+                "description" : "검색 데이터 개수"
+              }
+            }
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "상태 메세지"
+          }
+        }
+      },
+      "posts-id1650436776" : {
+        "required" : [ "code", "data", "message" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "상태 코드"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "상태 메세지"
+          }
+        }
+      },
+      "posts-1349496598" : {
+        "required" : [ "code", "message" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "상태 코드"
+          },
+          "data" : {
+            "required" : [ "id" ],
+            "type" : "object",
+            "properties" : {
+              "id" : {
+                "type" : "number",
+                "description" : "생성된 게시글 ID"
+              }
+            }
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "상태 메세지"
+          }
+        }
+      },
+      "posts-id1070811564" : {
+        "required" : [ "code", "message" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "상태 코드"
+          },
+          "data" : {
+            "required" : [ "author", "content", "createdTime", "id", "title" ],
+            "type" : "object",
+            "properties" : {
+              "author" : {
+                "type" : "string",
+                "description" : "게시글 작성자"
+              },
+              "createdTime" : {
+                "type" : "string",
+                "description" : "게시글 생성일"
+              },
+              "id" : {
+                "type" : "number",
+                "description" : "게시글 ID"
+              },
+              "title" : {
+                "type" : "string",
+                "description" : "게시글 제목"
+              },
+              "content" : {
+                "type" : "string",
+                "description" : "게시글 내용"
+              }
+            }
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "상태 메세지"
+          }
+        }
+      }
+    }
+  }
+}
