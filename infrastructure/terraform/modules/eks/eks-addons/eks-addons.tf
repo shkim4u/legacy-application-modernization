@@ -366,3 +366,11 @@ module "opentelemetry" {
   depends_on = [null_resource.wait_for_cluster]
   certificate_arn = var.aws_acm_certificate_arn
 }
+
+module "insurance" {
+  source = "./insurance"
+  eks_cluster_name = var.eks_cluster_name
+  irsa_oidc_provider_arn = var.oidc_provider_arn
+
+  depends_on = [null_resource.wait_for_cluster]
+}

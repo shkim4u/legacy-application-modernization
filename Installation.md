@@ -96,6 +96,7 @@ echo $ARGOCD_ADMIN_INITIAL_PASSWORD
 ./set-argocd-admin-password-argocd-server.sh $ARGOCD_ADMIN_INITIAL_PASSWORD "Abraca00#1"
 ./set-argocd-admin-password-secrets-manager.sh "Abraca00#1" hotelspecials-ci-argocd-admin-password
 ./set-argocd-admin-password-secrets-manager.sh "Abraca00#1" flightspecials-ci-argocd-admin-password
+./set-argocd-admin-password-secrets-manager.sh "Abraca00#1" restdoc-openapi-ci-argocd-admin-password
 ```
 
 ## 6. (RDS Bastion) MySQL 설정
@@ -426,7 +427,7 @@ export HELM_CODECOMMIT_URL=$(aws codecommit get-repository --repository-name hot
 echo $HELM_CODECOMMIT_URL
 ```
 
-4. `ArgoCD` Helm 리포지터리 생성
+4. `ArgoCD` Helm 리포지터리 연결
 
 5. `ArgoCD` Application 생성
 

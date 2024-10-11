@@ -71,7 +71,15 @@ phases:
         argocd login ${ARGOCD_SERVER} --username admin --password ${ARGOCD_ADMIN_PASSWORD} --insecure
       - |
         # Sync ArgoCD Application.
-        argocd app sync ${ARGOCD_APPLICATION_NAME} --insecure
+        argocd app sync ${ARGOCD_APPLICATION_NAME} --insecure --timeout 120
+      - |
+        OPENAPI3_URL=`kubectl get ingress/restdoc-openapi-ingress -n restdoc-openapi -o json | jq --raw-output '.status.loadBalancer.ingress[0].hostname'`
+        echo "OPENAPI3_URL: ${OPENAPI3_URL}"
+        sed -i "s|\"url\" : \"http://OPENAPI3_URL_TO_REPLACE\"|\"url\" : \"http://$OPENAPI3_URL\"|" templates/swagger-configmap.yaml
+        git status
+        git commit -am "Updated OPENAPI3_URL to the DNS name of ALB - ${OPENAPI3_URL}" && git push
+        # Resync the Swagger ConfigMap.
+        argocd app sync ${ARGOCD_APPLICATION_NAME} --insecure --timeout 120
   post_build:
     commands:
       - echo "post_build"

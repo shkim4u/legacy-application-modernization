@@ -15,7 +15,6 @@ spec:
       labels:
         app.kubernetes.io/name: {{ .Values.app.name }}
     spec:
-      serviceAccountName: {{ .Values.app.name }}-service-account
       containers:
         - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           name: {{ .Values.app.name }}
@@ -69,6 +68,8 @@ spec:
           env:
             - name: SWAGGER_JSON
               value: /tmp/openapi3.json
+            - name: BASE_URL
+              value: "/swagger-ui"
           volumeMounts:
             - name: swagger-config
               mountPath: /tmp

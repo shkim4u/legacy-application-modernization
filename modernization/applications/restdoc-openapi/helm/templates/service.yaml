@@ -11,3 +11,17 @@ spec:
       protocol: TCP
   selector:
     app.kubernetes.io/name: {{ .Values.app.name }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.namespace.name }}
+  name: swagger-ui-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: swagger-ui

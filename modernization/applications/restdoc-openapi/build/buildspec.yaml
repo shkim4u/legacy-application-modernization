@@ -68,7 +68,7 @@ phases:
         git config user.email "anyone@example.com"
         git config user.name "${APP_NAME} Developer"
         # openapi3.json 파일 경로 (예시, 실제 경로에 맞게 수정 필요)
-        OPENAPI_FILE="build/api-spec/openapi3.json"
+        OPENAPI_FILE="${CODEBUILD_SRC_DIR}/build/api-spec/openapi3.json"
         # OpenAPI Spec (OAS) ConfigMap 템플릿 파일 생성
         cat << EOF > templates/swagger-configmap.yaml
         apiVersion: v1
