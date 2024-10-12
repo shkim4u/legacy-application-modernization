@@ -15,7 +15,7 @@ metadata:
       {"Type":"redirect","RedirectConfig":{"Port":"443","Protocol":"HTTPS","StatusCode":"HTTP_302"}}
     alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.certificate_arn }}
     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
-    alb.ingress.kubernetes.io/group.name: travelbuddy
+    alb.ingress.kubernetes.io/group.name: {{ .Values.namespace.name }}
     alb.ingress.kubernetes.io/group.order: '1'
     alb.ingress.kubernetes.io/healthcheck-path: "/travelbuddy/health"
     alb.ingress.kubernetes.io/healthcheck-interval-seconds: '30'

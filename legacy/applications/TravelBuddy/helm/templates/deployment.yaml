@@ -20,6 +20,13 @@ spec:
         prometheus.io/port: "9404"
         prometheus.io/scrape: "true"
     spec:
+      topologySpreadConstraints:
+        - maxSkew: 6
+          topologyKey: "topology.kubernetes.io/zone"
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{ .Values.app.name }}
       nodeSelector:
         billing: aws-proserve
         purpose: samsungfire-underwriting-system
@@ -28,7 +35,7 @@ spec:
           operator: Equal
           value: "true"
           effect: NoSchedule
-      serviceAccountName: hotelspecials-service-account
+      serviceAccountName: {{ .Values.namespace.name }}-service-account
       volumes:
         - name: config-volume
           configMap:
@@ -52,34 +59,34 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   key: environment
-                  name: hotelspecials-configmap
+                  name: {{ .Values.configmap.name }}
             - name: JAVA_OPTS
               value: "-Xms20480M -Xmx148480M -Djava.awt.headless=true -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}"
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:
                   key: environment
-                  name: hotelspecials-configmap
+                  name: {{ .Values.configmap.name }}
             - name: DATABASE_ENDPOINT
               valueFrom:
                 configMapKeyRef:
                   key: database_endpoint
-                  name: hotelspecials-configmap
+                  name: {{ .Values.configmap.name }}
             - name: DATABASE_PORT
               valueFrom:
                 configMapKeyRef:
                   key: database_port
-                  name: hotelspecials-configmap
+                  name: {{ .Values.configmap.name }}
             - name: DATABASE_USERNAME
               valueFrom:
                 configMapKeyRef:
                   key: database_username
-                  name: hotelspecials-configmap
+                  name: {{ .Values.configmap.name }}
             - name: DATABASE_PASSWORD
               valueFrom:
                 configMapKeyRef:
                   key: database_password
-                  name: hotelspecials-configmap
+                  name: {{ .Values.configmap.name }}
             - name: JDBC_CONNECTION_STRING
               value: "jdbc:mysql://${DATABASE_ENDPOINT}:${DATABASE_PORT}/travelbuddy?useSSL=false&autoReconnect=true"
             - name: JDBC_UID

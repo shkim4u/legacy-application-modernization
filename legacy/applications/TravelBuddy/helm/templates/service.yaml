@@ -9,7 +9,7 @@ spec:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.container.port }}
       protocol: TCP
-      name: hotelspecials-service
+      name: {{ .Values.service.name }}
     - port: 9000
       targetPort: 9000
       protocol: TCP

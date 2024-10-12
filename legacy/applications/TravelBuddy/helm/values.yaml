@@ -1,27 +1,27 @@
 namespace:
   crate: false
-  name: hotelspecials
+  name: insurance
 app:
-  name: hotelspecials
+  name: insurance-planning
   build_number: 0
 deployment:
-  name: hotelspecials
+  name: insurance-planning
   replicas: 6
 image:
   repository: ${ECR_REPO_URI}
-  tag: ${IMAGE_TAG}
+  tag: "${IMAGE_TAG}"
 container:
   port: 8080
 service:
-  name: hotelspecials-service
+  name: insurance-planning-service
   type: NodePort
   port: 80
 ingress:
   enabled: true
-  name: hotelspecials-ingress
+  name: insurance-planning-ingress
   certificate_arn: ${CERTIFICATE_ARN}
 configmap:
-  name: hotelspecials-configmap
+  name: insurance-planning-configmap
   environment: dev
   database_endpoint: ${DATABASE_ENDPOINT}
   database_port: ${DATABASE_PORT}
@@ -29,11 +29,11 @@ configmap:
   database_password: ${DATABASE_PASSWORD}
 hpa:
   enabled: false
-  minReplicas: 6
-  maxReplicas: 18
+  minReplicas: 12
+  maxReplicas: 24
   targetCPUUtilizationPercentage: 30
 keda:
   enabled: true
-  minReplicaCount: 6
-  maxReplicaCount: 18
-  desiredReplicaCountAtPeak: 12
+  minReplicaCount: 12
+  maxReplicaCount: 24
+  desiredReplicaCountAtPeak: 24

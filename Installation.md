@@ -429,7 +429,7 @@ echo $HELM_CODECOMMIT_URL
 
 4. `ArgoCD` Helm 리포지터리 연결
 
-5. `ArgoCD` Application 생성
+5. `ArgoCD` Application 생성 (이름으로 `hotelspecials` 사용)
 
     * Application Name: `hotelspecials`
     * Project: `default`
@@ -439,6 +439,16 @@ echo $HELM_CODECOMMIT_URL
     * Destination 섹션 > Cluster URL: https://kubernetes.default.svc
     * Destination 섹션 > Namespace: `hotelspecials`를 입력하고 상단의 Create를 클릭합니다.
 
+6`ArgoCD` Application 생성 (이름으로 `insurance-plannning` 사용)
+
+    * Application Name: `insurance-planning`
+    * Project: `default`
+    * Sync Policy: Manual
+    * Repository URL: 앞서 설정한 배포 리포지터리
+    * PATH: `.`
+    * Destination 섹션 > Cluster URL: https://kubernetes.default.svc
+    * Destination 섹션 > Namespace: `insurance`를 입력하고 상단의 Create를 클릭합니다.
+
 ## 9. `eks-node-viewer` 설치
 
 https://github.com/awslabs/eks-node-viewer
@@ -446,7 +456,8 @@ https://github.com/awslabs/eks-node-viewer
 ```bash
 go install github.com/awslabs/eks-node-viewer/cmd/eks-node-viewer@latest
 # ~/go/bin/eks-node-viewer -resources cpu,memory
-~/go/bin/eks-node-viewer -resources cpu,memory -node-sort=eks-node-viewer/node-memory-usage=asc
+#~/go/bin/eks-node-viewer -resources cpu,memory -node-sort=eks-node-viewer/node-memory-usage=asc
+~/go/bin/eks-node-viewer -resources cpu,memory -node-selector=purpose -node-sort=eks-node-viewer/node-memory-usage=asc --extra-labels topology.kubernetes.io/zone,karpenter.sh/nodepool
 ```
 
 ## 10. Karpenter가 Spot 인스턴스 생성 시 `spot.amazonaws.com`가 사용하는 `Service-Linked Role` 생성

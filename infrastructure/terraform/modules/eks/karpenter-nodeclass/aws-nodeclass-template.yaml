@@ -14,6 +14,7 @@ spec:
   - tags:
       karpenter.sh/discovery/${cluster_name_prefix}: '*'
   tags:
+    Name: SamsungFire-Karpenter-Node
     karpenter.sh/discovery: ${cluster_name}
   metadataOptions:
     httpPutResponseHopLimit: 2
