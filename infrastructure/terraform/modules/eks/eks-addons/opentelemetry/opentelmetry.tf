@@ -20,9 +20,9 @@ resource "helm_release" "opentelemetry_operator" {
   timeout = 3600
 }
 
-resource "kubectl_manifest" "opentelemetry_resources" {
-  for_each  = data.kubectl_path_documents.opentelemetry_manifests.manifests
-  yaml_body = each.value
+resource "kubectl_manifest" "opentelemetry_collector" {
+  # yaml_body = file("${path.module}/collector-manifests/opentelemetry-collector.yaml")
+  yaml_body = values(data.kubectl_path_documents.opentelemetry_collector_manifests.manifests)[0]
   # override_namespace = kubernetes_namespace.opentelemetry.metadata[0].name
   depends_on = [helm_release.opentelemetry_operator]
 }

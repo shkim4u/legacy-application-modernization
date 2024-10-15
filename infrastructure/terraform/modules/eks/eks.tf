@@ -211,19 +211,35 @@ module "eks" {
   eks_managed_node_groups = {
     "OnDemand" = {
       capacity_type  = "ON_DEMAND"
-      instance_types = ["m5.4xlarge"]
+      instance_types = ["m7i.8xlarge"]
       min_size       = 2
       max_size       = 4
       desired_size   = 2
+      disk_size = 200
       # 생성된 node에 labels 추가 (kubectl get nodes --show-labels로 확인 가능)
       labels         = {
         ondemand = "true"
       }
+
+      block_device_mappings = {
+        xvda = {
+          device_name = "/dev/xvda"
+          ebs = {
+            volume_size           = 200
+            volume_type           = "gp3"
+            iops                  = 3000
+            throughput            = 150
+            encrypted             = true
+            delete_on_termination = true
+          }
+        }
+      }
+
       update_config = {
         # Refer to: https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest/submodules/eks-managed-node-group
         # This is the default.
-        "max_unavailable_percentage": 33
-        #        "max_unavailable" = "1"
+        # "max_unavailable_percentage": 33
+        "max_unavailable" = "1"
       }
       force_update_version = true
     }
@@ -257,6 +273,7 @@ module "eks" {
       min_size       = var.number_of_x2idn_16xlarge_instances
       max_size       = var.number_of_x2idn_16xlarge_instances == 0 ? 1 : var.number_of_x2idn_16xlarge_instances
       desired_size   = var.number_of_x2idn_16xlarge_instances # Currently 2
+      disk_size = 200
       labels         = {
         billing = "aws-proserve"
         purpose = "samsungfire-underwriting-system"

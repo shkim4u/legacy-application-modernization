@@ -29,11 +29,11 @@ configmap:
   database_password: ${DATABASE_PASSWORD}
 hpa:
   enabled: false
-  minReplicas: 12
+  minReplicas: 6
   maxReplicas: 24
   targetCPUUtilizationPercentage: 30
 keda:
   enabled: true
-  minReplicaCount: 12
+  minReplicaCount: 6
   maxReplicaCount: 24
   desiredReplicaCountAtPeak: 24
