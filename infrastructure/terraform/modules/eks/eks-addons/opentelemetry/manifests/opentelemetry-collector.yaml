@@ -5,24 +5,22 @@ metadata:
   namespace: ${namespace}
 spec:
   mode: deployment # This configuration is omittable.
-  config: |
+  config:
     receivers:
       otlp:
         protocols:
           grpc:
           http:
     processors:
-
     exporters:
-      logging:
-      jaeger:
-        endpoint: "jaeger-collector:14250"
+      otlp/jaeger: # Jaeger supports OTLP directly. The default port for OTLP/gRPC is 4317
+#        endpoint: "jaeger-collector.observability:14250"
+        endpoint: "jaeger-collector.observability:4317"
         tls:
           insecure: true
-
     service:
       pipelines:
         traces:
           receivers: [otlp]
           processors: []
-          exporters: [logging, jaeger]
+          exporters: [otlp/jaeger]

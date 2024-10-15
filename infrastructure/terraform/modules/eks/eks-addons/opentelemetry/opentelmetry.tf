@@ -23,6 +23,7 @@ resource "helm_release" "opentelemetry_operator" {
 resource "kubectl_manifest" "opentelemetry_resources" {
   for_each  = data.kubectl_path_documents.opentelemetry_manifests.manifests
   yaml_body = each.value
+  # override_namespace = kubernetes_namespace.opentelemetry.metadata[0].name
   depends_on = [helm_release.opentelemetry_operator]
 }
 

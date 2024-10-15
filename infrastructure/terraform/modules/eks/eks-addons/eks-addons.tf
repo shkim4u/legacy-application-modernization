@@ -361,6 +361,11 @@ module "keda" {
   depends_on = [null_resource.wait_for_cluster, module.prometheus]
 }
 
+module "observability" {
+  source = "./observability"
+  depends_on = [null_resource.wait_for_cluster]
+}
+
 module "opentelemetry" {
   source = "./opentelemetry"
   depends_on = [null_resource.wait_for_cluster]
