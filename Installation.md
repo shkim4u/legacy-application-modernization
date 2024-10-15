@@ -593,6 +593,7 @@ echo "GRAFANA_SERVER: https://${GRAFANA_SERVER}"
       * `~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/observability/grafana/karpenter-performance-dashboard.json`
 
 ## 14. 부하 테스트
+### 14.1. `Hey` 사용
 1. 부하 생성 (`Hey` 사용)
    * (참고) `Hey` GitHub URL
      * https://github.com/William-Yeh/docker-hey.git
@@ -618,10 +619,16 @@ echo "GRAFANA_SERVER: https://${GRAFANA_SERVER}"
      ``` 
 
 2. `Keda`에 의해 생성된 `HPA` 모니터링
-   * `CPU` 상태만 보기
+   * `CPU` 상태만 보기 (`hotelspecials` 네임스페이스 사용)
 
       ```bash
       kubectl get hpa keda-hpa-hotelspecials -n hotelspecials --watch -o custom-columns="NAME:.metadata.name,CPU TARGET:.spec.metrics[?(@.resource.name=='cpu')].resource.target.averageUtilization,CPU CURRENT:.status.currentMetrics[?(@.resource.name=='cpu')].resource.current.averageUtilization"
+      ```
+
+   * `CPU` 상태만 보기 (`insurance` 네임스페이스 사용)
+
+      ```bash
+      kubectl get hpa keda-hpa-insurance-planning -n insurance --watch -o custom-columns="NAME:.metadata.name,CPU TARGET:.spec.metrics[?(@.resource.name=='cpu')].resource.target.averageUtilization,CPU CURRENT:.status.currentMetrics[?(@.resource.name=='cpu')].resource.current.averageUtilization"
       ```
 
    * Cron 트리거를 포함한 전체 보기
@@ -629,12 +636,6 @@ echo "GRAFANA_SERVER: https://${GRAFANA_SERVER}"
       ```bash
       kubectl get hpa keda-hpa-hotelspecials -n hotelspecials --watch
       ```
-
-[//]: # (   ```bash)
-
-[//]: # (   kubectl get hpa keda-hpa-hotelspecials -n hotelspecials -o jsonpath="{.metadata.name}: CPU Target: {.spec.metrics[?&#40;@.resource.name=='cpu'&#41;].resource.target.averageUtilization}%, CPU Current: {.status.currentMetrics[?&#40;@.resource.name=='cpu'&#41;].resource.current.averageUtilization}%" --watch)
-
-[//]: # (   ```)
 
 3. 테스트가 끝나면 Pod 삭제
 
@@ -644,6 +645,55 @@ echo "GRAFANA_SERVER: https://${GRAFANA_SERVER}"
 
 4. (참고) `Keda`의 `ScaledObject`의 Replica를 0으로 설정하기
 * https://github.com/kedacore/keda/issues/5570
+
+### 14.2. `sress-ng` 유틸리티 사용
+
+이번에는 파드에 직접 접속하여 `stress-ng` 유틸리티를 통해 부하를 생성해 보겠습니다.
+
+1. 파드를 순회하면서 `stress-ng` 유틸리티를 설치하고 실행 (`insurance` 네임스페이스 사용)
+
+```bash
+# 매개변수 설정
+APP_NAME="insurance-planning"
+NAMESPACE="insurance"
+
+echo "Applying stress to pods with app.kubernetes.io/name=$APP_NAME in namespace $NAMESPACE"
+
+# Pod 목록 가져오기
+PODS=$(kubectl get pods -n $NAMESPACE -l app.kubernetes.io/name=$APP_NAME -o jsonpath='{.items[*].metadata.name}')
+
+# Pod가 없는 경우 처리
+if [ -z "$PODS" ]; then
+    echo "No pods found with app.kubernetes.io/name=$APP_NAME in namespace $NAMESPACE"
+    exit 1
+fi
+
+# 백그라운드 작업을 추적하기 위한 배열
+#declare -a pids
+
+# 각 Pod에 대해 루프 실행
+echo "$PODS" | tr ' ' '\n' | while read -r POD; do
+    echo "Processing Pod: $POD"
+    
+    # Pod에 명령어 실행 (백그라운드에서)
+    kubectl exec $POD -n $NAMESPACE -- /bin/bash -c '
+        apt-get update && apt-get install -y stress-ng &&
+        nohup stress-ng --cpu 10 --cpu-load 40 --timeout 5m > /dev/null 2>&1 &
+    ' &
+    
+    # 백그라운드 프로세스의 PID 저장
+#    pids+=($!)
+    
+    echo "Started processing Pod: $POD"
+done
+
+# 모든 백그라운드 작업이 완료될 때까지 대기
+#for pid in "${pids[@]}"; do
+#    wait $pid
+#done
+
+echo "All Pods processed."
+```
 
 ## 15. (Test) `Pod` 리플리카 수 조정 (`Deployment`)
 
