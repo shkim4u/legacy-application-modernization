@@ -142,6 +142,7 @@ module "eks" {
   # coredns, kube-proxy, vpc-cni, aws-ebs-csi-driver, aws-efs-csi-driver, amazon-cloudwatch-observability, eks-pod-identity-agent
   cluster_addons = {
     # [2024-02-24] Why the hell this has gone?
+    # [2024-10-17] 아마도 OpenTelemetry Auto-Instrumentation과 충돌이 나는 듯
     amazon-cloudwatch-observability = {
       most_recent = true
     }
@@ -278,6 +279,21 @@ module "eks" {
         billing = "aws-proserve"
         purpose = "samsungfire-underwriting-system"
       }
+
+      block_device_mappings = {
+        xvda = {
+          device_name = "/dev/xvda"
+          ebs = {
+            volume_size           = 200
+            volume_type           = "gp3"
+            iops                  = 3000
+            throughput            = 150
+            encrypted             = true
+            delete_on_termination = true
+          }
+        }
+      }
+
       taints = [
         {
           key    = "workload-type/x2idn-16xlarge-java"

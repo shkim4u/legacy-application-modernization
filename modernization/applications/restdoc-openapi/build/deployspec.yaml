@@ -73,8 +73,25 @@ phases:
         # Sync ArgoCD Application.
         argocd app sync ${ARGOCD_APPLICATION_NAME} --insecure --timeout 120
       - |
-        OPENAPI3_URL=`kubectl get ingress/restdoc-openapi-ingress -n restdoc-openapi -o json | jq --raw-output '.status.loadBalancer.ingress[0].hostname'`
-        echo "OPENAPI3_URL: ${OPENAPI3_URL}"
+        timeout=300  # 5 minutes in seconds
+        interval=5   # Interval between checks in seconds
+        elapsed=0
+
+        while [ -z "$OPENAPI3_URL" ] && [ $elapsed -lt $timeout ]; do
+          OPENAPI3_URL=$(kubectl get ingress/restdoc-openapi-ingress -n restdoc-openapi -o json | jq --raw-output '.status.loadBalancer.ingress[0].hostname')
+          echo "OPENAPI3_URL: ${OPENAPI3_URL}"
+          if [ -z "$OPENAPI3_URL" ]; then
+            sleep $interval
+            elapsed=$((elapsed + interval))
+          fi
+        done
+
+        if [ -z "$OPENAPI3_URL" ]; then
+          echo "Timeout reached. OPENAPI3_URL is still null."
+          exit 1
+        fi        
+        # OPENAPI3_URL=`kubectl get ingress/restdoc-openapi-ingress -n restdoc-openapi -o json | jq --raw-output '.status.loadBalancer.ingress[0].hostname'`
+        # echo "OPENAPI3_URL: ${OPENAPI3_URL}"
         sed -i "s|\"url\" : \"http://OPENAPI3_URL_TO_REPLACE\"|\"url\" : \"http://$OPENAPI3_URL\"|" templates/swagger-configmap.yaml
         git status
         git commit -am "Updated OPENAPI3_URL to the DNS name of ALB - ${OPENAPI3_URL}" && git push

@@ -61,7 +61,7 @@ echo $HELM_CODECOMMIT_URL
     * Repository URL: 앞서 설정한 배포 리포지터리
     * PATH: `.`
     * Destination 섹션 > Cluster URL: https://kubernetes.default.svc
-    * Destination 섹션 > Namespace: `hotelspecials`를 입력하고 상단의 Create를 클릭합니다.
+    * Destination 섹션 > Namespace: `restdoc-openapi`를 입력하고 상단의 Create를 클릭합니다.
 
 7. 소스 리포지터리 커밋 및 빌드 파이프라인 실행
 ```bash

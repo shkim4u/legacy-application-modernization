@@ -37,7 +37,8 @@ phases:
       - echo "(deploy) Retrieving database information..."
       - export DATABASE_ENDPOINT=$(aws rds describe-db-instances --query "DBInstances[?DBInstanceIdentifier=='mysql-excluded-1'].Endpoint.Address" --output text) && echo $DATABASE_ENDPOINT
       - export DATABASE_PORT=$(aws rds describe-db-instances --query "DBInstances[?DBInstanceIdentifier=='mysql-excluded-1'].Endpoint.Port" --output text) && echo $DATABASE_PORT
-      - export DATABASE_SECRETS=$(aws secretsmanager list-secrets --filters Key=tag-value,Values="arn:aws:rds:ap-northeast-2:${AWS_ACCOUNT_ID}:cluster:m2m-general-aurora-mysql" --query "SecretList[0].Name" --output text) && echo $DATABASE_SECRETS
+#      - export DATABASE_SECRETS=$(aws secretsmanager list-secrets --filters Key=tag-value,Values="arn:aws:rds:ap-northeast-2:${AWS_ACCOUNT_ID}:cluster:m2m-general-aurora-mysql" --query "SecretList[0].Name" --output text) && echo $DATABASE_SECRETS
+      - export DATABASE_SECRETS="mysql_master_password"
       - export DATABASE_CREDENTIALS=$(aws secretsmanager get-secret-value --secret-id $DATABASE_SECRETS --query SecretString --output text) && echo $DATABASE_CREDENTIALS
       - export DATABASE_USERNAME=$(echo $DATABASE_CREDENTIALS | jq -r '.username')
       - export DATABASE_PASSWORD=$(echo $DATABASE_CREDENTIALS | jq -r '.password')

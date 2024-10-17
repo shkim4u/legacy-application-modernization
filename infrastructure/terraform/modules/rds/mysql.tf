@@ -1,3 +1,31 @@
+variable "mysql_master_password" {
+  default = {
+    username = "root"
+    password = "rootpassword123"
+  }
+  type = map(string)
+}
+
+resource "aws_secretsmanager_secret" "mysql_master_password" {
+  name = "mysql_master_password"
+}
+
+resource "aws_secretsmanager_secret_version" "mysql_master_password" {
+  secret_id     = aws_secretsmanager_secret.mysql_master_password.id
+  secret_string = jsonencode(var.mysql_master_password)
+}
+
+data "aws_secretsmanager_secret" "mysql_master_password" {
+  name = "mysql_master_password"
+  depends_on = [
+    aws_secretsmanager_secret.mysql_master_password
+  ]
+}
+
+data "aws_secretsmanager_secret_version" "current_secrets" {
+  secret_id = data.aws_secretsmanager_secret.mysql_master_password.id
+}
+
 # Being different from PostgreSQL database, now let's create Amazon RDS Aurora MySQL using Terraform module.
 # Refer to: https://registry.terraform.io/modules/terraform-aws-modules/rds-aurora/aws/latest
 resource "aws_db_subnet_group" "m2m_general" {
@@ -143,9 +171,11 @@ module "aurora" {
 #  create_db_cluster_activity_stream     = true
 #  db_cluster_activity_stream_kms_key_id = module.kms.key_id
 
-  manage_master_user_password = true
+  # manage_master_user_password = true
 
-#  manage_master_user_password_rotation              = true
+  master_password = jsondecode(data.aws_secretsmanager_secret_version.current_secrets.secret_string)["password"]
+
+  #  manage_master_user_password_rotation              = true
 #  master_user_password_rotation_schedule_expression = "rate(15 days)"
 
   # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/DBActivityStreams.Overview.html#DBActivityStreams.Overview.sync-mode

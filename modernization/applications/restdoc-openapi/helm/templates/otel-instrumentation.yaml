@@ -1,0 +1,21 @@
+{{- if .Values.opentelemetry.enabled -}}
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: {{ .Values.app.name }}-otel-instrumentation
+  namespace: {{ .Values.namespace.name }}
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "0"
+spec:
+  exporter:
+    endpoint: {{ .Values.opentelemetry.otlp_endpoint }}
+  propagators:
+    - tracecontext
+    - baggage
+  sampler:
+    type: parentbased_traceidratio
+    argument: "0.5"  # 50% 샘플링 예시
+{{/*  java:*/}}
+{{/*    image: ghcr.io/open-telemetry/opentelemetry-java-instrumentation:latest*/}}
+{{- end }}

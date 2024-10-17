@@ -13,13 +13,13 @@ variable "vpc_cidr" {
 variable "public_subnets" {
   description = "Public subnets of VPC"
   type = list(string)
-  default = ["10.21.0.0/18", "10.21.8.0/18"]
+  default = ["10.21.0.0/18", "10.21.128.0/18"]
 }
 
 variable "private_subnets" {
   description = "Private subnets of VPC"
   type = list(string)
-  default = ["10.21.4.0/18", "10.21.12.0/18"]
+  default = ["10.21.64.0/18", "10.21.192.0/18"]
 }
 
 # variable "dms_tgw_name" {

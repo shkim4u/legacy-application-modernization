@@ -115,10 +115,22 @@ sudo yum install -y jq
 ```
 
 3. MySQL 접속
+* RDS 관리 암호 사용 시
 ```bash
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output=text) && echo $AWS_ACCOUNT_ID
 export AWS_DEFAULT_REGION=ap-northeast-2
 export DATABASE_SECRETS=$(aws secretsmanager list-secrets --filters Key=tag-value,Values="arn:aws:rds:ap-northeast-2:${AWS_ACCOUNT_ID}:cluster:m2m-general-aurora-mysql" --query "SecretList[0].Name" --output text) && echo $DATABASE_SECRETS
+export DATABASE_CREDENTIALS=$(aws secretsmanager get-secret-value --secret-id $DATABASE_SECRETS --query SecretString --output text) && echo $DATABASE_CREDENTIALS
+export DATABASE_USERNAME=$(echo $DATABASE_CREDENTIALS | jq -r '.username') && echo $DATABASE_USERNAME
+export DATABASE_PASSWORD=$(echo $DATABASE_CREDENTIALS | jq -r '.password') && echo $DATABASE_PASSWORD
+mysql -u ${DATABASE_USERNAME} --password="${DATABASE_PASSWORD}" -h `aws rds describe-db-clusters --db-cluster-identifier m2m-general-aurora-mysql --query "DBClusters[0].Endpoint" --output text`
+```
+
+* 사용자 지정 암호 사용 시 (현재 구성)
+```bash
+export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output=text) && echo $AWS_ACCOUNT_ID
+export AWS_DEFAULT_REGION=ap-northeast-2
+export DATABASE_SECRETS="mysql_master_password"
 export DATABASE_CREDENTIALS=$(aws secretsmanager get-secret-value --secret-id $DATABASE_SECRETS --query SecretString --output text) && echo $DATABASE_CREDENTIALS
 export DATABASE_USERNAME=$(echo $DATABASE_CREDENTIALS | jq -r '.username') && echo $DATABASE_USERNAME
 export DATABASE_PASSWORD=$(echo $DATABASE_CREDENTIALS | jq -r '.password') && echo $DATABASE_PASSWORD
@@ -439,7 +451,7 @@ echo $HELM_CODECOMMIT_URL
     * Destination 섹션 > Cluster URL: https://kubernetes.default.svc
     * Destination 섹션 > Namespace: `hotelspecials`를 입력하고 상단의 Create를 클릭합니다.
 
-6`ArgoCD` Application 생성 (이름으로 `insurance-plannning` 사용)
+6. `ArgoCD` Application 생성 (이름으로 `insurance-plannning` 사용)
 
     * Application Name: `insurance-planning`
     * Project: `default`

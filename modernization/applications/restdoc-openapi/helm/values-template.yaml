@@ -33,3 +33,7 @@ keda:
   minReplicaCount: 2
   maxReplicaCount: 4
   desiredReplicaCountAtPeak: 4
+opentelemetry:
+  enabled: true
+  service_name: restdoc-openapi
+  otlp_endpoint: "http://opentelemetry-collector-collector.opentelemetry.svc.cluster.local:4317"

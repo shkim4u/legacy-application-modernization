@@ -10,11 +10,16 @@ spec:
       otlp:
         protocols:
           grpc:
+            endpoint: 0.0.0.0:4317
           http:
+            endpoint: 0.0.0.0:4318
+            cors:
+              allowed_origins:
+              - http://*
+              - https://*
     processors:
     exporters:
       otlp/jaeger: # Jaeger supports OTLP directly. The default port for OTLP/gRPC is 4317
-#        endpoint: "jaeger-collector.observability:14250"
         endpoint: "jaeger-collector.observability:4317"
         tls:
           insecure: true

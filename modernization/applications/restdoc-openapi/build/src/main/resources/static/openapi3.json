@@ -1,14 +1,14 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "Post Service API",
-    "description" : "Post Service API description",
+    "title" : "Post service API",
+    "description" : "Post service API description",
     "version" : "1.0.0"
   },
   "servers" : [ {
     "url" : "http://localhost:8080"
   }, {
-    "url" : "http://production-api-server-url.com"
+    "url" : "http://OPENAPI3_URL_TO_REPLACE"
   } ],
   "tags" : [ ],
   "paths" : {
@@ -27,7 +27,7 @@
         }, {
           "name" : "size",
           "in" : "query",
-          "description" : "한 페이지의 데이터 개수",
+          "description" : "페이지 당 데이터 개수",
           "required" : true,
           "schema" : {
             "type" : "string"
@@ -35,7 +35,7 @@
         }, {
           "name" : "sort",
           "in" : "query",
-          "description" : "정렬 파라미터,오름차순 또는 내림차순 +\nex) +\ncreatedDate,asc(작성일 오름차순) +\ncreatedDate,desc(작성일 내림차순)",
+          "description" : "정렬 파라미터,오름차순 또는 내림차순: (예) createdDate,asc (작성일 오름차순) createdDate,desc (작성일 내림차순)",
           "required" : true,
           "schema" : {
             "type" : "string"

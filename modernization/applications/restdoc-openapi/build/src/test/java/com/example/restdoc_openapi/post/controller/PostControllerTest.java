@@ -1,7 +1,6 @@
-package com.example.restdoc_openapi.docs.post;
+package com.example.restdoc_openapi.post.controller;
 
 import com.example.restdoc_openapi.docs.RestDocsTest;
-import com.example.restdoc_openapi.post.controller.PostController;
 import com.example.restdoc_openapi.post.request.PostCreateRequest;
 import com.example.restdoc_openapi.post.request.PostUpdateRequest;
 import com.example.restdoc_openapi.post.response.PostCreateResponse;
@@ -30,7 +29,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class PostControllerDocsTest extends RestDocsTest {
+public class PostControllerTest extends RestDocsTest {
 
     private final PostService postService = mock(PostService.class);
 
@@ -64,41 +63,42 @@ public class PostControllerDocsTest extends RestDocsTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document("get-posts",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        queryParameters(
-                                parameterWithName("page")
-                                        .description("페이지 번호"),
-                                parameterWithName("size")
-                                        .description("한 페이지의 데이터 개수"),
-                                parameterWithName("sort")
-                                        .description("정렬 파라미터,오름차순 또는 내림차순 +\n" +
-                                                "ex) +\n" +
-                                                "createdDate,asc(작성일 오름차순) +\n" +
-                                                "createdDate,desc(작성일 내림차순)")),
-                        responseFields(
-                                fieldWithPath("code").type(JsonFieldType.NUMBER)
-                                        .description("상태 코드"),
-                                fieldWithPath("message").type(JsonFieldType.STRING)
-                                        .description("상태 메세지"),
-                                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER)
-                                        .description("검색 페이지 수"),
-                                fieldWithPath("data.pageNumber").type(JsonFieldType.NUMBER)
-                                        .description("현재 페이지 번호"),
-                                fieldWithPath("data.pageSize").type(JsonFieldType.NUMBER)
-                                        .description("한 페이지의 데이터 개수"),
-                                fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER)
-                                        .description("검색 데이터 개수"),
-                                fieldWithPath("data.posts[]").type(JsonFieldType.ARRAY)
-                                        .description("게시글 목록"),
-                                fieldWithPath("data.posts[].id").type(JsonFieldType.NUMBER)
-                                        .description("게시글 ID"),
-                                fieldWithPath("data.posts[].title").type(JsonFieldType.STRING)
-                                        .description("게시글 제목"),
-                                fieldWithPath("data.posts[].author").type(JsonFieldType.STRING)
-                                        .description("게시글 작성자"),
-                                fieldWithPath("data.posts[].createdTime").type(JsonFieldType.STRING)
-                                        .description("게시글 생성일"))));
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                queryParameters(
+                                        parameterWithName("page")
+                                                .description("페이지 번호"),
+                                        parameterWithName("size")
+                                                .description("페이지 당 데이터 개수"),
+                                        parameterWithName("sort")
+                                                .description("정렬 파라미터,오름차순 또는 내림차순: (예) createdDate,asc (작성일 오름차순) createdDate,desc (작성일 내림차순)")
+                                ),
+                                responseFields(
+                                        fieldWithPath("code").type(JsonFieldType.NUMBER)
+                                                .description("상태 코드"),
+                                        fieldWithPath("message").type(JsonFieldType.STRING)
+                                                .description("상태 메세지"),
+                                        fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER)
+                                                .description("검색 페이지 수"),
+                                        fieldWithPath("data.pageNumber").type(JsonFieldType.NUMBER)
+                                                .description("현재 페이지 번호"),
+                                        fieldWithPath("data.pageSize").type(JsonFieldType.NUMBER)
+                                                .description("한 페이지의 데이터 개수"),
+                                        fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER)
+                                                .description("검색 데이터 개수"),
+                                        fieldWithPath("data.posts[]").type(JsonFieldType.ARRAY)
+                                                .description("게시글 목록"),
+                                        fieldWithPath("data.posts[].id").type(JsonFieldType.NUMBER)
+                                                .description("게시글 ID"),
+                                        fieldWithPath("data.posts[].title").type(JsonFieldType.STRING)
+                                                .description("게시글 제목"),
+                                        fieldWithPath("data.posts[].author").type(JsonFieldType.STRING)
+                                                .description("게시글 작성자"),
+                                        fieldWithPath("data.posts[].createdTime").type(JsonFieldType.STRING)
+                                                .description("게시글 생성일")
+                                )
+                        )
+                );
     }
 
     @DisplayName("게시글 조회 API")

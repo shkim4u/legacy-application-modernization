@@ -3,6 +3,9 @@ kind: Deployment
 metadata:
   namespace: {{ .Values.namespace.name }}
   name: {{ .Values.deployment.name }}
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "5"
 spec:
   {{- if and (not .Values.hpa.enabled) (not .Values.keda.enabled) }}
   replicas: {{ .Values.deployment.replicas }}
@@ -14,6 +17,8 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: {{ .Values.app.name }}
+      annotations:
+        instrumentation.opentelemetry.io/inject-java: "true"
     spec:
       containers:
         - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
