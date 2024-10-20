@@ -4,24 +4,9 @@ resource "helm_release" "jaeger" {
   name = "jaeger"
   namespace = kubernetes_namespace.observability.metadata[0].name
 
-  set {
-    name  = "collector.service.otlp.grpc.port"
-    value = "4317"
-  }
+  values = [templatefile("${path.module}/jaeger-values.yaml", {
+    certificate_arn = var.certificate_arn
+  })]
 
-  set {
-    name  = "collector.service.otlp.grpc.name"
-    value = "otlp-grpc"
-  }
-
-  set {
-    name  = "collector.service.otlp.http.port"
-    value = "4318"
-  }
-
-  set {
-    name  = "collector.service.otlp.http.name"
-    value = "otlp-http"
-  }
-
+  timeout = 3600
 }

@@ -12,8 +12,8 @@ resource "helm_release" "prometheus" {
 
   # Resources.
   set {
-      name = "prometheus.prometheusSpec.resources.requests.cpu"
-      value = "500m"
+    name = "prometheus.prometheusSpec.resources.requests.cpu"
+    value = "500m"
   }
 
   set {
@@ -31,49 +31,54 @@ resource "helm_release" "prometheus" {
     value = "1Gi"
   }
 
+  set {
+    name = "prometheus.prometheusSpec.enableRemoteWriteReceiver"
+    value = true
+  }
+
   # Grafana is configured in separate module.
   set {
     name = "grafana.enabled"
     value = false
   }
 
-#   set {
-#     name  = "prometheus.prometheusSpec.additionalScrapeConfigs"
-#     value = <<EOF
-# - job_name: 'hotelspecials-jmx'
-#   static_configs:
-#     - targets: ['hotelspecials-service.hotelspecials.svc.cluster.local:9404']
-# - job_name: 'karpenter'
-#   static_configs:
-#     - targets: ['karpenter.karpenter.svc.cluster.local:8080']
-# EOF
-#   }
-
-#   set {
-#     name  = "prometheus.prometheusSpec.additionalScrapeConfigs"
-#     value = <<EOF
-# - job_name: 'hotelspecials-jmx'
-#   static_configs:
-#     - targets: ['hotelspecials-service.hotelspecials.svc.cluster.local:9404']
-# - job_name: 'karpenter'
-#   kubernetes_sd_configs:
-#   - role: endpoints
-#     namespaces:
-#       names:
-#       - karpenter
-#   relabel_configs:
-#   - source_labels:
-#     - __meta_kubernetes_endpoints_name
-#     - __meta_kubernetes_endpoint_port_name
-#     action: keep
-#     regex: karpenter;http-metrics
-# EOF
-#   }
-
   set {
     name  = "prometheus.prometheusSpec.additionalScrapeConfigs"
     value = file("${path.module}/prometheus-additional-scrape-configs.yaml")
   }
+
+  set {
+    name  = "prometheus.prometheusSpec.logLevel"
+    value = "debug"
+  }
+
+  # From Otel demo.
+  # --storage.tsdb.retention.time=15d
+  # --config.file=/etc/config/prometheus.yml
+  # --storage.tsdb.path=/data
+  # --web.console.libraries=/etc/prometheus/console_libraries
+  # --web.console.templates=/etc/prometheus/consoles
+  # --enable-feature=exemplar-storage
+  # --enable-feature=otlp-write-receiver
+
+  # set {
+  #   name = "prometheus.prometheusSpec.additionalArgs[0]"
+  #   value = "--enable-feature=otlp-write-receiver"
+  # }
+
+  # set {
+  #   name = "prometheus.prometheusSpec.additionalArgs[1]"
+  #   value = "--enable-feature=exemplar-storage"
+  # }
+
+  # set {
+  #   name = "prometheus.prometheusSpec.additionalArgs[2]"
+  #   value = "--storage.tsdb.retention.time=15d"
+  # }
+
+  values = [
+    file("${path.module}/prometheus-additional-args.yaml")
+  ]
 
   timeout = 3600
 }

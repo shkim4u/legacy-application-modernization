@@ -363,12 +363,13 @@ module "keda" {
 
 module "observability" {
   source = "./observability"
+  certificate_arn = var.aws_acm_certificate_arn
   depends_on = [null_resource.wait_for_cluster]
 }
 
 module "opentelemetry" {
   source = "./opentelemetry"
-  depends_on = [null_resource.wait_for_cluster]
+  depends_on = [null_resource.wait_for_cluster, module.cert_manager]
   certificate_arn = var.aws_acm_certificate_arn
 }
 

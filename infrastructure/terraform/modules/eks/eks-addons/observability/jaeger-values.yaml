@@ -1,0 +1,47 @@
+collector:
+  service:
+    otlp:
+      grpc:
+        port: 4317
+        name: otlp-grpc
+      http:
+        port: 4318
+        name: otlp-http
+query:
+  ingress:
+    enabled: true
+    annotations:
+      # Ingress core settings.
+      "kubernetes.io/ingress.class": "alb"
+      "alb.ingress.kubernetes.io/scheme": "internet-facing"
+      "alb.ingress.kubernetes.io/target-type": "ip"
+      "alb.ingress.kubernetes.io/target-group-attributes": "stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=60"
+      # Ingress group settings.
+      "alb.ingress.kubernetes.io/group.name": "observability"
+      "alb.ingress.kubernetes.io/group.order": "1"
+      # Needed when using TLS.
+      "alb.ingress.kubernetes.io/success-codes": "200,404,301,302"
+      "alb.ingress.kubernetes.io/listen-ports": '[{"HTTP": 80}, {"HTTPS": 443}]'
+      "alb.ingress.kubernetes.io/actions.ssl-redirect": '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+      "alb.ingress.kubernetes.io/certificate-arn": ${certificate_arn}
+    hosts: ["*.ap-northeast-2.elb.amazonaws.com"]
+    pathType: Prefix
+  config: |-
+    {
+      "dependencies": {
+        "dagMaxNumServices": 200,
+        "menuEnabled": true
+      },
+      "monitor": {
+        "menuEnabled": true
+      }
+    }
+  extraEnv:
+    - name: METRICS_STORAGE_TYPE
+      value: prometheus
+  cmdlineParams:
+    prometheus.server-url: http://prometheus-kube-prometheus-prometheus.istio-system:9090
+    prometheus.query.support-spanmetrics-connector: true
+    prometheus.query.normalize-calls: true
+    prometheus.query.normalize-duration: true
+    prometheus.query.namespace: traces_span_metrics

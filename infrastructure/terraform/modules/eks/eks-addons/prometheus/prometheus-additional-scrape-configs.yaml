@@ -12,8 +12,27 @@
       action: keep
       regex: true
     - source_labels:
-      - __meta_kubernetes_pod_ip
-      - __meta_kubernetes_pod_annotation_prometheus_io_port
+        - __meta_kubernetes_pod_ip
+        - __meta_kubernetes_pod_annotation_prometheus_io_port
+      separator: ":"
+      target_label: __address__
+  scheme: http
+- job_name: 'insurance-planning-jmx'
+  kubernetes_sd_configs:
+    - role: pod
+      namespaces:
+        names:
+          - insurance
+  relabel_configs:
+    - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+      action: keep
+      regex: insurance-planning
+    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+      action: keep
+      regex: true
+    - source_labels:
+        - __meta_kubernetes_pod_ip
+        - __meta_kubernetes_pod_annotation_prometheus_io_port
       separator: ":"
       target_label: __address__
   scheme: http
