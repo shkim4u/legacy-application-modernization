@@ -54,7 +54,7 @@ spec:
       spanmetrics:
         histogram:
           explicit:
-            buckets: [100us, 1ms, 2ms, 6ms, 10ms, 100ms, 250ms]
+            buckets: [100us, 1ms, 2ms, 6ms, 10ms, 100ms, 250ms, 500ms, 1s, 2s, 5s, 10s, 30s, 1m, 2m, 5m]
         dimensions:
           - name: http.method
             default: GET

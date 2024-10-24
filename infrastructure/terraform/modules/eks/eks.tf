@@ -268,16 +268,16 @@ module "eks" {
     #      }
     #    ]
 
-    "SamsungFire" = {
+    "MemoryIntensive" = {
       capacity_type  = "ON_DEMAND"
-      instance_types = ["x2idn.16xlarge"]  # 삼성화재 제안용 인스턴스 타입
+      instance_types = ["x2idn.16xlarge"]  # 메모리 집중 시스템 제안용 인스턴스 타입
       min_size       = var.number_of_x2idn_16xlarge_instances
       max_size       = var.number_of_x2idn_16xlarge_instances == 0 ? 1 : var.number_of_x2idn_16xlarge_instances
       desired_size   = var.number_of_x2idn_16xlarge_instances # Currently 2
       disk_size = 200
       labels         = {
         billing = "aws-proserve"
-        purpose = "samsungfire-underwriting-system"
+        purpose = "memory-intensive-system"
       }
 
       block_device_mappings = {

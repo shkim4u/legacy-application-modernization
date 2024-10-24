@@ -21,7 +21,7 @@ spec:
     metadata:
       labels:
         billing: aws-proserve
-        purpose: samsungfire-underwriting-system
+        purpose: memory-intensive-system
     spec:
       taints:
         - key: workload-type/x2idn-16xlarge-java

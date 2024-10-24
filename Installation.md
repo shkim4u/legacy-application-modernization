@@ -31,17 +31,17 @@ sudo npm install -g jwt-cli
 ## 3. 프로젝트 소스 다운로드
 ```bash
 cd ~/environment/
-git clone https://github.com/shkim4u/samsung-fire-eks-evaluation
+git clone https://github.com/shkim4u/legacy-application-modernization
 ```
 
 ## 4. 자원 생성을 위한 환경 설정
 ```bash
 hash -d aws
 
-cd ~/environment/samsung-fire-eks-evaluation/infrastructure/terraform
+cd ~/environment/legacy-application-modernization/infrastructure/terraform
 
 # 1. Configure Terraform workspace and Private Certificate Authority.
-. ./configure.sh samsung-fire-eks-evaluation ap-northeast-2
+. ./configure.sh legacy-application-modernization ap-northeast-2
 
 env | grep TF_VAR
 
@@ -55,7 +55,7 @@ EOF
 ## 5. `Terraform`을 이용한 자원 생성
 ```bash
 # 1. IaC 디렉토리로 이동
-cd ~/environment/samsung-fire-eks-evaluation/infrastructure/terraform
+cd ~/environment/legacy-application-modernization/infrastructure/terraform
 
 # terraform init
 terraform init
@@ -68,7 +68,7 @@ terraform apply -auto-approve tfplan
 ```
 
 ```bash
-cd ~/environment/samsung-fire-eks-evaluation/infrastructure/terraform
+cd ~/environment/legacy-application-modernization/infrastructure/terraform
 
 echo 'export KUBECONFIG=~/.kube/config:$(find ~/.kube/ -type f -name "*M2M-EksCluster*" | tr "\n" ":")' >> ~/.bash_profile 
 
@@ -86,7 +86,7 @@ source ~/.bash_profile
 ```bash
 # 아래 명령을 수행하면 ArgoCD 서버의 Admin 암호를 설정하고 이를 AWS Secrets Manager에 동기화 저장합니다.
 # AWS Secrets Manager에 동기화 저장된 암호는 어플리케이션의 배포 파이프라인에서 배포 단계에 사용됩니다.
-cd ~/environment/samsung-fire-eks-evaluation/cloud9
+cd ~/environment/legacy-application-modernization/cloud9
 chmod +x *.sh
 
 # Production 클러스터
@@ -387,11 +387,11 @@ exit
 
 ## 7. `TravelBuddy` `GitOps` 리포지터리 (`Helm`) 설정
 ```bash
-cd ~/environment/samsung-fire-eks-evaluation
+cd ~/environment/legacy-application-modernization
 rm -rf .git
 
 # 1. 어플리케이션 Helm Artifact 경로로 이동
-cd ~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/helm
+cd ~/environment/legacy-application-modernization/legacy/applications/TravelBuddy/helm
 
 # 2. git 연결
 git init
@@ -483,7 +483,7 @@ aws iam create-service-linked-role --aws-service-name spot.amazonaws.com
 1. (Optional) `servlet-context.xml` 파일 수정
 
 ```bash
-cd ~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/build
+cd ~/environment/legacy-application-modernization/legacy/applications/TravelBuddy/build
 c9 open src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml
 ```
 
@@ -496,7 +496,7 @@ c9 open src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml
 
 ```bash
 # 1. 어플리케이션 소스 경로로 이동
-cd ~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/build/
+cd ~/environment/legacy-application-modernization/legacy/applications/TravelBuddy/build/
 
 # 2. git 연결
 git init
@@ -596,13 +596,13 @@ echo "GRAFANA_SERVER: https://${GRAFANA_SERVER}"
 3. 필요한 대시보드 임포트
 
     * 자바 애플리케이션 힙 메모리 대시보드
-      * `~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/observability/grafana/(Large Memory Java) JVM Metrics.json`
+      * `~/environment/legacy-application-modernization/legacy/applications/TravelBuddy/observability/grafana/(Large Memory Java) JVM Metrics.json`
     * `Karpenter` 용량 대시보드
-      * `~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/observability/grafana/Karpenter Capacity v1 and JVM Memory Pool Bytes Committed.json`
+      * `~/environment/legacy-application-modernization/legacy/applications/TravelBuddy/observability/grafana/Karpenter Capacity v1 and JVM Memory Pool Bytes Committed.json`
     * `Karpenter Controllers` 대시보드
-      * `~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/observability/grafana/karpenter-controllers.json`
+      * `~/environment/legacy-application-modernization/legacy/applications/TravelBuddy/observability/grafana/karpenter-controllers.json`
     * `Karpenter Performance` 대시보드
-      * `~/environment/samsung-fire-eks-evaluation/legacy/applications/TravelBuddy/observability/grafana/karpenter-performance-dashboard.json`
+      * `~/environment/legacy-application-modernization/legacy/applications/TravelBuddy/observability/grafana/karpenter-performance-dashboard.json`
 
 ## 14. 부하 테스트
 ### 14.1. `Hey` 사용
@@ -623,11 +623,11 @@ echo "GRAFANA_SERVER: https://${GRAFANA_SERVER}"
      ```
 
      ```bash
-     chmod +x ~/environment/samsung-fire-eks-evaluation/check-load-generator.sh
+     chmod +x ~/environment/legacy-application-modernization/check-load-generator.sh
      ```
 
      ```bash
-     ~/environment/samsung-fire-eks-evaluation/check-load-generator.sh
+     ~/environment/legacy-application-modernization/check-load-generator.sh
      ``` 
 
 2. `Keda`에 의해 생성된 `HPA` 모니터링

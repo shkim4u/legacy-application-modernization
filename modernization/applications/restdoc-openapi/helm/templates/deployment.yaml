@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.deployment.name }}
   annotations:
     "helm.sh/hook": "post-install,post-upgrade"
-    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-weight": "1"
 spec:
   {{- if and (not .Values.hpa.enabled) (not .Values.keda.enabled) }}
   replicas: {{ .Values.deployment.replicas }}

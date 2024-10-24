@@ -33,7 +33,7 @@ spec:
               app.kubernetes.io/name: {{ .Values.app.name }}
       nodeSelector:
         billing: aws-proserve
-        purpose: samsungfire-underwriting-system
+        purpose: memory-intensive-system
       tolerations:
         - key: workload-type/x2idn-16xlarge-java
           operator: Equal

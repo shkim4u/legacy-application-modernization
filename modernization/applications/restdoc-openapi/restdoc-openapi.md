@@ -1,11 +1,11 @@
 ## 클라우드 빌드 및 배포
 1. `Helm` 설정
 ```bash
-cd ~/environment/samsung-fire-eks-evaluation
+cd ~/environment/legacy-application-modernization
 rm -rf .git || true
 
 # 1. 어플리케이션 Helm Artifact 경로로 이동
-cd ~/environment/samsung-fire-eks-evaluation/modernization/applications/restdoc-openapi/helm
+cd ~/environment/legacy-application-modernization/modernization/applications/restdoc-openapi/helm
 
 # 2. git 연결
 git init
@@ -66,7 +66,7 @@ echo $HELM_CODECOMMIT_URL
 7. 소스 리포지터리 커밋 및 빌드 파이프라인 실행
 ```bash
 # 1. 어플리케이션 소스 경로로 이동
-cd ~/environment/samsung-fire-eks-evaluation/modernization/applications/restdoc-openapi/build/
+cd ~/environment/legacy-application-modernization/modernization/applications/restdoc-openapi/build/
 
 # 2. git 연결
 git init
