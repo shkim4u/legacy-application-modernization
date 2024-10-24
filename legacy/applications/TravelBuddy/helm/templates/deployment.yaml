@@ -5,6 +5,9 @@ kind: Deployment
 metadata:
   namespace: {{ .Values.namespace.name }}
   name: {{ .Values.deployment.name }}
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "5"
 spec:
   {{- if and (not .Values.hpa.enabled) (not .Values.keda.enabled) }}
   replicas: {{ .Values.deployment.replicas }}
@@ -19,6 +22,7 @@ spec:
       annotations:
         prometheus.io/port: "9404"
         prometheus.io/scrape: "true"
+        instrumentation.opentelemetry.io/inject-java: "true"
     spec:
       topologySpreadConstraints:
         - maxSkew: 6

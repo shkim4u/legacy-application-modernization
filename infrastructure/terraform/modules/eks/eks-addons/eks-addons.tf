@@ -175,6 +175,7 @@ module "istio" {
  */
 module "prometheus" {
   source = "./prometheus"
+  certificate_arn = var.aws_acm_certificate_arn
   depends_on = [module.metrics_server, module.aws_ebs_csi_driver, module.aws_load_balancer_controller]
 }
 

@@ -27,8 +27,8 @@ resource "helm_release" "grafana" {
   repository = "https://grafana.github.io/helm-charts"
   chart = "grafana"
   name  = "grafana"
-  namespace = "grafana"
-  create_namespace = true
+  namespace = kubernetes_namespace.grafana.metadata[0].name
+  create_namespace = false
   values = [templatefile("${path.module}/values.yaml", {
     admin_existing_secret = kubernetes_secret.grafana.metadata[0].name
     admin_user_key = "admin-user"
@@ -37,4 +37,23 @@ resource "helm_release" "grafana" {
   })]
 
   timeout = 3600
+}
+
+resource "helm_release" "tempo" {
+  repository = "https://grafana.github.io/helm-charts"
+  chart = "tempo"
+  name = "tempo"
+  namespace = kubernetes_namespace.grafana.metadata[0].name
+  create_namespace = false
+
+  # https://github.com/grafana/helm-charts/blob/main/charts/tempo/values.yaml
+  set {
+    name  = "tempo.metricsGenerator.enabled"
+    value = true
+  }
+
+  set {
+    name  = "tempo.metricsGenerator.remoteWriteUrl"
+    value = "http://prometheus-kube-prometheus-prometheus.istio-system:9090/api/v1/write"
+  }
 }

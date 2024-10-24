@@ -50,7 +50,13 @@ spec:
         tls:
           insecure: true
 
+    # connectors:
+    #   spanmetrics:
+    #     namespace: span.metrics
+
     connectors:
+      # spanmetrics/tempo:
+      #   namespace: traces.spanmetrics
       spanmetrics:
         histogram:
           explicit:
@@ -64,17 +70,41 @@ spec:
         exclude_dimensions: ['status.code']
         dimensions_cache_size: 1000
         aggregation_temporality: "AGGREGATION_TEMPORALITY_CUMULATIVE"
+        # aggregation_temporality: "AGGREGATION_TEMPORALITY_DELTA"
         metrics_flush_interval: 15s
         metrics_expiration: 0
-        events:
-         enabled: true
-         dimensions:
-           - name: exception.type
-           - name: exception.message
+        # events:
+        #   enabled: true
+        #   dimensions:
+        #     - name: exception.type
+        #     - name: exception.message
         resource_metrics_key_attributes:
           - service.name
           - telemetry.sdk.language
           - telemetry.sdk.name
+
+    # connectors:
+    #   spanmetrics:
+    #     histogram:
+    #       explicit:
+    #         buckets: [50ms, 100ms, 200ms, 500ms, 1s, 5s]
+    #     aggregation_temporality: "AGGREGATION_TEMPORALITY_CUMULATIVE"
+    #     metrics_flush_interval: 15s
+    #     exemplars:
+    #       enabled: false
+    #     events:
+    #       enabled: true
+    #       dimensions:
+    #         - name: exception.type
+    #         - name: exception.message
+    #     resource_metrics_key_attributes:
+    #       - service.name
+    #       - telemetry.sdk.language
+    #       - telemetry.sdk.name
+
+    # connectors:
+    #   spanmetrics: {}
+
     service:
       extensions: [zpages]
       pipelines:
@@ -84,9 +114,12 @@ spec:
         traces:
           receivers: [otlp]
           processors: []
+          # exporters: [otlp/jaeger, otlp/tempo, spanmetrics, spanmetrics/tempo]
           exporters: [otlp/jaeger, otlp/tempo, spanmetrics]
         metrics:
+          # receivers: [spanmetrics, spanmetrics/tempo, prometheus/otelcol]
           receivers: [spanmetrics, prometheus/otelcol]
+          # exporters: [prometheusremotewrite, logging, debug]
           exporters: [otlphttp/prometheus, logging, debug]
       telemetry:
         logs:

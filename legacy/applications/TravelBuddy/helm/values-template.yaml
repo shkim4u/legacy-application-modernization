@@ -37,3 +37,7 @@ keda:
   minReplicaCount: 6
   maxReplicaCount: 24
   desiredReplicaCountAtPeak: 24
+opentelemetry:
+  enabled: true
+  otlp_endpoint: "http://opentelemetry-collector-collector.opentelemetry.svc.cluster.local:4317"
+  auto_instrumentation_sampling_rate: "1"

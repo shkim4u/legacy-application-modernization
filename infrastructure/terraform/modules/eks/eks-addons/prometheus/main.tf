@@ -76,9 +76,13 @@ resource "helm_release" "prometheus" {
   #   value = "--storage.tsdb.retention.time=15d"
   # }
 
-  values = [
-    file("${path.module}/prometheus-additional-args.yaml")
-  ]
+  # values = [
+  #   file("${path.module}/prometheus-additional-args.yaml")
+  # ]
+
+  values = [templatefile("${path.module}/prometheus-additional-values.yaml", {
+    certificate_arn = var.certificate_arn
+  })]
 
   timeout = 3600
 }

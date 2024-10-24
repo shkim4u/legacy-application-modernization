@@ -1,0 +1,46 @@
+flowchart LR
+    subgraph Receivers
+        direction TB
+        otlp["otlp
+        (gRPC/HTTP)"]
+        prom["prometheus/otelcol"]
+    end
+
+    spanmetrics["spanmetrics
+    (connector)"]
+
+    subgraph Processors
+        proc["(없음)"]
+    end
+
+    subgraph Exporters
+        debug["debug"]
+        logging["logging"]
+        jaeger["otlp/jaeger"]
+        promhttp["otlphttp/prometheus"]
+        tempo["otlp/tempo"]
+    end
+
+    %% Logs Pipeline
+    otlp -->|logs| debug
+
+    %% Traces Pipeline
+    otlp -->|traces| jaeger
+    otlp -->|traces| tempo
+    otlp -->|traces| spanmetrics
+
+    %% Metrics Pipeline
+    spanmetrics -->|metrics| promhttp
+    spanmetrics -->|metrics| logging
+    spanmetrics -->|metrics| debug
+    prom -->|metrics| promhttp
+    prom -->|metrics| logging
+    prom -->|metrics| debug
+
+    style Receivers fill:#e1f3fe,stroke:#0077b6,color:#000
+    style Processors fill:#fff3bf,stroke:#f59f00,color:#000
+    style Exporters fill:#d8f5a2,stroke:#82c91e,color:#000
+    style spanmetrics fill:#ffddd2,stroke:#ff922b,color:#000
+
+%%    classDef blackText fill:#fff,stroke:#000,color:#000
+%%    class Receivers,Processors,Exporters,spanmetrics blackText

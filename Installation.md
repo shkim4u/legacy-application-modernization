@@ -771,6 +771,12 @@ git push --set-upstream origin main
      * k8s-views-nodes.json: `15759` 
      * k8s-views-pods.json: `15760`
 
+3. `Observability` 대시보드
+   * OpenTelemetry 관련 대시보드 목록: https://grafana.com/grafana/dashboards/?search=OpenTelemetry  
+   * OpenTelemetry APM: https://grafana.com/grafana/dashboards/19419-opentelemetry-apm/
+   * OpenTelemetry Collector: https://grafana.com/grafana/dashboards/15983-opentelemetry-collector/
+   * (Use, Read) Opentelemetry Collector Data Flow: https://grafana.com/grafana/dashboards/18309-opentelemetry-collector-data-flow/
+
 https://chatgpt.com/share/66e6f3fa-191c-800c-93ba-0b0f0fc35bf6
 
 https://velog.io/@cks8483/Kubernetes-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-JVM-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0

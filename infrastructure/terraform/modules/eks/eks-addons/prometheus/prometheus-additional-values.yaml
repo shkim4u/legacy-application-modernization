@@ -1,0 +1,38 @@
+prometheus:
+  ingress:
+    enabled: true
+    annotations:
+      # Ingress core settings.
+      "kubernetes.io/ingress.class": "alb"
+      "alb.ingress.kubernetes.io/scheme": "internet-facing"
+      "alb.ingress.kubernetes.io/target-type": "ip"
+      "alb.ingress.kubernetes.io/target-group-attributes": "stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=60"
+      # Ingress group settings.
+      "alb.ingress.kubernetes.io/group.name": "observability"
+      "alb.ingress.kubernetes.io/group.order": "1"
+      # Needed when using TLS.
+      "alb.ingress.kubernetes.io/success-codes": "200,404,301,302"
+      "alb.ingress.kubernetes.io/listen-ports": '[{"HTTP": 80}, {"HTTPS": 443}]'
+      "alb.ingress.kubernetes.io/actions.ssl-redirect": '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+      "alb.ingress.kubernetes.io/certificate-arn": ${certificate_arn}
+#    hosts: ["*.ap-northeast-2.elb.amazonaws.com"]
+    pathType: "Prefix"
+#    paths:
+#      - /
+#      - path: "/"
+#        pathType: Prefix
+#        backend:
+#          serviceName: ssl-redirect
+#          servicePort: use-annotation
+#      - path: "/"
+#        pathType: Prefix
+#        backend:
+#          serviceName: prometheus-kube-prometheus-prometheus
+#          servicePort: 9090
+  prometheusSpec:
+    routePrefix: "/"
+    additionalArgs:
+      - name: "enable-feature"
+        value: "otlp-write-receiver"
+      - name: "enable-feature"
+        value: "exemplar-storage"
