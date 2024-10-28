@@ -57,3 +57,11 @@ resource "helm_release" "tempo" {
     value = "http://prometheus-kube-prometheus-prometheus.istio-system:9090/api/v1/write"
   }
 }
+
+resource "helm_release" "loki" {
+  repository       = "https://grafana.github.io/helm-charts"
+  chart            = "loki-distributed"
+  name             = "loki-distributed"
+  namespace        = kubernetes_namespace.grafana.metadata[0].name
+  create_namespace = false
+}

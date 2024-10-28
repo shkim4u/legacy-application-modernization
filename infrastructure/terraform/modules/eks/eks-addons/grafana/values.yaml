@@ -75,6 +75,10 @@ datasources:
         url: http://prometheus-kube-prometheus-prometheus.istio-system:9090
         access: proxy
         isDefault: true
+        jsonData:
+          exemplarTraceIdDestinations:
+            - name: trace_id
+              url: http://localhost:16686/trace/$${__value.raw}
 
 # Use an existing secret for the admin user.
 admin:
