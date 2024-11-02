@@ -658,7 +658,7 @@ echo "GRAFANA_SERVER: https://${GRAFANA_SERVER}"
 4. (참고) `Keda`의 `ScaledObject`의 Replica를 0으로 설정하기
 * https://github.com/kedacore/keda/issues/5570
 
-### 14.2. `sress-ng` 유틸리티 사용
+### 14.2. `stress-ng` 유틸리티 사용
 
 이번에는 파드에 직접 접속하여 `stress-ng` 유틸리티를 통해 부하를 생성해 보겠습니다.
 
@@ -732,6 +732,70 @@ git remote add origin $HELM_CODECOMMIT_URL
 git add .
 
 # 4. Commit 및 배포 리포지터리에 Push합니다.
+git commit -am "First commit."
+git push --set-upstream origin main
+```
+
+## 17. `FlightSpecials` `GitOps` 배포 설정 (`ArgoCD`)
+1. `ArgoCD` 접속 주소 확인
+```bash
+# ArgoCD 접속 주소 확인
+kcp
+export ARGOCD_SERVER=`kubectl get ingress/argocd-server -n argocd -o json | jq --raw-output '.status.loadBalancer.ingress[0].hostname'`
+echo https://$ARGOCD_SERVER
+```
+
+2. (Optional) `ArgoCD` Helm 리포지터리 사용자 생성
+```bash
+# IAM User 생성
+aws iam create-user --user-name argocd 
+
+# AWSCodeCommitPowerUser 관리형 권한 정책 연결 (arn:aws:iam::aws:policy/AWSCodeCommitPowerUser)
+aws iam attach-user-policy --user-name argocd --policy-arn arn:aws:iam::aws:policy/AWSCodeCommitPowerUser
+
+# CodeCommit 접근을 위한 Specific Credential 생성
+# (중요) 결과로서 반환되는 "ServiceUserName"과 "ServicePassword"를 기록해 둡니다.
+aws iam create-service-specific-credential --user-name argocd --service-name codecommit.amazonaws.com
+```
+
+3. `ArgoCD` Helm 리포지터리 URL 확인
+```bash
+export HELM_CODECOMMIT_URL=$(aws codecommit get-repository --repository-name flightspecials-configuration --region ap-northeast-2 | grep -o '"cloneUrlHttp": "[^"]*'|grep -o '[^"]*$')
+echo $HELM_CODECOMMIT_URL
+```
+
+4. `ArgoCD` Helm 리포지터리 연결
+
+5. `ArgoCD` Application 생성 (이름으로 `flightspecials` 사용)
+
+    * Application Name: `flightspecials`
+    * Project: `default`
+    * Sync Policy: Manual
+    * Repository URL: 앞서 설정한 배포 리포지터리
+    * PATH: `.`
+    * Destination 섹션 > Cluster URL: https://kubernetes.default.svc
+    * Destination 섹션 > Namespace: `flightspecials`를 입력하고 상단의 Create를 클릭합니다.
+
+## 18. `FlightSpecials` 서비스 빌드
+1. 빌드
+
+```bash
+# 1. 어플리케이션 소스 경로로 이동
+cd ~/environment/legacy-application-modernization/modernization/applications/FlightSpecials/build/
+
+# 2. git 연결
+git init
+git branch -M main
+
+export BUILD_CODECOMMIT_URL=$(aws codecommit get-repository --repository-name flightspecials-application --region ap-northeast-2 | grep -o '"cloneUrlHttp": "[^"]*'|grep -o '[^"]*$')
+echo $BUILD_CODECOMMIT_URL
+
+git remote add origin $BUILD_CODECOMMIT_URL
+
+# 3. Git 스테이징 영역에 파일을 추가합니다.
+git add .
+
+# 4. Commit 및 Push합니다.
 git commit -am "First commit."
 git push --set-upstream origin main
 ```

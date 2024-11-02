@@ -70,15 +70,47 @@ datasources:
     apiVersion: 1
     datasources:
       - name: Prometheus
+        uid: prometheus
         type: prometheus
         # url: http://prometheus-server.istio-system
         url: http://prometheus-kube-prometheus-prometheus.istio-system:9090
         access: proxy
         isDefault: true
+        # jsonData:
+        #   exemplarTraceIdDestinations:
+        #     - name: trace_id
+        #       url: http://localhost:16686/trace/$${__value.raw}
         jsonData:
           exemplarTraceIdDestinations:
-            - name: trace_id
-              url: http://localhost:16686/trace/$${__value.raw}
+            - datasourceUid: Tempo
+              name: traceId
+          httpMethod: POST
+        readOnly: false
+        editable: true
+      - name: Tempo
+        uid: tempo
+        type: tempo
+        url: http://tempo-query-frontend-discovery.grafana:3100
+        access: proxy
+        isDefault: false
+        jsonData:
+          serviceMap:
+            datasourceUid: 'prometheus'
+          nodeGraph:
+            enabled: true
+          search:
+            hide: false
+          lokiSearch:
+            datasourceUid: loki
+          tracesToLogs:
+            datasourceUid: loki
+            filterBySpanID: false
+            filterByTraceID: true
+            mapTagNamesEnabled: false
+            tags:
+              - service
+        readOnly: false
+        editable: true
 
 # Use an existing secret for the admin user.
 admin:

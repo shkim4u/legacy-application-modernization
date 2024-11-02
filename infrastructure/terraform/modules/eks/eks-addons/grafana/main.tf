@@ -29,33 +29,49 @@ resource "helm_release" "grafana" {
   name  = "grafana"
   namespace = kubernetes_namespace.grafana.metadata[0].name
   create_namespace = false
-  values = [templatefile("${path.module}/values.yaml", {
+  values = [templatefile("${path.module}/grafana-values.yaml", {
     admin_existing_secret = kubernetes_secret.grafana.metadata[0].name
     admin_user_key = "admin-user"
     admin_password_key    = "admin-password"
     certificate_arn = var.certificate_arn
   })]
 
+  depends_on = [helm_release.tempo, helm_release.loki]
+
   timeout = 3600
 }
 
+# resource "helm_release" "tempo" {
+#   repository = "https://grafana.github.io/helm-charts"
+#   chart = "tempo"
+#   name = "tempo"
+#   namespace = kubernetes_namespace.grafana.metadata[0].name
+#   create_namespace = false
+
+#   # https://github.com/grafana/helm-charts/blob/main/charts/tempo/values.yaml
+#   set {
+#     name  = "tempo.metricsGenerator.enabled"
+#     value = true
+#   }
+
+#   set {
+#     name  = "tempo.metricsGenerator.remoteWriteUrl"
+#     value = "http://prometheus-kube-prometheus-prometheus.istio-system:9090/api/v1/write"
+#   }
+# }
+
 resource "helm_release" "tempo" {
   repository = "https://grafana.github.io/helm-charts"
-  chart = "tempo"
+  chart = "tempo-distributed"
   name = "tempo"
   namespace = kubernetes_namespace.grafana.metadata[0].name
   create_namespace = false
 
-  # https://github.com/grafana/helm-charts/blob/main/charts/tempo/values.yaml
-  set {
-    name  = "tempo.metricsGenerator.enabled"
-    value = true
-  }
+  # https://github.com/grafana/helm-charts/blob/main/charts/tempo-distributed/values.yaml
+  values = [templatefile("${path.module}/tempo-values.yaml", {})]
 
-  set {
-    name  = "tempo.metricsGenerator.remoteWriteUrl"
-    value = "http://prometheus-kube-prometheus-prometheus.istio-system:9090/api/v1/write"
-  }
+  timeout = 1800
+
 }
 
 resource "helm_release" "loki" {
@@ -64,4 +80,6 @@ resource "helm_release" "loki" {
   name             = "loki-distributed"
   namespace        = kubernetes_namespace.grafana.metadata[0].name
   create_namespace = false
+
+  timeout = 1800
 }
