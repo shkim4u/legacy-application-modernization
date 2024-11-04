@@ -25,7 +25,7 @@ phases:
       # 운영 배포 시에는 Public ALB 배포 -> ACM Certificate ARN을 설정 필요
       # INGRESS_ENABLED 환경변수를 통해 Ingress 리소스 생성 여부를 결정 -> true일 경우, Service 리소스와 함께 Ingress 리소스 생성 -> AWS ALB도 함께 생성
       - export INGRESS_ENABLED=true
-      - export CERTIFICATE_ARN=`aws acm list-certificates --query "CertificateSummaryList[?DomainName=='www.mydemo.co.kr'&& RenewalEligibility=='ELIGIBLE'].CertificateArn" --output text`
+      - export CERTIFICATE_ARN=`aws acm list-certificates --query "CertificateSummaryList[?DomainName=='*.mydemo.co.kr'&& RenewalEligibility=='ELIGIBLE'].CertificateArn" --output text`
       - echo "(deploy) Using CERTIFICATE_ARN ${CERTIFICATE_ARN}"
       # Access to EKS cluster.
       - export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output=text) && echo $AWS_ACCOUNT_ID

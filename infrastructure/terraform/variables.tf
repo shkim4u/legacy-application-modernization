@@ -30,6 +30,11 @@ variable "eks_cluster_staging_name" {
   description = "The name of EKS cluster to be created for staging"
 }
 
+variable "route53_account_role_arn" {
+  type        = string
+  description = "ARN of the IAM role to assume to manage Route53 records."
+}
+
 variable "grafana_admin_password" {
   description = "Admin password for Grafana"
   default = "P@$$w0rd00#1"

@@ -49,7 +49,7 @@ resource "helm_release" "prometheus" {
 
   set {
     name  = "prometheus.prometheusSpec.logLevel"
-    value = "debug"
+    value = "info"
   }
 
   # From Otel demo.

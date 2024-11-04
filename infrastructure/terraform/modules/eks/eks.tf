@@ -431,6 +431,7 @@ module "eks_addons" {
   oidc_provider_arn = module.eks.oidc_provider_arn
   region = var.region
   aws_acm_certificate_arn = module.aws_acm_certificate.certificate_arn
+  route53_account_role_arn = var.route53_account_role_arn
   grafana_admin_password = var.grafana_admin_password
   create_karpenter = var.create_karpenter
 

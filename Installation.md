@@ -35,6 +35,73 @@ git clone https://github.com/shkim4u/legacy-application-modernization
 ```
 
 ## 4. 자원 생성을 위한 환경 설정
+1. (`Route 53` 어카운트에서 수행) `External DNS` 접근을 위한 `IAM Role` 생성 및 `Route 53 Hosted Zone` 설정
+```bash
+# 1. Role Trust Relationship Policy를 JSON 파일로 저장 (trust-policy.json):
+# (주의) 아래 EKS_CLUSTER_ACCOUNT는 실습 환경에 맞게 수정합니다.
+EKS_CLUSTER_ACCOUNT="498486469311"
+cat << EOF > trust-policy.json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::${EKS_CLUSTER_ACCOUNT}:root"
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {}
+    }
+  ]
+}
+EOF
+
+# 2. Role Permission Policy를 JSON 파일로 저장 (permission-policy.json):
+echo '{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "route53:ChangeResourceRecordSets"
+            ],
+            "Resource": [
+                "arn:aws:route53:::hostedzone/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "route53:ListHostedZones",
+                "route53:ListResourceRecordSets"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}' > permission-policy.json
+
+# 3. IAM Role 생성
+aws iam create-role --role-name external-dns-role --assume-role-policy-document file://trust-policy.json
+
+# 4. Permission Policy 생성
+aws iam create-policy --policy-name external-dns-policy --policy-document file://permission-policy.json
+
+# 5. 생성된 Permission Policy를 Role에 연결:
+aws iam attach-role-policy --role-name external-dns-role --policy-arn $(aws iam list-policies --query 'Policies[?PolicyName==`external-dns-policy`].Arn' --output text)
+
+# 6. (참고) 생성된 Role의 ARN을 확인하고 기록해 둠 -> 이후 EKS 클러스터 생성 시 사용 EKS의 External DNS Controller 설정 시 사용 
+export ROUTE53_ACCOUNT_ROLE_ARN=$(aws iam get-role --role-name external-dns-role --query 'Role.Arn' --output text) && echo ROUTE53_ACCOUNT_ROLE_ARN
+
+# 6. 생성된 파일을 삭제
+rm -f trust-policy.json permission-policy.json
+
+# 7. Route 53 Hosted Zone ID 확인
+export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones --query 'HostedZones[?Name==`mydemo.co.kr.`].Id' --output text) && echo $HOSTED_ZONE_ID
+```
+
+2. (현재 실습 어카운트) `Private CA` 및 `테라폼 워크스페이스` 설정
 ```bash
 hash -d aws
 
@@ -49,6 +116,7 @@ cat <<EOF > terraform.tfvars
 ca_arn = "${TF_VAR_ca_arn}"
 eks_cluster_production_name = "${TF_VAR_eks_cluster_production_name}"
 eks_cluster_staging_name = "${TF_VAR_eks_cluster_staging_name}"
+route53_account_role_arn = "${ROUTE53_ACCOUNT_ROLE_ARN}"
 EOF
 ```
 
@@ -706,6 +774,63 @@ done
 
 echo "All Pods processed."
 ```
+
+### 14.3. `Gatling` 사용
+1. 컨테이너 이미지 빌드 및 ECR 푸시
+```bash
+# 1. Gatling 이미지 빌드
+cd ~/environment/legacy-application-modernization/tests/load/gatling
+chmod +x ./mvnw ./docker-entrypoint.sh
+./mvnw clean package
+docker build -t gatling-java-http:latest .
+
+# 2. ECR 리포지터리에 업로드
+AWS_REGION=$(aws configure get region) && echo $AWS_REGION
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text) && echo $AWS_ACCOUNT_ID
+docker login --username AWS -p $(aws ecr get-login-password --region ${AWS_REGION}) ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/gatling
+docker tag gatling-java-http:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/gatling:latest
+docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/gatling:latest
+```
+
+2. `Helm` 차트를 사용하여 `Gatling` 테스트 실행 (`Kubernetes Job`)
+```bash
+cd ~/environment/legacy-application-modernization/tests/load/gatling/deployment/k8s/helm
+make install
+```
+
+```bash
+# 테스트가 완료되면 Job 삭제
+cd ~/environment/legacy-application-modernization/tests/load/gatling/deployment/k8s/helm
+make uninstall
+```
+
+3. `Docker 컨테이너`를 사용하여 `Gatling` 테스트 실행
+
+```bash
+cd ~/environment/legacy-application-modernization/tests/load/gatling
+
+./mvnw clean package
+docker build -t gatling-java-http:latest .
+docker run -e "JAVA_OPTS=-DbaseUrl=http://insurance-planning.mydemo.co.kr/travelbuddy/ -DdurationMin=1 -DrequestPerSecond=10" -e SIMULATION_NAME=gatling.test.example.simulation.ExampleSimulation gatling-java-http:latest
+```
+
+4. `Maven Plugin`을 사용하여 `Gatling` 테스트 실행
+```bash
+cd ~/environment/legacy-application-modernization/tests/load/gatling
+
+JAVA_OPTS="-DbaseUrl=http://insurance-planning.mydemo.co.kr/travelbuddy/ -DdurationMin=1 -DrequestPerSecond=10"
+./mvnw ${JAVA_OPTS} -DsimulationClass=gatling.test.example.simulation.ExampleSimulation gatling:test
+```
+
+5. `Java`를 사용하여 `Gatling` 테스트 실행
+```bash
+cd ~/environment/legacy-application-modernization/tests/load/gatling
+
+./mvnw clean package
+JAVA_OPTS="-DbaseUrl=http://insurance-planning.mydemo.co.kr/travelbuddy/ -DdurationMin=1 -DrequestPerSecond=10"
+SIMULATION_NAME=gatling.test.example.simulation.ClosedLoadModelSimulation
+java ${JAVA_OPTS} -cp target/gatling-java-http.jar io.gatling.app.Gatling --simulation "${SIMULATION_NAME}" --results-folder results
+````
 
 ## 15. (Test) `Pod` 리플리카 수 조정 (`Deployment`)
 

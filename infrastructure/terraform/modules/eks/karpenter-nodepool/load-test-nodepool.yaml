@@ -1,0 +1,98 @@
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: load-test
+spec:
+  disruption:
+    consolidateAfter: 1m
+    # To test consolidation, use the following steps:
+    # 1. Deploy hotelspecials pod with replicas=2 and consolidationPolicy "WhenEmpty".
+    # 2. kubectl scale deployment hotelspecials --replicas=6 -n hotelspecials
+    # 3. And configure the consolidationPolicy to "WhenEmptyOrUnderutilized" in the nodepool.
+    # See: https://karpenter.sh/v1.0/concepts/nodepools/
+#    consolidationPolicy: WhenEmpty
+    consolidationPolicy: WhenEmptyOrUnderutilized
+#    expireAfter: 2h0m0s
+    expireAfter: 720h
+  limits:
+    cpu: 1k
+    mem: 6000Gi
+  template:
+    metadata:
+      labels:
+        billing: aws-proserve
+        purpose: load-test
+    spec:
+      taints:
+        - key: workload-type/load-test
+          value: "true"
+          effect: NoSchedule
+      # See for instance types: https://karpenter.sh/docs/reference/instance-types/
+      nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
+        name: aws-node-template
+      requirements:
+        # - key: node.kubernetes.io/instance-type
+        #   operator: In
+        #   values: ["c7i.4xlarge"]
+        - key: karpenter.k8s.aws/instance-category
+          operator: In
+          values:
+            - c
+            - m
+            - r
+        - key: karpenter.k8s.aws/instance-cpu
+          operator: In
+          values:
+            - "4"
+            - "8"
+            - "16"
+            - "32"
+        - key: karpenter.k8s.aws/instance-hypervisor
+          operator: In
+          values:
+            - nitro
+        - key: kubernetes.io/arch
+          operator: In
+          values: ["amd64"]
+        - key: karpenter.sh/capacity-type
+          operator: In
+          # Spot instances requires additional permission to attach service-linked roles.
+          # See: https://karpenter.sh/docs/troubleshooting/#missing-service-linked-role
+          # aws iam create-service-linked-role --aws-service-name spot.amazonaws.com
+          values: ["on-demand", "spot"]
+        - key: kubernetes.io/os
+          operator: In
+          values: ["linux"]
+      kubelet:
+        kubeReserved:
+          cpu: 200m
+          memory: 100Mi
+          ephemeral-storage: 3Gi
+        systemReserved:
+          cpu: 100m
+          memory: 100Mi
+          ephemeral-storage: 1Gi
+        evictionSoft:
+          memory.available: 1Gi
+          nodefs.available: 15%
+          nodefs.inodesFree: 15%
+          imagefs.available: 10%
+          imagefs.inodesFree: 10%
+          pid.available: 10%
+        evictionHard:
+          memory.available: 500Mi
+          nodefs.available: 10%
+          nodefs.inodesFree: 10%
+          imagefs.available: 5%
+          imagefs.inodesFree: 5%
+          pid.available: 7%
+        imageGCHighThresholdPercent: 85
+        imageGCLowThresholdPercent: 60
+        cpuCFSQuota: true
+        # Lower values from below will be used.
+        # [podsPerCore * # of Core, maxPods]
+        podsPerCore: 2
+        maxPods: 40
+  weight: 100

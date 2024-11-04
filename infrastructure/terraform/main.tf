@@ -25,6 +25,7 @@ module "eks_cluster_production" {
   vpc_id = module.network.vpc_id
   private_subnet_ids = module.network.private_subnets
   certificate_authority_arn = var.ca_arn
+  route53_account_role_arn = var.route53_account_role_arn
   grafana_admin_password = var.grafana_admin_password
   cluster_name = var.eks_cluster_production_name
   create_karpenter = var.create_karpenter
@@ -44,6 +45,7 @@ module "eks_cluster_staging" {
   vpc_id = module.network.vpc_id
   private_subnet_ids = module.network.private_subnets
   certificate_authority_arn = var.ca_arn
+  route53_account_role_arn = var.route53_account_role_arn
   grafana_admin_password = var.grafana_admin_password
   cluster_name = var.eks_cluster_staging_name
   create_karpenter = var.create_karpenter
@@ -137,4 +139,11 @@ module "frontend" {
 ###
 module "wafv2" {
   source = "./modules/wafv2"
+}
+
+###
+### [2024-11-03] Gatling for load test.
+###
+module "gatling" {
+  source = "./modules/gatling"
 }

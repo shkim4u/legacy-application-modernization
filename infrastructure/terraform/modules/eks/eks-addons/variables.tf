@@ -5,6 +5,12 @@ variable "cluster_certificate_authority_data" {}
 variable "oidc_provider" {}
 variable "oidc_provider_arn" {}
 variable "aws_acm_certificate_arn" {}
+
+variable "route53_account_role_arn" {
+  type        = string
+  description = "ARN of the IAM role to assume to manage Route53 records."
+}
+
 variable "grafana_admin_password" {}
 variable "create_karpenter" {default = false}
 

@@ -92,6 +92,23 @@ module "aws_load_balancer_controller" {
 }
 
 /**
+ * External DNS controller.
+ */
+module "external_dns" {
+  source = "./external-dns"
+
+  cluster_name                     = var.eks_cluster_name
+  cluster_identity_oidc_issuer     = var.oidc_provider
+  cluster_identity_oidc_issuer_arn = var.oidc_provider_arn
+  aws_region                       = var.region
+
+  route53_account_role_arn         = var.route53_account_role_arn
+
+  # Better to be with this dependency: https://docs.solo.io/gateway/latest/integrations/external-dns-cert-manager/
+  depends_on = [module.cert_manager]
+}
+
+/**
  * AWS EBS CSI driver for Prometheus.
  */
 module "aws_ebs_csi_driver" {
@@ -370,8 +387,8 @@ module "observability" {
 
 module "opentelemetry" {
   source = "./opentelemetry"
-  depends_on = [null_resource.wait_for_cluster, module.cert_manager]
   certificate_arn = var.aws_acm_certificate_arn
+  depends_on = [null_resource.wait_for_cluster, module.cert_manager]
 }
 
 module "insurance" {
@@ -380,4 +397,10 @@ module "insurance" {
   irsa_oidc_provider_arn = var.oidc_provider_arn
 
   depends_on = [null_resource.wait_for_cluster]
+}
+
+module "influxdb" {
+  source = "./influxdb"
+  certificate_arn = var.aws_acm_certificate_arn
+  depends_on = [null_resource.wait_for_cluster, module.aws_load_balancer_controller]
 }

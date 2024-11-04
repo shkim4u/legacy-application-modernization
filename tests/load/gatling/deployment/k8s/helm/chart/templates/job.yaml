@@ -1,0 +1,68 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "gatling-java-http.fullname" . }}
+  # annotations:
+  #   "helm.sh/hook": post-upgrade
+  #   "helm.sh/hook-weight": "-5"
+  #   "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  parallelism: {{ .Values.replicaCount }} # Number of replicas
+  backoffLimit: 5
+  template:
+    spec:
+      containers:
+        - name: gatling-java-http
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: Always
+          env:
+            - name: JAVA_OPTS
+{{/*              initialConcurrentUsers: 100*/}}
+{{/*              initialConcurrentUsersDuration: 30*/}}
+{{/*              maxConcurrentUsers: 1000*/}}
+{{/*              maxConcurrentUsersDuration: 270*/}}
+{{/*              rampsLasting: 10*/}}
+{{/*              levelLasting: 30*/}}
+{{/*              incrementTimes: 10*/}}
+{{/*              incrementConcurrentUsersBy: 100*/}}
+{{/*              value: '-DbaseUrl={{ .Values.simulation.http.baseUrl }} -DinitialConcurrentUsers={{ .Values.simulation.http.initialConcurrentUsers }} -DinitialConcurrentUsersDuration={{ .Values.simulation.http.initialConcurrentUsersDuration }}'*/}}
+              value: |
+                -DbaseUrl={{ .Values.simulation.http.baseUrl }}
+                -DinitialConcurrentUsers={{ .Values.simulation.http.initialConcurrentUsers }}
+                -DinitialConcurrentUsersDuration={{ .Values.simulation.http.initialConcurrentUsersDuration }}
+                -DmaxConcurrentUsers={{ .Values.simulation.http.maxConcurrentUsers }}
+                -DmaxConcurrentUsersDuration={{ .Values.simulation.http.maxConcurrentUsersDuration }}
+                -DrampsLasting={{ .Values.simulation.http.rampsLasting }}
+                -DlevelLasting={{ .Values.simulation.http.levelLasting }}
+                -DincrementTimes={{ .Values.simulation.http.incrementTimes }}
+                -DincrementConcurrentUsersBy={{ .Values.simulation.http.incrementConcurrentUsersBy }}
+                -DthinkTimeMillisBetweenCalls={{ .Values.simulation.http.thinkTimeMillisBetweenCalls }}
+            - name: SIMULATION_NAME
+              value: "{{ .Values.simulation.name }}"
+          resources:
+            requests:
+              cpu: 8000m
+              memory: 30Gi
+            limits:
+              cpu: 16000m
+              memory: 30Gi
+          volumeMounts:
+            - name: tmp-volume
+              mountPath: /tmp
+      volumes:
+        - name: tmp-volume
+          emptyDir: {}
+      restartPolicy: OnFailure
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+

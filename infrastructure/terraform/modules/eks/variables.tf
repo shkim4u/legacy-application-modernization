@@ -13,6 +13,11 @@ variable "private_subnet_ids" {}
 
 variable "certificate_authority_arn" {}
 
+variable "route53_account_role_arn" {
+  type        = string
+  description = "ARN of the IAM role to assume to manage Route53 records."
+}
+
 # Variable for future use.
 variable "create_cluster_addons" {
   default = false
