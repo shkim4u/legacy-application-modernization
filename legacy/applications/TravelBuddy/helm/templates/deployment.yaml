@@ -22,7 +22,9 @@ spec:
       annotations:
         prometheus.io/port: "9404"
         prometheus.io/scrape: "true"
+        {{- if .Values.opentelemetry.enabled }}
         instrumentation.opentelemetry.io/inject-java: "true"
+        {{- end }}
     spec:
       topologySpreadConstraints:
         - maxSkew: 6

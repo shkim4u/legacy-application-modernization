@@ -19,8 +19,10 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: {{ .Values.app.name }}
+      {{- if .Values.opentelemetry.enabled }}
       annotations:
         instrumentation.opentelemetry.io/inject-java: "true"
+      {{- end }}
     spec:
       serviceAccountName: flightspecials-service-account
       containers:

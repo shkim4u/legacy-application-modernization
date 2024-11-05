@@ -776,6 +776,17 @@ echo "All Pods processed."
 ```
 
 ### 14.3. `Gatling` 사용
+> 🚨🚨🚨 (주의) 🚨🚨🚨<br>
+> 
+> `Gatling`을 사용하여 End-to-End 부하 테스트를 진행할 때 애플리케이션이 `OpenTelemetry` 트레이싱 구성이 되어 있으면 다량의 트레이싱 및 메트릭이 발생할 수 있습니다.
+> 이로 인해 `Prometheus`, `Jaeger`, `Tempo` 및 `Grafana` 대시보드에 부하가 발생할 수 있으므로 주의하여야 합니다.
+> 이를 방지하기 위해 `Gatling` 테스트를 진행할 때는 워크로드에서 `OpenTelemetry` 트레이싱을 비활성화하는 것이 좋습니다.
+> ```yaml
+> {{- if .Values.opentelemetry.enabled -}}
+> instrumentation.opentelemetry.io/inject-java: "true"
+> {{- end }}
+> ```
+
 1. 컨테이너 이미지 빌드 및 ECR 푸시
 ```bash
 # 1. Gatling 이미지 빌드

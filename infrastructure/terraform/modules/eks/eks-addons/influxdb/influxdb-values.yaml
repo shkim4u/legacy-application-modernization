@@ -24,6 +24,10 @@ initScripts:
       CREATE DATABASE "telegraf" WITH DURATION 30d REPLICATION 1 NAME "telegraf_rp_30d"
       CREATE DATABASE "gatling" WITH DURATION 30d REPLICATION 1 NAME "gatling_rp_30d"
 
+persistence:
+  enabled: true
+  size: 200Gi
+
 config:
   graphite:
     enabled: true

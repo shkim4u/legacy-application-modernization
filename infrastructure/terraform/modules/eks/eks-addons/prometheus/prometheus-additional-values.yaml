@@ -35,8 +35,10 @@ prometheus:
       - otlp-write-receiver
       - remote-write-receiver
       - exemplar-storage
-#    additionalArgs:
-#      - name: "enable-feature"
-#        value: "otlp-write-receiver"
-#      - name: "enable-feature"
-#        value: "exemplar-storage"
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: gp3
+          resources:
+            requests:
+              storage: 200Gi

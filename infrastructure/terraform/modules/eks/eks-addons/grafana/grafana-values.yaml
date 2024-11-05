@@ -57,6 +57,7 @@ ingress:
 ##
 persistence:
   enabled: true
+  size: 200Gi
 
 ## Password can be retrieved with the following command.
 #  kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo

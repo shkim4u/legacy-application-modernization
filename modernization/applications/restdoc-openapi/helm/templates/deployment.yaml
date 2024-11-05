@@ -17,8 +17,10 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: {{ .Values.app.name }}
+      {{- if .Values.opentelemetry.enabled }}
       annotations:
         instrumentation.opentelemetry.io/inject-java: "true"
+      {{- end }}
     spec:
       containers:
         - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
