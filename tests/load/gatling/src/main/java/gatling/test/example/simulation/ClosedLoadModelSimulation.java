@@ -13,7 +13,7 @@ import static io.gatling.javaapi.http.HttpDsl.status;
 
 public class ClosedLoadModelSimulation extends Simulation {
 
-    HttpProtocolBuilder httpProtocol = http.baseUrl(BASE_URL)
+    HttpProtocolBuilder httpProtocol = (SHARE_CONNECTIONS ? http.baseUrl(BASE_URL) : http.baseUrl(BASE_URL).shareConnections())
             .header("Content-Type", "application/json")
             .header("Accept-Encoding", "gzip")
             .check(status().is(200));

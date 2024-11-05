@@ -7,6 +7,7 @@ public final class PerfTestConfig {
     public static final double REQUEST_PER_SECOND = getAsDoubleOrElse("requestPerSecond", 10f);
     public static final long DURATION_MIN = getAsIntOrElse("durationMin", 1);
     /** Closed load model test */
+    public static final boolean SHARE_CONNECTIONS = getAsBooleanOrElse("shareConnections", true);
     public static final int INITIAL_CONCURRENT_USERS = getAsIntOrElse("initialConcurrentUsers", 100);
     public static final int INITIAL_CONCURRENT_USERS_DURATION = getAsIntOrElse("initialConcurrentUsersDuration", 30);
     public static final int MAX_CONCURRENT_USERS = getAsIntOrElse("maxConcurrentUsers", 1000);

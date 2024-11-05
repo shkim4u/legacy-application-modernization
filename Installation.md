@@ -787,7 +787,57 @@ echo "All Pods processed."
 > {{- end }}
 > ```
 
-1. 컨테이너 이미지 빌드 및 ECR 푸시
+> ⚠️⚠️⚠️ (참고) ⚠️⚠️⚠️<br>
+> `Concurrent User (Close Load Model)` 혹은 `Arrival Rate (Open Load Model)`을 큰 값으로 가져갈 경우 다음과 같은 OS 수준의 파일 및 네트워크 설정을 고려해야 합니다.<br>
+> 그렇지 않으면 `ConnectException: Cannot assign requested address` 에러가 발생합니다.<br>
+>   * https://docs.gatling.io/reference/script/protocols/http/protocol/<br>
+>   * https://stackoverflow.com/questions/34925795/specifying-socket-options-in-gatling<br>
+> 
+> * Max Open Files (ulimit -n)
+> * Port Range (net.ipv4.ip_local_port_range)
+> * TCP FIN Timeout (net.ipv4.tcp_fin_timeout)
+> * TCP Idle Timeout (net.ipv4.tcp_keepalive_time)
+> * TCP Reuse Address (net.ipv4.tcp_tw_reuse)
+> * Netfilter Conntrack (net.netfilter.nf_conntrack_max)
+
+1. `Java`를 사용하여 `Gatling` 테스트 실행
+대량의 트래픽을 테스트할 때 권장하며, 추가적으로 2대 이상의 EC2 인스턴스를 사용할 수도 있습니다.
+```bash
+cd ~/environment/legacy-application-modernization/tests/load/gatling
+
+./mvnw clean package
+JAVA_OPTS="-DbaseUrl=http://insurance-planning.mydemo.co.kr/travelbuddy/ -DdurationMin=1 -DrequestPerSecond=10"
+SIMULATION_NAME=gatling.test.example.simulation.ClosedLoadModelSimulation
+java ${JAVA_OPTS} -cp target/gatling-java-http.jar io.gatling.app.Gatling --simulation "${SIMULATION_NAME}" --results-folder results
+````
+
+2. `Maven Plugin`을 사용하여 `Gatling` 테스트 실행
+```bash
+cd ~/environment/legacy-application-modernization/tests/load/gatling
+
+JAVA_OPTS="-DbaseUrl=http://insurance-planning.mydemo.co.kr/travelbuddy/ -DdurationMin=1 -DrequestPerSecond=10"
+./mvnw ${JAVA_OPTS} -DsimulationClass=gatling.test.example.simulation.ExampleSimulation gatling:test
+```
+
+3. `Docker 컨테이너`를 사용하여 `Gatling` 테스트 실행
+
+```bash
+cd ~/environment/legacy-application-modernization/tests/load/gatling
+
+./mvnw clean package
+docker build -t gatling-java-http:latest .
+docker run -e "JAVA_OPTS=-DbaseUrl=http://insurance-planning.mydemo.co.kr/travelbuddy/ -DdurationMin=1 -DrequestPerSecond=10" -e SIMULATION_NAME=gatling.test.example.simulation.ExampleSimulation gatling-java-http:latest
+```
+
+4. `Helm` 차트를 사용하여 `Gatling` 테스트 실행 (`Kubernetes Job`)
+4.1. 실행 스크립트를 사용하여 한번에 실행
+```bash
+cd ~/environment/legacy-application-modernization/tests/load/gatling/
+./run-simulation-using-k8s-job.sh true
+```
+
+4.2. 단계별 실행
+4.2.1. 컨테이너 이미지 빌드 및 ECR 푸시
 ```bash
 # 1. Gatling 이미지 빌드
 cd ~/environment/legacy-application-modernization/tests/load/gatling
@@ -803,7 +853,7 @@ docker tag gatling-java-http:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amaz
 docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/gatling:latest
 ```
 
-2. `Helm` 차트를 사용하여 `Gatling` 테스트 실행 (`Kubernetes Job`)
+4.2.2. `Helm` 차트를 사용하여 `Gatling` 테스트 실행 (`Kubernetes Job`)
 ```bash
 cd ~/environment/legacy-application-modernization/tests/load/gatling/deployment/k8s/helm
 make install
@@ -814,34 +864,6 @@ make install
 cd ~/environment/legacy-application-modernization/tests/load/gatling/deployment/k8s/helm
 make uninstall
 ```
-
-3. `Docker 컨테이너`를 사용하여 `Gatling` 테스트 실행
-
-```bash
-cd ~/environment/legacy-application-modernization/tests/load/gatling
-
-./mvnw clean package
-docker build -t gatling-java-http:latest .
-docker run -e "JAVA_OPTS=-DbaseUrl=http://insurance-planning.mydemo.co.kr/travelbuddy/ -DdurationMin=1 -DrequestPerSecond=10" -e SIMULATION_NAME=gatling.test.example.simulation.ExampleSimulation gatling-java-http:latest
-```
-
-4. `Maven Plugin`을 사용하여 `Gatling` 테스트 실행
-```bash
-cd ~/environment/legacy-application-modernization/tests/load/gatling
-
-JAVA_OPTS="-DbaseUrl=http://insurance-planning.mydemo.co.kr/travelbuddy/ -DdurationMin=1 -DrequestPerSecond=10"
-./mvnw ${JAVA_OPTS} -DsimulationClass=gatling.test.example.simulation.ExampleSimulation gatling:test
-```
-
-5. `Java`를 사용하여 `Gatling` 테스트 실행
-```bash
-cd ~/environment/legacy-application-modernization/tests/load/gatling
-
-./mvnw clean package
-JAVA_OPTS="-DbaseUrl=http://insurance-planning.mydemo.co.kr/travelbuddy/ -DdurationMin=1 -DrequestPerSecond=10"
-SIMULATION_NAME=gatling.test.example.simulation.ClosedLoadModelSimulation
-java ${JAVA_OPTS} -cp target/gatling-java-http.jar io.gatling.app.Gatling --simulation "${SIMULATION_NAME}" --results-folder results
-````
 
 ## 15. (Test) `Pod` 리플리카 수 조정 (`Deployment`)
 
