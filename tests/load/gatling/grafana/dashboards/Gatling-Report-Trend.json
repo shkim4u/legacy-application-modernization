@@ -1,0 +1,3308 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Gatling Report Trends for Grafana",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "gnetId": 12507,
+  "graphTooltip": 0,
+  "id": 2,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": "InfluxDB",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "inspect": false,
+            "width": 70
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "KO / Total"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "lcd-gauge"
+              },
+              {
+                "id": "custom.width",
+                "value": 200
+              },
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 10
+                    },
+                    {
+                      "color": "#EF843C",
+                      "value": 20
+                    },
+                    {
+                      "color": "#E24D42",
+                      "value": 30
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "run"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "OK / Total"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "lcd-gauge"
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "custom.width",
+                "value": 202
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "#e24d42",
+                      "value": null
+                    },
+                    {
+                      "color": "#EF843C",
+                      "value": 70
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 80
+                    },
+                    {
+                      "color": "green",
+                      "value": 90
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mean / median(Mean)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 200
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "lcd-gauge"
+              },
+              {
+                "id": "max",
+                "value": 1.6
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "blue",
+                      "value": 0.7
+                    },
+                    {
+                      "color": "red",
+                      "value": 1.3
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "min",
+                "value": 0.4
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Duration / median(Duration)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 200
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "lcd-gauge"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0.7
+                    },
+                    {
+                      "color": "red",
+                      "value": 1.3
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "max",
+                "value": 1.6
+              },
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "min",
+                "value": 0.4
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mean"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 50
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Simulation"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 170
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Region"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 136
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Duration(s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 99
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "OK"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background-solid"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "KO"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "semi-dark-red",
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background-solid"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Duration"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 25,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 10,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 1,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.3.2",
+      "targets": [
+        {
+          "datasource": "InfluxDB",
+          "groupBy": [
+            {
+              "params": [
+                "run"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "gatling",
+          "orderByTime": "ASC",
+          "policy": "$archive",
+          "query": "SELECT sum(\"count\") AS \"OK\", mean(\"mean\") AS \"Mean\", mean(\"mean\")  / ${mean_median} AS \"Mean / median(Mean)\" FROM \"$archive\".\"gatling\" WHERE (\"request\" = 'allRequests' AND \"status\" = 'ok' AND \"simulation\" =~ /^$simulation$/) AND $timeFilter GROUP BY \"run\"",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [
+                  "OK"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "request",
+              "operator": "=",
+              "value": "allRequests"
+            },
+            {
+              "condition": "AND",
+              "key": "status",
+              "operator": "=",
+              "value": "ok"
+            },
+            {
+              "condition": "AND",
+              "key": "simulation",
+              "operator": "=~",
+              "value": "/^$simulation$/"
+            },
+            {
+              "condition": "AND",
+              "key": "userCount",
+              "operator": "=~",
+              "value": "/^$userCount$/"
+            },
+            {
+              "condition": "AND",
+              "key": "region",
+              "operator": "=~",
+              "value": "/^$region$/"
+            }
+          ]
+        },
+        {
+          "datasource": "InfluxDB",
+          "groupBy": [
+            {
+              "params": [
+                "run"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "measurement": "gatling",
+          "orderByTime": "ASC",
+          "policy": "$archive",
+          "refId": "D",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [
+                  "KO"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "request",
+              "operator": "=",
+              "value": "allRequests"
+            },
+            {
+              "condition": "AND",
+              "key": "status",
+              "operator": "=",
+              "value": "ko"
+            },
+            {
+              "condition": "AND",
+              "key": "simulation",
+              "operator": "=~",
+              "value": "/^$simulation$/"
+            },
+            {
+              "condition": "AND",
+              "key": "userCount",
+              "operator": "=~",
+              "value": "/^$userCount$/"
+            },
+            {
+              "condition": "AND",
+              "key": "region",
+              "operator": "=~",
+              "value": "/^$region$/"
+            }
+          ]
+        },
+        {
+          "datasource": "InfluxDB",
+          "groupBy": [
+            {
+              "params": [
+                "run"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "measurement": "gatling",
+          "orderByTime": "ASC",
+          "policy": "$archive",
+          "refId": "E",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [
+                  "Total"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "request",
+              "operator": "=",
+              "value": "allRequests"
+            },
+            {
+              "condition": "AND",
+              "key": "status",
+              "operator": "=",
+              "value": "all"
+            },
+            {
+              "condition": "AND",
+              "key": "simulation",
+              "operator": "=~",
+              "value": "/^$simulation$/"
+            },
+            {
+              "condition": "AND",
+              "key": "userCount",
+              "operator": "=~",
+              "value": "/^$userCount$/"
+            },
+            {
+              "condition": "AND",
+              "key": "region",
+              "operator": "=~",
+              "value": "/^$region$/"
+            }
+          ]
+        },
+        {
+          "datasource": "InfluxDB",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"Duration\" AS \"Duration\",  \"run\"\nFROM (\nSELECT SUM(\"e\") as \"Duration\" \nFROM\n(SELECT elapsed(\"count\", 1s) as \"e\" FROM \"$archive\".\"gatling\" WHERE (\"region\" =~ /^$region$/ AND \"request\" = 'allRequests' AND \"simulation\" =~ /^$simulation$/ AND \"userCount\" =~ /^$userCount$/ AND \"status\" = 'all') AND $timeFilter GROUP BY \"run\")\nGROUP BY  \"run\"\n)\n",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": "InfluxDB",
+          "groupBy": [
+            {
+              "params": [
+                "run"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "measurement": "gatling",
+          "orderByTime": "ASC",
+          "policy": "$archive",
+          "query": "SELECT min(\"min\") AS \"min\" FROM \"$archive\".\"gatling\" WHERE (\"request\" = 'allRequests' AND \"status\" = 'ok' AND \"simulation\" =~ /^$simulation$/) AND $timeFilter GROUP BY \"run\"",
+          "rawQuery": false,
+          "refId": "F",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "min"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "min"
+              },
+              {
+                "params": [
+                  "Min(ms)"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "max"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              },
+              {
+                "params": [
+                  "Max(ms)"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "mean"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "Mean(ms)"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "percentiles90"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "90"
+                ],
+                "type": "percentile"
+              },
+              {
+                "params": [
+                  "90th pct"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "percentiles95"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "95"
+                ],
+                "type": "percentile"
+              },
+              {
+                "params": [
+                  "95th pct"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "percentiles99"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "99"
+                ],
+                "type": "percentile"
+              },
+              {
+                "params": [
+                  "99th pct"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "request",
+              "operator": "=",
+              "value": "allRequests"
+            },
+            {
+              "condition": "AND",
+              "key": "simulation",
+              "operator": "=~",
+              "value": "/^$simulation$/"
+            },
+            {
+              "condition": "AND",
+              "key": "userCount",
+              "operator": "=~",
+              "value": "/^$userCount$/"
+            },
+            {
+              "condition": "AND",
+              "key": "region",
+              "operator": "=~",
+              "value": "/^$region$/"
+            }
+          ]
+        },
+        {
+          "datasource": "InfluxDB",
+          "groupBy": [
+            {
+              "params": [
+                "run"
+              ],
+              "type": "tag"
+            }
+          ],
+          "hide": false,
+          "measurement": "gatling",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "mean"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "Mean2"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "userCount"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "Users"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "simulation"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "Simulation"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "region"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [
+                  "Region"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "simulation",
+              "operator": "=~",
+              "value": "/^$simulation$/"
+            },
+            {
+              "condition": "AND",
+              "key": "request",
+              "operator": "=",
+              "value": "allRequests"
+            },
+            {
+              "condition": "AND",
+              "key": "userCount",
+              "operator": "=~",
+              "value": "/^$userCount$/"
+            },
+            {
+              "condition": "AND",
+              "key": "region",
+              "operator": "=~",
+              "value": "/^$region$/"
+            }
+          ]
+        }
+      ],
+      "title": "Test Details",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "run"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Duration": false,
+              "KO": false,
+              "Mean2": true,
+              "Time": true,
+              "Total": false
+            },
+            "indexByName": {
+              "90th pct": 11,
+              "95th pct": 12,
+              "99th pct": 13,
+              "Duration": 10,
+              "Region": 0,
+              "KO": 5,
+              "Max(ms)": 8,
+              "Mean(ms)": 9,
+              "Mean2": 20,
+              "Min(ms)": 7,
+              "OK": 4,
+              "Simulation": 1,
+              "Time 1": 17,
+              "Time 2": 14,
+              "Time 3": 16,
+              "Time 4": 18,
+              "Time 5": 15,
+              "Time 6": 19,
+              "Total": 6,
+              "Users": 2,
+              "run": 3
+            },
+            "renameByName": {
+              "Duration": ""
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Req./s",
+            "binary": {
+              "left": "Total",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "Duration"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "",
+            "binary": {
+              "left": "OK",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "Total"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": "KO",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "Total"
+            },
+            "mode": "binary",
+            "reduce": {
+              "include": [
+                "Total"
+              ],
+              "reducer": "max"
+            },
+            "replaceFields": false
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": true,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 18,
+      "panels": [
+        {
+          "datasource": "InfluxDB",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "displayMode": "auto"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Mean"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "auto"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "run"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 26
+          },
+          "id": 3,
+          "options": {
+            "frameIndex": 1,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "run"
+              }
+            ]
+          },
+          "pluginVersion": "7.0.3",
+          "targets": [
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "run"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "gatling",
+              "orderByTime": "ASC",
+              "policy": "$archive",
+              "refId": "A",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "mean"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  },
+                  {
+                    "params": [
+                      "Mean"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "request",
+                  "operator": "=",
+                  "value": "allRequests"
+                },
+                {
+                  "condition": "AND",
+                  "key": "status",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "simulation",
+                  "operator": "=~",
+                  "value": "/^$simulation$/"
+                }
+              ]
+            }
+          ],
+          "title": "Test Mean Time",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true
+                },
+                "indexByName": {},
+                "renameByName": {}
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": "InfluxDB",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "center",
+                "displayMode": "auto"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Mean"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "auto"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "color-background"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "percentage",
+                      "steps": [
+                        {
+                          "color": "rgb(115, 191, 105)"
+                        },
+                        {
+                          "color": "#EAB839",
+                          "value": 50
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "run"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Mean / max(Mean)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "lcd-gauge"
+                  },
+                  {
+                    "id": "max",
+                    "value": 1
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "percentage",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "#EAB839",
+                          "value": 50
+                        },
+                        {
+                          "color": "#E24D42",
+                          "value": 80
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 300
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Mean / mean(Mean)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 300
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "lcd-gauge"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "#EAB839",
+                          "value": 1
+                        },
+                        {
+                          "color": "red",
+                          "value": 1.5
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "max",
+                    "value": 2
+                  },
+                  {
+                    "id": "min",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Mean / median(Mean)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 300
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "custom.displayMode",
+                    "value": "lcd-gauge"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "blue",
+                          "value": 0.7
+                        },
+                        {
+                          "color": "red",
+                          "value": 1.3
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "max",
+                    "value": 2
+                  },
+                  {
+                    "id": "min",
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName"
+                },
+                "properties": []
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 15,
+            "w": 24,
+            "x": 0,
+            "y": 33
+          },
+          "id": 15,
+          "options": {
+            "frameIndex": 1,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "run"
+              }
+            ]
+          },
+          "pluginVersion": "7.0.3",
+          "targets": [
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "run"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "gatling",
+              "orderByTime": "ASC",
+              "policy": "$archive",
+              "refId": "A",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "mean"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  },
+                  {
+                    "params": [
+                      "Mean"
+                    ],
+                    "type": "alias"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "mean"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  },
+                  {
+                    "params": [
+                      " / ${mean_max}"
+                    ],
+                    "type": "math"
+                  },
+                  {
+                    "params": [
+                      "Mean / max(Mean)"
+                    ],
+                    "type": "alias"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "mean"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  },
+                  {
+                    "params": [
+                      " / ${mean_mean}"
+                    ],
+                    "type": "math"
+                  },
+                  {
+                    "params": [
+                      "Mean / mean(Mean)"
+                    ],
+                    "type": "alias"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "mean"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  },
+                  {
+                    "params": [
+                      " / ${mean_median}"
+                    ],
+                    "type": "math"
+                  },
+                  {
+                    "params": [
+                      "Mean / median(Mean)"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "request",
+                  "operator": "=",
+                  "value": "allRequests"
+                },
+                {
+                  "condition": "AND",
+                  "key": "status",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "simulation",
+                  "operator": "=~",
+                  "value": "/^$simulation$/"
+                }
+              ]
+            },
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "run"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": true,
+              "measurement": "gatling",
+              "orderByTime": "ASC",
+              "policy": "$archive",
+              "query": "SELECT mean(\"mean\") AS \"Mean\", mean(\"mean\")  / ${mean_max} AS \"Mean / max(Mean)\" FROM \"$archive\".\"gatling\" WHERE (\"request\" = 'allRequests' AND \"status\" = 'ok' AND \"simulation\" =~ /^$simulation$/) AND $timeFilter GROUP BY \"run\"",
+              "rawQuery": true,
+              "refId": "B",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "mean"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  },
+                  {
+                    "params": [
+                      "Mean"
+                    ],
+                    "type": "alias"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "mean"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  },
+                  {
+                    "params": [
+                      " / ${mean_max}"
+                    ],
+                    "type": "math"
+                  },
+                  {
+                    "params": [
+                      "Mean / max(Mean)"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "request",
+                  "operator": "=",
+                  "value": "allRequests"
+                },
+                {
+                  "condition": "AND",
+                  "key": "status",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "simulation",
+                  "operator": "=~",
+                  "value": "/^$simulation$/"
+                }
+              ]
+            }
+          ],
+          "title": "Test Mean Time + Mean analitics",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "KO": false,
+                  "Mean": false,
+                  "Mean / max(Mean)": false,
+                  "Mean / mean(Mean)": false,
+                  "Time": true,
+                  "Total": false,
+                  "run": false
+                },
+                "indexByName": {
+                  "Mean": 2,
+                  "Mean / max(Mean)": 3,
+                  "Mean / mean(Mean)": 4,
+                  "Mean / median(Mean)": 5,
+                  "Time": 0,
+                  "run": 1
+                },
+                "renameByName": {}
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": "InfluxDB",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "displayMode": "auto",
+                "width": 100
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "run"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 160
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "right"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 48
+          },
+          "id": 6,
+          "options": {
+            "frameIndex": 1,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "run"
+              }
+            ]
+          },
+          "pluginVersion": "7.0.3",
+          "targets": [
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "run"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "gatling",
+              "orderByTime": "ASC",
+              "policy": "$archive",
+              "refId": "A",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "OK"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "request",
+                  "operator": "=",
+                  "value": "allRequests"
+                },
+                {
+                  "condition": "AND",
+                  "key": "status",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "simulation",
+                  "operator": "=~",
+                  "value": "/^$simulation$/"
+                }
+              ]
+            },
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "run"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "measurement": "gatling",
+              "orderByTime": "ASC",
+              "policy": "$archive",
+              "refId": "D",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "KO"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "request",
+                  "operator": "=",
+                  "value": "allRequests"
+                },
+                {
+                  "condition": "AND",
+                  "key": "status",
+                  "operator": "=",
+                  "value": "ko"
+                },
+                {
+                  "condition": "AND",
+                  "key": "simulation",
+                  "operator": "=~",
+                  "value": "/^$simulation$/"
+                }
+              ]
+            },
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "run"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "measurement": "gatling",
+              "orderByTime": "ASC",
+              "policy": "$archive",
+              "refId": "E",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "Total"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "request",
+                  "operator": "=",
+                  "value": "allRequests"
+                },
+                {
+                  "condition": "AND",
+                  "key": "status",
+                  "operator": "=",
+                  "value": "all"
+                },
+                {
+                  "condition": "AND",
+                  "key": "simulation",
+                  "operator": "=~",
+                  "value": "/^$simulation$/"
+                }
+              ]
+            }
+          ],
+          "title": "Test: OK, KO, Total join",
+          "transformations": [
+            {
+              "id": "seriesToColumns",
+              "options": {
+                "byField": "run"
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": "InfluxDB",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "displayMode": "auto",
+                "width": 100
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "KO / Total"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "lcd-gauge"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 300
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "max",
+                    "value": 1
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "percentage",
+                      "steps": [
+                        {
+                          "color": "green"
+                        },
+                        {
+                          "color": "#EAB839",
+                          "value": 10
+                        },
+                        {
+                          "color": "#EF843C",
+                          "value": 20
+                        },
+                        {
+                          "color": "#E24D42",
+                          "value": 30
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "run"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "OK / Total"
+                },
+                "properties": [
+                  {
+                    "id": "custom.displayMode",
+                    "value": "lcd-gauge"
+                  },
+                  {
+                    "id": "max",
+                    "value": 1
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 300
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "percentage",
+                      "steps": [
+                        {
+                          "color": "#e24d42"
+                        },
+                        {
+                          "color": "#EF843C",
+                          "value": 70
+                        },
+                        {
+                          "color": "#EAB839",
+                          "value": 80
+                        },
+                        {
+                          "color": "green",
+                          "value": 90
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 61
+          },
+          "id": 16,
+          "options": {
+            "frameIndex": 1,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "run"
+              }
+            ]
+          },
+          "pluginVersion": "7.0.3",
+          "targets": [
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "run"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "gatling",
+              "orderByTime": "ASC",
+              "policy": "$archive",
+              "refId": "A",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "OK"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "request",
+                  "operator": "=",
+                  "value": "allRequests"
+                },
+                {
+                  "condition": "AND",
+                  "key": "status",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "simulation",
+                  "operator": "=~",
+                  "value": "/^$simulation$/"
+                }
+              ]
+            },
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "run"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "measurement": "gatling",
+              "orderByTime": "ASC",
+              "policy": "$archive",
+              "refId": "D",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "KO"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "request",
+                  "operator": "=",
+                  "value": "allRequests"
+                },
+                {
+                  "condition": "AND",
+                  "key": "status",
+                  "operator": "=",
+                  "value": "ko"
+                },
+                {
+                  "condition": "AND",
+                  "key": "simulation",
+                  "operator": "=~",
+                  "value": "/^$simulation$/"
+                }
+              ]
+            },
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "run"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "measurement": "gatling",
+              "orderByTime": "ASC",
+              "policy": "$archive",
+              "refId": "E",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "Total"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "request",
+                  "operator": "=",
+                  "value": "allRequests"
+                },
+                {
+                  "condition": "AND",
+                  "key": "status",
+                  "operator": "=",
+                  "value": "all"
+                },
+                {
+                  "condition": "AND",
+                  "key": "simulation",
+                  "operator": "=~",
+                  "value": "/^$simulation$/"
+                }
+              ]
+            }
+          ],
+          "title": "Test: %OK and %Fail ",
+          "transformations": [
+            {
+              "id": "seriesToColumns",
+              "options": {
+                "byField": "run"
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "KO": false,
+                  "Time": true,
+                  "Total": false
+                },
+                "indexByName": {
+                  "KO": 3,
+                  "OK": 2,
+                  "Time": 0,
+                  "Total": 4,
+                  "run": 1
+                },
+                "renameByName": {}
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "",
+                "binary": {
+                  "left": "OK",
+                  "operator": "/",
+                  "reducer": "sum",
+                  "right": "Total"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                },
+                "replaceFields": false
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "binary": {
+                  "left": "KO",
+                  "operator": "/",
+                  "reducer": "sum",
+                  "right": "Total"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "include": [
+                    "Total"
+                  ],
+                  "reducer": "max"
+                },
+                "replaceFields": false
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": "InfluxDB",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "displayMode": "auto",
+                "width": 150
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Test Finish Time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 200
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 192
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 68
+          },
+          "id": 5,
+          "options": {
+            "frameIndex": 1,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "run"
+              }
+            ]
+          },
+          "pluginVersion": "7.0.3",
+          "targets": [
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "run"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "gatling",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "query": "SELECT SUM(\"e\") as \"Duration\" FROM\n(SELECT elapsed(\"count\", 1s) as \"e\" FROM \"$archive\".\"gatling\" WHERE (\"request\" = 'allRequests' AND \"simulation\" =~ /^$simulation$/ AND \"status\" = 'all') AND $timeFilter GROUP BY \"run\")\nGROUP BY  \"run\"",
+              "rawQuery": true,
+              "refId": "B",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [
+                      "1s"
+                    ],
+                    "type": "elapsed"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "request",
+                  "operator": "=",
+                  "value": "allRequests"
+                },
+                {
+                  "condition": "AND",
+                  "key": "simulation",
+                  "operator": "=~",
+                  "value": "/^$simulation$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "status",
+                  "operator": "=",
+                  "value": "all"
+                }
+              ]
+            }
+          ],
+          "title": "Test Duration",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": false
+                },
+                "indexByName": {
+                  "Duration": 1,
+                  "Duration x 2": 2,
+                  "Time": 3,
+                  "run": 0
+                },
+                "renameByName": {
+                  "Time": ""
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": "InfluxDB",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "displayMode": "auto",
+                "width": 150
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Test Finish Time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 200
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 11,
+            "x": 0,
+            "y": 81
+          },
+          "id": 11,
+          "options": {
+            "frameIndex": 1,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "run"
+              }
+            ]
+          },
+          "pluginVersion": "7.0.3",
+          "targets": [
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "10s"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "run"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "gatling",
+              "orderByTime": "ASC",
+              "policy": "$archive",
+              "query": "SELECT last(\"d\") AS \"Duration\"\nFROM (\n    SELECT cumulative_sum(elapsed(last(\"count\"), 1s)) AS \"d\"\n    FROM \"$archive\".\"gatling\"\n    WHERE \"simulation\" = '$simulation' AND $timeFilter\n    GROUP BY time(1s),  \"run\"\n) \nWHERE $timeFilter\nGROUP BY \"run\"",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "1s"
+                    ],
+                    "type": "elapsed"
+                  },
+                  {
+                    "params": [],
+                    "type": "cumulative_sum"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "simulation",
+                  "operator": "=~",
+                  "value": "/^$simulation$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "request",
+                  "operator": "=",
+                  "value": "allRequests"
+                },
+                {
+                  "condition": "AND",
+                  "key": "status",
+                  "operator": "=",
+                  "value": "all"
+                }
+              ]
+            }
+          ],
+          "title": "Test Duration with Finish Time (precise)",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {
+                  "Duration": 1,
+                  "Duration x 2": 2,
+                  "Time": 3,
+                  "run": 0
+                },
+                "renameByName": {
+                  "Time": "Test Finish Time"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": "InfluxDB",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "displayMode": "auto",
+                "width": 150
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Test Finish Time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 200
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 11,
+            "x": 11,
+            "y": 81
+          },
+          "id": 12,
+          "options": {
+            "frameIndex": 1,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "run"
+              }
+            ]
+          },
+          "pluginVersion": "7.0.3",
+          "targets": [
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "10s"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "run"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "gatling",
+              "orderByTime": "ASC",
+              "policy": "$archive",
+              "query": "SELECT last(\"d\") AS \"Duration\"\nFROM (\n    SELECT cumulative_sum(elapsed(last(\"count\"), 1s)) AS \"d\"\n    FROM \"$archive\".\"gatling\"\n    WHERE \"simulation\" = '$simulation' AND $timeFilter\n    GROUP BY time(10s),  \"run\"\n) \nWHERE $timeFilter\nGROUP BY \"run\"",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "1s"
+                    ],
+                    "type": "elapsed"
+                  },
+                  {
+                    "params": [],
+                    "type": "cumulative_sum"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "simulation",
+                  "operator": "=~",
+                  "value": "/^$simulation$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "request",
+                  "operator": "=",
+                  "value": "allRequests"
+                },
+                {
+                  "condition": "AND",
+                  "key": "status",
+                  "operator": "=",
+                  "value": "all"
+                }
+              ]
+            }
+          ],
+          "title": "Test Duration with Finish Time",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {
+                  "Duration": 1,
+                  "Duration x 2": 2,
+                  "Time": 3,
+                  "run": 0
+                },
+                "renameByName": {
+                  "Time": "Test Finish Time"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": "InfluxDB",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "displayMode": "auto",
+                "width": 150
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Test Finish Time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 200
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 12,
+            "x": 0,
+            "y": 94
+          },
+          "id": 8,
+          "options": {
+            "frameIndex": 1,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "run"
+              }
+            ]
+          },
+          "pluginVersion": "7.0.3",
+          "targets": [
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "10s"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "run"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "gatling",
+              "orderByTime": "ASC",
+              "policy": "$archive",
+              "query": "SELECT last(\"d\") AS \"Duration\"\nFROM (\n    SELECT cumulative_sum(elapsed(last(\"count\"), 1s)) AS \"d\"\n    FROM \"$archive\".\"gatling\"\n    WHERE \"simulation\" = '$simulation' AND $timeFilter\n    GROUP BY time(1s),  \"run\"\n) \nWHERE $timeFilter\nGROUP BY \"run\"",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  },
+                  {
+                    "params": [
+                      "1s"
+                    ],
+                    "type": "elapsed"
+                  },
+                  {
+                    "params": [],
+                    "type": "cumulative_sum"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "simulation",
+                  "operator": "=~",
+                  "value": "/^$simulation$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "request",
+                  "operator": "=",
+                  "value": "allRequests"
+                },
+                {
+                  "condition": "AND",
+                  "key": "status",
+                  "operator": "=",
+                  "value": "all"
+                }
+              ]
+            },
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "run"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "gatling",
+              "orderByTime": "ASC",
+              "policy": "autogen",
+              "refId": "B",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  },
+                  {
+                    "params": [
+                      "Total"
+                    ],
+                    "type": "alias"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "simulation",
+                  "operator": "=~",
+                  "value": "/^$simulation$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "request",
+                  "operator": "=",
+                  "value": "allRequests"
+                },
+                {
+                  "condition": "AND",
+                  "key": "status",
+                  "operator": "=",
+                  "value": "all"
+                }
+              ]
+            }
+          ],
+          "title": "Test Duration with Finish Time  join  Total",
+          "transformations": [
+            {
+              "id": "seriesToColumns",
+              "options": {
+                "byField": "run"
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": "InfluxDB",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "displayMode": "auto",
+                "width": 150
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 200
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Report 2",
+                        "url": "/d/gatling/gatling-report?time=${__cell}&time.window=${__cell_2}000&var-g=${__cell_3}s&var-duration_1=${duration_1}&var-duration_2=${duration_2}&var-simulation=${simulation}&var-run=${__cell_1}&var-host=All&var-group1=All&var-group2=All&var-group3=All&var-request=All"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 25,
+            "w": 5,
+            "x": 0,
+            "y": 107
+          },
+          "id": 9,
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "report 1",
+              "url": "/d/gatling/gatling-report?time=${__cell}&time.window=${__cell_2}000&var-g=${__cell_3}s&var-duration_1=${duration_1}&var-duration_2=${duration_2}&var-simulation=${simulation}&var-run=${__cell_1}&var-host=All&var-group1=All&var-group2=All&var-group3=All&var-request=All"
+            }
+          ],
+          "options": {
+            "frameIndex": 1,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "run"
+              }
+            ]
+          },
+          "pluginVersion": "7.0.3",
+          "targets": [
+            {
+              "datasource": "InfluxDB",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \n    (last(\"duration\")*2+10) as \"Duration\" \nFROM\n    (SELECT \n         cumulative_sum(elapsed(last(\"count\"), 1s)) as \"duration\" \n     FROM \"$archive\".\"gatling\" \n     WHERE \n         (\"simulation\" =~ /^${simulation:regex}$/) AND \n          $timeFilter \n     GROUP BY time(1s),  \"run\"\n) \nGROUP BY \"run\"",
+              "rawQuery": true,
+              "refId": "B",
+              "resultFormat": "table",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  }
+                ]
+              ],
+              "tags": []
+            }
+          ],
+          "title": "Test Duration with Finish Time",
+          "transformations": [],
+          "type": "table"
+        }
+      ],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Develop examples for Grafana 7.0.3",
+      "type": "row"
+    }
+  ],
+  "schemaVersion": 37,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "No data sources found",
+          "value": ""
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "data source",
+        "multi": false,
+        "name": "ds",
+        "options": [],
+        "query": "influxdb",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "/.*Gatling.*/i",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "autogen",
+          "value": "autogen"
+        },
+        "datasource": "InfluxDB",
+        "definition": "SHOW RETENTION POLICIES",
+        "hide": 2,
+        "includeAll": false,
+        "label": "Retention policy (archive)",
+        "multi": false,
+        "name": "archive",
+        "options": [],
+        "query": "SHOW RETENTION POLICIES",
+        "refresh": 1,
+        "regex": "^autogen$",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
+        },
+        "datasource": "InfluxDB",
+        "definition": "SHOW RETENTION POLICIES",
+        "hide": 2,
+        "includeAll": false,
+        "label": "Retention policy (new)",
+        "multi": false,
+        "name": "new",
+        "options": [],
+        "query": "SHOW RETENTION POLICIES",
+        "refresh": 1,
+        "regex": "^(?!$archive$).*$",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "InfluxDB",
+        "definition": "SELECT DISTINCT(\"simulation\") FROM \n  (SELECT last(\"mean\") FROM \"$new\".\"gatling\" GROUP BY \"simulation\"),\n  (SELECT last(\"mean\") FROM \"$archive\".\"gatling\" GROUP BY \"simulation\")\nWHERE $timeFilter",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Simulation",
+        "multi": true,
+        "name": "simulation",
+        "options": [],
+        "query": "SELECT DISTINCT(\"simulation\") FROM \n  (SELECT last(\"mean\") FROM \"$new\".\"gatling\" GROUP BY \"simulation\"),\n  (SELECT last(\"mean\") FROM \"$archive\".\"gatling\" GROUP BY \"simulation\")\nWHERE $timeFilter",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
+        },
+        "datasource": "InfluxDB",
+        "definition": "SELECT max(\"Mean\") FROM (\nSELECT mean(\"mean\") as \"Mean\"\n   FROM  \"$archive\".\"gatling\"\n   WHERE \"request\" = 'allRequests'\n         AND \"status\" = 'ok'\n         AND \"simulation\" =~ /^${simulation:regex}$/\n         AND $timeFilter\n   GROUP BY \"run\"\n)",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "mean_max",
+        "options": [],
+        "query": "SELECT max(\"Mean\") FROM (\nSELECT mean(\"mean\") as \"Mean\"\n   FROM  \"$archive\".\"gatling\"\n   WHERE \"request\" = 'allRequests'\n         AND \"status\" = 'ok'\n         AND \"simulation\" =~ /^${simulation:regex}$/\n         AND $timeFilter\n   GROUP BY \"run\"\n)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
+        },
+        "datasource": "InfluxDB",
+        "definition": "SELECT mean(\"Mean\") FROM (\nSELECT mean(\"mean\") as \"Mean\"\n   FROM  \"$archive\".\"gatling\"\n   WHERE \"request\" = 'allRequests'\n         AND \"status\" = 'ok'\n         AND \"simulation\" =~ /^${simulation:regex}$/\n         AND $timeFilter\n   GROUP BY \"run\"\n)",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "mean_mean",
+        "options": [],
+        "query": "SELECT mean(\"Mean\") FROM (\nSELECT mean(\"mean\") as \"Mean\"\n   FROM  \"$archive\".\"gatling\"\n   WHERE \"request\" = 'allRequests'\n         AND \"status\" = 'ok'\n         AND \"simulation\" =~ /^${simulation:regex}$/\n         AND $timeFilter\n   GROUP BY \"run\"\n)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
+        },
+        "datasource": "InfluxDB",
+        "definition": "SELECT median(\"Mean\") FROM (\nSELECT mean(\"mean\") as \"Mean\"\n   FROM  \"$archive\".\"gatling\"\n   WHERE \"request\" = 'allRequests'\n         AND \"status\" = 'ok'\n         AND \"simulation\" =~ /^${simulation:regex}$/\n         AND $timeFilter\n   GROUP BY \"run\"\n)",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "mean_median",
+        "options": [],
+        "query": "SELECT median(\"Mean\") FROM (\nSELECT mean(\"mean\") as \"Mean\"\n   FROM  \"$archive\".\"gatling\"\n   WHERE \"request\" = 'allRequests'\n         AND \"status\" = 'ok'\n         AND \"simulation\" =~ /^${simulation:regex}$/\n         AND $timeFilter\n   GROUP BY \"run\"\n)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "92",
+          "value": "92"
+        },
+        "datasource": "InfluxDB",
+        "definition": "SELECT median(\"Duration\") FROM (\nSELECT SUM(\"e\") as \"Duration\" FROM\n(SELECT elapsed(\"count\", 1s) as \"e\" FROM \"$archive\".\"gatling\" WHERE (\"request\" = 'allRequests' AND \"simulation\" =~ /^$simulation$/ AND \"status\" = 'all') AND $timeFilter GROUP BY \"run\")\nGROUP BY  \"run\"\n)",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "duration_median",
+        "options": [],
+        "query": "SELECT median(\"Duration\") FROM (\nSELECT SUM(\"e\") as \"Duration\" FROM\n(SELECT elapsed(\"count\", 1s) as \"e\" FROM \"$archive\".\"gatling\" WHERE (\"request\" = 'allRequests' AND \"simulation\" =~ /^$simulation$/ AND \"status\" = 'all') AND $timeFilter GROUP BY \"run\")\nGROUP BY  \"run\"\n)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "InfluxDB",
+        "definition": "SELECT DISTINCT(\"userCount\") FROM \n  (SELECT last(\"mean\") FROM \"$new\".\"gatling\" GROUP BY \"userCount\"),\n  (SELECT last(\"mean\") FROM \"$archive\".\"gatling\" GROUP BY \"userCount\")\nWHERE $timeFilter",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Users",
+        "multi": false,
+        "name": "userCount",
+        "options": [],
+        "query": "SELECT DISTINCT(\"userCount\") FROM \n  (SELECT last(\"mean\") FROM \"$new\".\"gatling\" GROUP BY \"userCount\"),\n  (SELECT last(\"mean\") FROM \"$archive\".\"gatling\" GROUP BY \"userCount\")\nWHERE $timeFilter",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "InfluxDB",
+        "definition": "SELECT DISTINCT(\"region\") FROM \n  (SELECT last(\"mean\") FROM \"$new\".\"gatling\" GROUP BY \"region\"),\n  (SELECT last(\"mean\") FROM \"$archive\".\"gatling\" GROUP BY \"region\")\nWHERE $timeFilter",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Region",
+        "multi": true,
+        "name": "region",
+        "options": [],
+        "query": "SELECT DISTINCT(\"region\") FROM \n  (SELECT last(\"mean\") FROM \"$new\".\"gatling\" GROUP BY \"region\"),\n  (SELECT last(\"mean\") FROM \"$archive\".\"gatling\" GROUP BY \"region\")\nWHERE $timeFilter",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "Gatling Report Trend",
+  "uid": "gatlingTrend2",
+  "version": 1,
+  "weekStart": ""
+}

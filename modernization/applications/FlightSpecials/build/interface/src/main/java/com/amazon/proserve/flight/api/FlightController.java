@@ -1,5 +1,6 @@
 package com.amazon.proserve.flight.api;
 
+import com.amazon.proserve.domain.flight.FlightSpecial;
 import com.amazon.proserve.application.flight.usecase.GetFlightSpecialUseCase;
 import com.amazon.proserve.application.flight.command.ChangeFlightNameCommand;
 import com.amazon.proserve.application.flight.command.UpdateFlightSpecialHeaderCommand;
@@ -31,6 +32,11 @@ public class FlightController {
     public List<FlightSpecialView> getFlightSpecial() {
         // return getFlightSpecialUseCase.getFlightSpecial();
         return getFlightSpecialUseCase.getAllFlightSpecialsSortedByExpiryDate();
+    }
+
+    @GetMapping({"/flightspecials/{id}"})
+    public FlightSpecial getFlightSpecialById(@PathVariable(name = "id") int id) {
+        return getFlightSpecialUseCase.getFlightSpecialById(id);
     }
 
     @PostMapping(value = "/flightspecials/{prfId}/name", produces = "application/json")

@@ -79,6 +79,7 @@ public class FlightSpecialJpaEntity {
 
         public FlightSpecial toDomainEntity() {
                 return FlightSpecial.builder()
+                                .id(com.amazon.proserve.domain.flight.vo.Id.of(this.id))
                                 .header(Header.of("[" + System.getenv("CODEBUILD_BUILD_NUMBER") + "] ==> " + this.header))
                                 .body(Body.of(this.body))
                                 .origin(Origin.of(this.origin))

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import com.amazonaws.xray.AWSXRay;
 import com.amazonaws.xray.entities.Segment;
@@ -26,6 +27,8 @@ public class RESTController {
 	private static final ResponseEntity<String> HEALTH_RESPONSE = ResponseEntity.ok().body("OK");
 	private FlightSpecialService flightSpecialService;
 	private HotelSpecialService  hotelSpecialService;
+
+	private RestTemplate restTemplate = new RestTemplate();
 
 	private AtomicBoolean isCpuLoadRunning = new AtomicBoolean(false);
 
@@ -59,6 +62,29 @@ public class RESTController {
 
 		}
 		finally {
+			AWSXRay.endSubsegment();
+		}
+
+		return result;
+	}
+
+	@RequestMapping(path="/flightspecials-new/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	@CrossOrigin("*")
+	public FlightSpecial flightspecials(@PathVariable("id") int id) {
+		/*
+		 * Handover the request to the newly decomposed FlightSpecials service with http://flightspecials-service.flightspecials/flightspecials/{id}.
+		 * Ideally this should be done inside outbound service to handover legacy and new service.
+		 */
+		FlightSpecial result = null;
+		try {
+			Subsegment subsegment = AWSXRay.beginSubsegment(this.getClass().getName() + "::flightspecials");
+			String url = "http://flightspecials-service.flightspecials/travelbuddy/flightspecials/" + id;
+			result = restTemplate.getForObject(url, FlightSpecial.class);
+			subsegment.putMetadata("flightspecial", result);
+		} catch (Exception ex) {
+			// Handle exception
+		} finally {
 			AWSXRay.endSubsegment();
 		}
 

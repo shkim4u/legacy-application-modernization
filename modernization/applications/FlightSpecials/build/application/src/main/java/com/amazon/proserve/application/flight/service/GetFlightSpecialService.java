@@ -5,6 +5,7 @@ import com.amazon.proserve.application.flight.view.FlightSpecialView;
 import com.amazon.proserve.domain.flight.FlightSpecial;
 import com.amazon.proserve.domain.flight.repository.FlightSpecialRepository;
 
+import com.amazon.proserve.domain.flight.vo.Id;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -22,7 +23,14 @@ public class GetFlightSpecialService implements GetFlightSpecialUseCase {
         List<FlightSpecial> list = repository.findAll();
         return list.stream().map(x -> FlightSpecialView.of(x)).collect(Collectors.toList());
     }
-    
+
+    @Override
+    public FlightSpecial getFlightSpecialById(int id) {
+        FlightSpecial flightSpecial = repository.findById(Id.of((long)id));
+//        return FlightSpecialView.of(flightSpecial);
+        return flightSpecial;
+    }
+
     @Override
     public List<FlightSpecialView> getAllFlightSpecialsSortedByExpiryDate() {
         List<FlightSpecial> list = repository.findAllByOrderByExpiryDateAsc();

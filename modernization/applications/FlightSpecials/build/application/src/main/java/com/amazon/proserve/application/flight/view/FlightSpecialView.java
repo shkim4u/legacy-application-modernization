@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class FlightSpecialView {
+    private long id;
     private String header;
     private String body;
     private String origin;
@@ -21,6 +22,7 @@ public class FlightSpecialView {
 
     public static FlightSpecialView of(FlightSpecial flightSpecial) {
         return FlightSpecialView.builder()
+                .id(flightSpecial.getId().getValue())
                 .header(flightSpecial.getHeader().getValue())
                 .body(flightSpecial.getBody().getValue())
                 .origin(flightSpecial.getOrigin().getValue())
