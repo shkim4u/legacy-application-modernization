@@ -68,22 +68,42 @@ public class RESTController {
 		return result;
 	}
 
+//	@RequestMapping(path="/flightspecials-new/{id}", method = RequestMethod.GET)
+//	@ResponseBody
+//	@CrossOrigin("*")
+//	public FlightSpecial flightspecials(@PathVariable("id") int id) {
+//		/*
+//		 * Handover the request to the newly decomposed FlightSpecials service with http://flightspecials-service.flightspecials/flightspecials/{id}.
+//		 * Ideally this should be done inside outbound service to handover legacy and new service.
+//		 */
+//		FlightSpecial result = null;
+//		try {
+//			Subsegment subsegment = AWSXRay.beginSubsegment(this.getClass().getName() + "::flightspecials");
+//			String url = "http://flightspecials-service.flightspecials/travelbuddy/flightspecials/" + id;
+//			result = restTemplate.getForObject(url, FlightSpecial.class);
+//			subsegment.putMetadata("flightspecial", result);
+//		} catch (Exception ex) {
+//			// Handle exception
+//		} finally {
+//			AWSXRay.endSubsegment();
+//		}
+//
+//		return result;
+//	}
+
 	@RequestMapping(path="/flightspecials-new/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	@CrossOrigin("*")
-	public FlightSpecial flightspecials(@PathVariable("id") int id) {
-		/*
-		 * Handover the request to the newly decomposed FlightSpecials service with http://flightspecials-service.flightspecials/flightspecials/{id}.
-		 * Ideally this should be done inside outbound service to handover legacy and new service.
-		 */
-		FlightSpecial result = null;
+	public String flightspecials(@PathVariable("id") int id) {
+		String result = null;
 		try {
 			Subsegment subsegment = AWSXRay.beginSubsegment(this.getClass().getName() + "::flightspecials");
 			String url = "http://flightspecials-service.flightspecials/travelbuddy/flightspecials/" + id;
-			result = restTemplate.getForObject(url, FlightSpecial.class);
+			result = restTemplate.getForObject(url, String.class);
 			subsegment.putMetadata("flightspecial", result);
 		} catch (Exception ex) {
 			// Handle exception
+			ex.printStackTrace();
 		} finally {
 			AWSXRay.endSubsegment();
 		}

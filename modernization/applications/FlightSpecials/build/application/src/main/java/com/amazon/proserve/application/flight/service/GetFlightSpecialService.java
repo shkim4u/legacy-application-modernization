@@ -25,10 +25,9 @@ public class GetFlightSpecialService implements GetFlightSpecialUseCase {
     }
 
     @Override
-    public FlightSpecial getFlightSpecialById(int id) {
+    public FlightSpecialView getFlightSpecialById(int id) {
         FlightSpecial flightSpecial = repository.findById(Id.of((long)id));
-//        return FlightSpecialView.of(flightSpecial);
-        return flightSpecial;
+        return FlightSpecialView.of(flightSpecial);
     }
 
     @Override
