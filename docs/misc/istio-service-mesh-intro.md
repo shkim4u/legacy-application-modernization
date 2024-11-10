@@ -46,3 +46,43 @@ echo "KIALI_SERVER: ${KIALI_SERVER}"
 # Kiali 대시보드 접속
 echo "Kiali 대시보드 URL: http://${KIALI_SERVER}/kiali"
 ```
+
+3. `istioctl` 명령어
+
+```bash
+istioctl analyze
+
+istioctl proxy-config route deploy/istio-ingressgateway
+# !!!Use This!!!
+istioctl proxy-config route deploy/istio-ingressgateway -n istio-system
+istioctl proxy-config route deploy/istio-ingressgateway -n istio-system -o json
+istioctl proxy-config route deploy/istio-ingressgateway -n istio-system -o json --name http.80
+istioctl proxy-config route deploy/istio-ingressgateway -n istio-system -o json --name http.8080
+istioctl --help
+istioctl proxy-config routes istio-ingressgateway-7f675b6684-fmfsg
+# !!!Use This!!!
+istioctl proxy-config routes istio-ingressgateway-7898f49cfc-6htgb.istio-system
+istioctl proxy-status istio-ingressgateway-7f675b6684-fmfsg.istio-system
+
+istioctl proxy-status istio-ingressgateway-7898f49cfc-6htgb.istio-system
+
+istioctl proxy-config routes istio-ingressgateway-7898f49cfc-6htgb.istio-system --name http.80 -o json
+```
+
+<pre>
+istioctl proxy-config route deploy/istio-ingressgateway -n istio-system
+NAME        VHOST NAME     DOMAINS     MATCH                          VIRTUAL SERVICE
+http.80     *:80           *           /game-2048*                    virtualservice-2048.game-2048
+http.80     *:80           *           regex /(.*)                    insurance-planning-virtualservice.insurance
+http.80     *:80           *           regex /flightspecials/(.*)     flightspecials-virtualservice.flightspecials
+http.80     *:80           *           /flightspecials                flightspecials-virtualservice.flightspecials
+            backend        *           /stats/prometheus*
+            backend        *           /healthz/ready*
+</pre>
+
+<pre>
+istioctl proxy-status istio-ingressgateway-7898f49cfc-6htgb.istio-system
+Clusters Match
+Listeners Match
+Routes Match (RDS last loaded at Sun, 10 Nov 2024 21:14:15 KST)
+</pre>

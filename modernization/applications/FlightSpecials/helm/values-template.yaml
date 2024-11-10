@@ -3,6 +3,7 @@ namespace:
   name: flightspecials
 app:
   name: flightspecials
+  purpose: m2m
   build_number: ${CODEBUILD_BUILD_NUMBER}
 deployment:
   name: flightspecials
@@ -20,6 +21,11 @@ ingress:
   enabled: ${INGRESS_ENABLED}
   name: flightspecials-ingress
   certificate_arn: ${CERTIFICATE_ARN}
+istio:
+  enabled: true
+  ingressGatewayNamespace: istio-system
+  ingressGatewayServiceName: istio-ingressgateway
+  ingressGatewayServicePort: 80
 configmap:
   name: flightspecials-configmap
   environment: test

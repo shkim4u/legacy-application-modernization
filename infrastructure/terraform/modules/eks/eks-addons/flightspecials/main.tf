@@ -5,6 +5,7 @@ resource "kubernetes_namespace" "flightspecials" {
       name = local.name
       app = local.app
       purpose = "m2m"
+      istio-injection = "enabled"
     }
   }
 }

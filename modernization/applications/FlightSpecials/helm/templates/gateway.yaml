@@ -1,0 +1,18 @@
+{{- if and (.Values.istio.enabled) (false) -}} # Disabled to use the gateway from "insurance" namespace.
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ .Values.app.name }}-gateway
+  namespace: {{ .Values.namespace.name }}
+spec:
+  selector:
+    app: istio-ingressgateway
+    istio: ingressgateway
+  servers:
+    - port:
+        number: {{ .Values.istio.ingressGatewayServicePort }}
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+{{- end }}

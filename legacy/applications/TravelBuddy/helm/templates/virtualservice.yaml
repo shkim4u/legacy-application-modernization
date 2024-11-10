@@ -1,4 +1,6 @@
-{{- if .Values.istio.enabled -}}
+# Istio VirtualService route rules are sometimes matched by creation timestamp.
+# This is moved into the FlightSpecials application's VirtualService to ensure that the FlightSpecials application is matched first.
+{{- if and (.Values.istio.enabled) (false) -}}
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:

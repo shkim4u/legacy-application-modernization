@@ -1,0 +1,59 @@
+{{- if .Values.istio.enabled -}}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ .Values.app.name }}-virtualservice
+  namespace: {{ .Values.namespace.name }}
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - insurance/insurance-planning-gateway
+  http:
+    - match:
+        - uri:
+            regex: /flightspecials/(.*)
+      rewrite:
+        uri: /travelbuddy/flightspecials/$1
+      route:
+        - destination:
+            host: {{ .Values.service.name }}
+            port:
+              number: {{ .Values.service.port }}
+    - match:
+        - uri:
+            exact: /flightspecials
+      rewrite:
+        uri: /travelbuddy/flightspecials
+      route:
+        - destination:
+            host: {{ .Values.service.name }}
+            port:
+              number: {{ .Values.service.port }}
+---
+# Istio VirtualService route rules are sometimes matched by creation timestamp.
+# "insurance-planning" VirtualService has been moved into the FlightSpecials application's VirtualService to ensure that the FlightSpecials application is matched first.
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: insurance-planning-virtualservice
+  namespace: insurance
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - insurance-planning-gateway
+  http:
+    - match:
+        - uri:
+            regex: /(.*)
+      rewrite:
+        uriRegexRewrite:
+          match: /(.*)
+          rewrite: /travelbuddy/\1
+      route:
+        - destination:
+            host: insurance-planning-service
+            port:
+              number: 80
+{{- end }}

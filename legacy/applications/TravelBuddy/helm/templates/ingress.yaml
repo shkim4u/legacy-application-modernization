@@ -53,7 +53,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: {{ .Values.istio.ingressGatewayNamespace }}
-  name: {{ .Values.ingress.name }}
+  name: {{ .Values.ingress.name }}-istio
   labels:
     app: {{ .Values.app.name }}
   annotations:
@@ -66,7 +66,7 @@ metadata:
     alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.certificate_arn }}
     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
     alb.ingress.kubernetes.io/group.name: {{ .Values.namespace.name }}
-    alb.ingress.kubernetes.io/group.order: '10'
+    alb.ingress.kubernetes.io/group.order: '11'
     alb.ingress.kubernetes.io/healthcheck-path: "/health"
     alb.ingress.kubernetes.io/healthcheck-interval-seconds: '30'
     alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '10'
