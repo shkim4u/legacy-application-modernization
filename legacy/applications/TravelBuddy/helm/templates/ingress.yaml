@@ -1,3 +1,14 @@
+{{- if and (.Values.istio.enabled) (false) -}}  # Disabled.
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.istio.ingressGatewayServiceName }}-external
+  namespace: {{ .Values.namespace.name }}
+spec:
+  type: ExternalName
+  externalName: {{ .Values.istio.ingressGatewayServiceName}}.{{ .Values.istio.ingressGatewayNamespace }}.svc.cluster.local
+{{- end }}
+---
 {{- if .Values.ingress.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -20,16 +31,14 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-path: "/travelbuddy/health"
     alb.ingress.kubernetes.io/healthcheck-interval-seconds: '30'
     alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '10'
-    alb.ingress.kubernetes.io/success-codes: 200,201,302,401
+    alb.ingress.kubernetes.io/success-codes: 200,201,302,401,404
     alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=86400
-    external-dns.alpha.kubernetes.io/hostname: {{ .Values.app.name }}.mydemo.co.kr
+    # external-dns.alpha.kubernetes.io/hostname: {{ .Values.app.name }}.mydemo.co.kr
 spec:
   rules:
-{{/*    - host: {{ .Values.service.name }}.{{ .Values.namespace.name }}.cluster.local*/}}
-    - host: {{ .Values.app.name }}.mydemo.co.kr
-      http:
+    #- host: {{ .Values.app.name }}.mydemo.co.kr
+    - http:
         paths:
-{{/*          - path: /travelbuddy/hotelspecials*/}}
           - path: /travelbuddy/
             pathType: Prefix
             backend:
@@ -37,4 +46,43 @@ spec:
                 name: {{ .Values.service.name }}
                 port:
                   number: {{ .Values.service.port }}
+{{- end }}
+---
+{{- if and ( .Values.ingress.enabled) (.Values.istio.enabled) -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: {{ .Values.istio.ingressGatewayNamespace }}
+  name: {{ .Values.ingress.name }}
+  labels:
+    app: {{ .Values.app.name }}
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/actions.redirect-to-https: >
+      {"Type":"redirect","RedirectConfig":{"Port":"443","Protocol":"HTTPS","StatusCode":"HTTP_302"}}
+    alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.certificate_arn }}
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    alb.ingress.kubernetes.io/group.name: {{ .Values.namespace.name }}
+    alb.ingress.kubernetes.io/group.order: '10'
+    alb.ingress.kubernetes.io/healthcheck-path: "/health"
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '30'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '10'
+    alb.ingress.kubernetes.io/success-codes: 200,201,302,401,404
+    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=86400
+    # external-dns.alpha.kubernetes.io/hostname: {{ .Values.app.name }}.mydemo.co.kr
+spec:
+  rules:
+    #- host: {{ .Values.app.name }}.mydemo.co.kr
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.istio.ingressGatewayServiceName }}
+                port:
+                  number: {{ .Values.istio.ingressGatewayServicePort }}
 {{- end }}

@@ -23,10 +23,6 @@ variable "create_cluster_addons" {
   default = false
 }
 
-# Backward compatible with variable name in "eks_addons" module.
-# Will be deleted in the future.
-variable "create_karpenter" {default = false}
-
 variable "grafana_admin_password" {}
 variable "defectdojo_admin_password" {}
 

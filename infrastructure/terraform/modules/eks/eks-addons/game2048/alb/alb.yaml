@@ -18,6 +18,10 @@ metadata:
     alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
     # ExternalDNS settings: https://rtfm.co.ua/en/kubernetes-update-aws-route53-dns-from-an-ingress/
 #    external-dns.alpha.kubernetes.io/hostname: "app1-test-common-ingress.example.com, app2-test-common-ingress.example.com"
+    alb.ingress.kubernetes.io/healthcheck-path: "/game-2048"
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '30'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '10'
+    alb.ingress.kubernetes.io/success-codes: 200,201,302,401
 spec:
   rules:
     - http:
@@ -26,7 +30,7 @@ spec:
             backend:
               serviceName: ssl-redirect
               servicePort: use-annotation
-          - path: /*
+          - path: /game-2048/*
             backend:
               serviceName: istio-ingressgateway
               servicePort: 80

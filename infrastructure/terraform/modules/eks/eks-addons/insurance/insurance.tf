@@ -5,6 +5,7 @@ resource "kubernetes_namespace" "insurance" {
       name = local.name
       app = local.app
       purpose = "insurance"
+      istio-injection = "enabled"
     }
   }
 }

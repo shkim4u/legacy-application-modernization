@@ -28,7 +28,6 @@ module "eks_cluster_production" {
   route53_account_role_arn = var.route53_account_role_arn
   grafana_admin_password = var.grafana_admin_password
   cluster_name = var.eks_cluster_production_name
-  create_karpenter = var.create_karpenter
 
   defectdojo_admin_password = var.defectdojo_admin_password
 
@@ -48,7 +47,6 @@ module "eks_cluster_staging" {
   route53_account_role_arn = var.route53_account_role_arn
   grafana_admin_password = var.grafana_admin_password
   cluster_name = var.eks_cluster_staging_name
-  create_karpenter = var.create_karpenter
 
   defectdojo_admin_password = var.defectdojo_admin_password
 

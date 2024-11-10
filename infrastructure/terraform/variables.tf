@@ -46,7 +46,6 @@ variable "create_msk" {
 }
 variable "create_rds" {default = true}
 variable "create_frontend" {default = true}
-variable "create_karpenter" {default = true}
 variable "create_documentdb" {default = false}
 
 variable "cicd_services" {

@@ -114,7 +114,9 @@ resource "kubectl_manifest" "virtualservice" {
       http:
         - match:
             - uri:
-                prefix: /
+                prefix: /game-2048
+          rewrite:
+            uri: /
           route:
             - destination:
                 host: service-2048
@@ -148,6 +150,10 @@ resource "kubectl_manifest" "alb" {
         #alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
         # ExternalDNS settings: https://rtfm.co.ua/en/kubernetes-update-aws-route53-dns-from-an-ingress/
     #    external-dns.alpha.kubernetes.io/hostname: "app1-test-common-ingress.example.com, app2-test-common-ingress.example.com"
+        alb.ingress.kubernetes.io/healthcheck-path: "/game-2048"
+        alb.ingress.kubernetes.io/healthcheck-interval-seconds: '30'
+        alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '10'
+        alb.ingress.kubernetes.io/success-codes: 200,201,302,401
     spec:
       rules:
         - http:
@@ -159,7 +165,7 @@ resource "kubectl_manifest" "alb" {
 #                    name: ssl-redirect
 #                    port:
 #                      name: use-annotation
-              - path: /
+              - path: /game-2048
                 pathType: Prefix
                 backend:
                   service:

@@ -12,7 +12,6 @@ variable "route53_account_role_arn" {
 }
 
 variable "grafana_admin_password" {}
-variable "create_karpenter" {default = false}
 
 variable "defectdojo_admin_password" {}
 

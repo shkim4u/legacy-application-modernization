@@ -44,7 +44,11 @@ variable "helm_chart_release_name" {
 
 variable "helm_chart_version" {
   type        = string
-  default     = "1.5.3"
+  # default     = "1.5.3"
+  # (2024-11-07) Make up-to-date version as default, with big feature for multi-cluster target group support.
+  # Chart version: 1.10.0, Application version: v2.10.1
+  # See: https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/tag/v2.10.0
+  default = "1.10.0"
   description = "ALB Controller Helm chart version."
 }
 

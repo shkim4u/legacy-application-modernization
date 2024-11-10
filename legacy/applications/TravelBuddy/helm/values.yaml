@@ -3,6 +3,7 @@ namespace:
   name: insurance
 app:
   name: insurance-planning
+  purpose: insurance
   build_number: 0
 deployment:
   name: insurance-planning
@@ -20,6 +21,11 @@ ingress:
   enabled: true
   name: insurance-planning-ingress
   certificate_arn: ${CERTIFICATE_ARN}
+istio:
+  enabled: true
+  ingressGatewayNamespace: istio-system
+  ingressGatewayServiceName: istio-ingressgateway
+  ingressGatewayServicePort: 80
 configmap:
   name: insurance-planning-configmap
   environment: dev

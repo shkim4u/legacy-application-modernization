@@ -433,7 +433,6 @@ module "eks_addons" {
   aws_acm_certificate_arn = module.aws_acm_certificate.certificate_arn
   route53_account_role_arn = var.route53_account_role_arn
   grafana_admin_password = var.grafana_admin_password
-  create_karpenter = var.create_karpenter
 
   defectdojo_admin_password = var.defectdojo_admin_password
 

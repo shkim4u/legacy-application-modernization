@@ -1,7 +1,7 @@
 ---
 external_services:
   prometheus:
-    url: "http://prometheus-server"
+    url: "http://prometheus-kube-prometheus-prometheus:9090"
 kiali_feature_flags:
   clustering:
     autodetect_secrets:
@@ -18,7 +18,7 @@ deployment:
           alb.ingress.kubernetes.io/scheme: "internet-facing"
           alb.ingress.kubernetes.io/target-type: "ip"
           alb.ingress.kubernetes.io/success-codes: "200,404,301,302"
-          alb.ingress.kubernetes.io/group.name: "kaili"
+          alb.ingress.kubernetes.io/group.name: "kiali"
           alb.ingress.kubernetes.io/group.order: "1"
       spec:
         rules:
