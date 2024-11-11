@@ -91,7 +91,7 @@ git clone https://github.com/shkim4u/legacy-application-modernization legacy-app
 ```bash
 hash -d aws
 
-cd ~/environment/legacy-application-modernization/infrastructure-terraform
+cd ~/environment/legacy-application-modernization/infrastructure/terraform
 
 # 1. Configure Terraform workspace and Private Certificate Authority.
 . ./configure.sh legacy-application-modernization ap-northeast-2
@@ -114,27 +114,22 @@ EOF
 
 ## 5. EKS 클러스터 생성 (테라폼 사용)
 
-
-
 이제 아래 명령어를 통해 ```Amazon EKS ``` 클러스터 및 기타 자원을 생성합니다. 15 ~ 20분 정도 소요됩니다.<br>
 
 ```bash
-# 1. IaC 디렉토리로 이동
-cd ~/environment/legacy-application-modernization/infrastructure-terraform
-
+# 테라폼 디렉토리로 이동
+cd ~/environment/legacy-application-modernization/infrastructure/terraform
 # terraform init
 terraform init
-
 # terraform plan
 terraform plan -out tfplan
-
 # terraform apply
 terraform apply -auto-approve tfplan
 ```
 
-모든 자원의 생성이 완료되면 Production과 Staging을 위한 EKS 클러스터 2개가 생성되며, 우리는 우선 Production 클러스터에서 작업하므로 아래와 같이 환경 변수를 설정합니다.
+모든 자원의 생성이 완료되면 Production과 Staging (테스트 및 검증)을 위한 EKS 클러스터 2개가 생성되며, 우리는 우선 Production 클러스터에서 작업하므로 아래와 같이 환경 변수를 설정합니다.
 ```bash
-cd ~/environment/legacy-application-modernization/infrastructure-terraform
+cd ~/environment/legacy-application-modernization/infrastructure/terraform
 
 echo 'export KUBECONFIG=~/.kube/config:$(find ~/.kube/ -type f -name "*M2M-EksCluster*" | tr "\n" ":")' >> ~/.bash_profile 
 

@@ -81,7 +81,7 @@ module "cert_manager" {
  * Alt 2: Set up AWS load balancer controller from scratch.
  */
 module "aws_load_balancer_controller" {
-  source = "aws-load-balancer-controller"
+  source = "./aws-load-balancer-controller"
 
   cluster_name = var.eks_cluster_name
   cluster_identity_oidc_issuer = var.oidc_provider
