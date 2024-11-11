@@ -1,4 +1,4 @@
-# 테라폼을 통한 워크샵 환경 프로비저닝
+# 워크샵 환경 프로비저닝
 
 ## Agenda
 1. Overall Architecture
@@ -47,6 +47,10 @@ curl -fsSL https://raw.githubusercontent.com/shkim4u/m2m-travelbuddy/main/cloud9
 10. ArgoCD 설치
 11. Python 3.11 설치
 
+> 📌📌📌 (참고) 📌📌📌<br>
+> 아래 명령어 뭉치를 `Cloud9` 상에 붙여넣기 하면 마지막 행은 `New Line`이 포함되어 있지 않으므로 자동 실행되지 않고 대기 중입니다.<br>
+> `Enter` 키를 눌러 마지막 행을 실행하면 됩니다.
+
 ```bash
 cd ~/environment/
 
@@ -63,15 +67,15 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 
 # JWT CLI 설치
-npm install -g jwt-cli
+sudo npm install -g jwt-cli
 ```
 
-## 4. `Amazon EKS Extended Workshop` 소스 받기
-이제부터 모든 작업은 `Cloud9` 상에서 이루어지며, 먼저 `Amazon EKS Extended Workshop` 소스를 아래와 같이 다운로드합니다.<br>
+## 4. `Legacy Application Modernization (LegMod) 워크샵` 소스 받기
+이제부터 모든 작업은 `Cloud9` 상에서 이루어지며, 먼저 `Legacy Application Modernization 워크샵` 소스를 아래와 같이 다운로드합니다.<br>
 ```bash
 cd ~/environment/
-git clone https://github.com/shkim4u/Amazon-EKS-Extended-Workshop.git eks-workshop
-cd eks-workshop
+git clone https://github.com/shkim4u/legacy-application-modernization legacy-application-modernization
+cd legacy-application-modernization
 ```
 
 해당 소스 코드에는 테라폼으로 작성된 IaC 코드도 포함되어 있으며 여기에는 ```Amazon EKS```, ```Amazon RDS```, ```Amazon MSK``` 등의 자원이 포함되어 있습니다.<br>
@@ -83,10 +87,10 @@ cd eks-workshop
 ```bash
 hash -d aws
 
-cd ~/environment/eks-workshop/infrastructure-terraform
+cd ~/environment/legacy-application-modernization/infrastructure-terraform
 
 # 1. Configure Terraform workspace and Private Certificate Authority.
-. ./configure.sh eks-workshop ap-northeast-2
+. ./configure.sh legacy-application-modernization ap-northeast-2
 
 env | grep TF_VAR
 
@@ -108,7 +112,7 @@ EOF
 
 ```bash
 # 1. IaC 디렉토리로 이동
-cd ~/environment/eks-workshop/infrastructure-terraform
+cd ~/environment/legacy-application-modernization/infrastructure-terraform
 
 # terraform init
 terraform init
@@ -122,7 +126,7 @@ terraform apply -auto-approve tfplan
 
 모든 자원의 생성이 완료되면 Production과 Staging을 위한 EKS 클러스터 2개가 생성되며, 우리는 우선 Production 클러스터에서 작업하므로 아래와 같이 환경 변수를 설정합니다.
 ```bash
-cd ~/environment/eks-workshop/infrastructure-terraform
+cd ~/environment/legacy-application-modernization/infrastructure-terraform
 
 echo 'export KUBECONFIG=~/.kube/config:$(find ~/.kube/ -type f -name "*M2M-EksCluster*" | tr "\n" ":")' >> ~/.bash_profile 
 
@@ -144,7 +148,7 @@ kcp
 ```bash
 # 아래 명령을 수행하면 ArgoCD 서버의 Admin 암호를 설정하고 이를 AWS Secrets Manager에 동기화 저장합니다.
 # AWS Secrets Manager에 동기화 저장된 암호는 어플리케이션의 배포 파이프라인에서 배포 단계에 사용됩니다.
-cd ~/environment/eks-workshop/cloud9
+cd ~/environment/legacy-application-modernization/cloud9
 chmod +x *.sh
 
 # Production 클러스터
