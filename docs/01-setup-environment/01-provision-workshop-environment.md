@@ -70,19 +70,23 @@ docker-compose --version
 sudo npm install -g jwt-cli
 ```
 
-## 4. `Legacy Application Modernization (LegMod) 워크샵` 소스 받기
+## 4. `Legacy Application Modernization (LegMod) 워크샵` 소스 받기 및 자원 배포를 위한 사전 준비
+### 4.1. 워크샵 소스 코드 받기
+
 이제부터 모든 작업은 `Cloud9` 상에서 이루어지며, 먼저 `Legacy Application Modernization 워크샵` 소스를 아래와 같이 다운로드합니다.<br>
 ```bash
 cd ~/environment/
 git clone https://github.com/shkim4u/legacy-application-modernization legacy-application-modernization
-cd legacy-application-modernization
+#cd legacy-application-modernization
 ```
 
-해당 소스 코드에는 테라폼으로 작성된 IaC 코드도 포함되어 있으며 여기에는 ```Amazon EKS```, ```Amazon RDS```, ```Amazon MSK``` 등의 자원이 포함되어 있습니다.<br>
+해당 소스 코드에는 테라폼으로 작성된 IaC 코드도 포함되어 있으며 여기에는 `VPC (Virtual Private Cloud)`와 같은 네트워크 자원,  `쿠버네테스` 클러스터 및 클러스터 자원 들 (`ArgoCD`, `Observability` 등), `데이터베이스`, 그리고 간단한 `CI` 파이프라인이 포함되어 있습니다.<br>
+
 우선 이 테라폼 코드를 사용하여 자원을 배포하도록 합니다.
 
-## 5. EKS 클러스터 생성 (테라폼 사용)
-본격적으로 자원을 생성하기 앞서, 우선 아래 명령을 실행하여 몇몇 ALB (취약 어플리케이션, ArgoCD, Argo Rollouts 등)에서 사용하기 위한 Amazon Certificate Manager (ACM) 사설 (Private) CA를 생성하고 Self-signed Root CA 인증서를 설치합니다.<br>
+### 4.2. 테라폼을 통한 자원 배포를 위한 사전 준비
+
+본격적으로 자원을 생성하기 앞서, 몇몇 ALB (취약 어플리케이션, ArgoCD, Argo Rollouts 등)에서 사용하기 위한 `Amazon Certificate Manager (ACM)` 사설 (Private) CA를 생성하고 `Self-signed Root CA` 인증서를 설치합니다.<br>
 
 ```bash
 hash -d aws
@@ -107,6 +111,10 @@ EOF
 
 > (참고)<br>
 > 현재 리포지터를 통해 공유된 테라폼 코드에는 테라폼 상태 공유 및 공동 작업을 위한 백엔드 (S3, DynamoDB)가 포함되어 있지 않은데, 이에 대해서 궁금하시면 관리자나 과정 진행자에게 문의하세요.
+
+## 5. EKS 클러스터 생성 (테라폼 사용)
+
+
 
 이제 아래 명령어를 통해 ```Amazon EKS ``` 클러스터 및 기타 자원을 생성합니다. 15 ~ 20분 정도 소요됩니다.<br>
 

@@ -97,6 +97,8 @@ module "aws_load_balancer_controller" {
 module "external_dns" {
   source = "./external-dns"
 
+  count = var.route53_account_role_arn != null && var.route53_account_role_arn != "" ? 1 : 0
+
   cluster_name                     = var.eks_cluster_name
   cluster_identity_oidc_issuer     = var.oidc_provider
   cluster_identity_oidc_issuer_arn = var.oidc_provider_arn
