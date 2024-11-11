@@ -33,6 +33,7 @@ variable "eks_cluster_staging_name" {
 variable "route53_account_role_arn" {
   type        = string
   description = "ARN of the IAM role to assume to manage Route53 records."
+  default = ""
 }
 
 variable "grafana_admin_password" {
