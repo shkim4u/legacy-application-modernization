@@ -7,7 +7,15 @@ app:
   build_number: ${CODEBUILD_BUILD_NUMBER}
 deployment:
   name: insurance-planning
-  replicas: 6
+  replicas: 2
+  tolerationKey: "workload-type/large-memory-java"
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "1000m"
+    limits:
+      memory: "4Gi"
+      cpu: "2000m"
 image:
   repository: ${ECR_REPO_URI}
   tag: "${IMAGE_TAG}"

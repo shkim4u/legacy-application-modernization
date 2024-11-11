@@ -37,7 +37,8 @@ spec:
         billing: aws-proserve
         purpose: memory-intensive-system
       tolerations:
-        - key: workload-type/x2idn-16xlarge-java
+{{/*        - key: "workload-type/x2idn-16xlarge-java"*/}}
+        - key: "{{ .Values.deployment.tolerationKey }}"
           operator: Equal
           value: "true"
           effect: NoSchedule
@@ -53,13 +54,20 @@ spec:
           ports:
             - containerPort: {{ .Values.container.port }}
               protocol: TCP
+{{/*          resources:*/}}
+{{/*            requests:*/}}
+{{/*              memory: "154Gi"*/}}
+{{/*              cpu: "10000m"*/}}
+{{/*            limits:*/}}
+{{/*              memory: "154Gi"*/}}
+{{/*              cpu: "15000m"*/}}
           resources:
             requests:
-              memory: "154Gi"
-              cpu: "10000m"
+              memory: "{{ .Values.deployment.resources.requests.memory }}"
+              cpu: "{{ .Values.deployment.resources.requests.cpu }}"
             limits:
-              memory: "154Gi"
-              cpu: "15000m"
+              memory: "{{ .Values.deployment.resources.limits.memory }}"
+              cpu: "{{ .Values.deployment.resources.limits.cpu }}"
           env:
             - name: PROFILE
               valueFrom:
@@ -113,10 +121,10 @@ spec:
               protocol: TCP
           resources:
             requests:
-              memory: "1Gi"
+              memory: "256Mi"
               cpu: "400m"
             limits:
-              memory: "1Gi"
+              memory: "512Mi"
               cpu: "1000m"
           # Volume mount for X-Ray Configuration.
           volumeMounts:
