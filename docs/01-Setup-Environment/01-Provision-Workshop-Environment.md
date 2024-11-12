@@ -1,11 +1,15 @@
 # 워크샵 환경 프로비저닝
 
+---
+
 ## Agenda
 1. Overall Architecture
 2. Cloud9 통합 환경 (IDE) 생성 (CloudShell)
 3. Cloud9 통합 환경 (IDE) 설정 (Cloud9)
 4. `Amazon EKS Extended Workshop` Demo Kit 받기
 5. EKS 클러스터 생성 (테라폼 사용)
+
+---
 
 ## 1. Overall Architecture
 ![워크샵 아키텍처](./assets/eks-extended-workshop-architecture.png)
@@ -159,14 +163,23 @@ kcp
 ARGOCD_ADMIN_INITIAL_PASSWORD=`kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
 echo $ARGOCD_ADMIN_INITIAL_PASSWORD
 ./set-argocd-admin-password-argocd-server.sh $ARGOCD_ADMIN_INITIAL_PASSWORD "Abraca00#1"
+./set-argocd-admin-password-secrets-manager.sh "Abraca00#1" hotelspecials-ci-argocd-admin-password
+./set-argocd-admin-password-secrets-manager.sh "Abraca00#1" flightspecials-ci-argocd-admin-password
+./set-argocd-admin-password-secrets-manager.sh "Abraca00#1" restdoc-openapi-ci-argocd-admin-password
 
-# Staging 클러스터
+# (Staging 환경을 사용하지 않을 경우 실행하지 않아도 됨) Staging 클러스터
 kcs
 ARGOCD_ADMIN_INITIAL_PASSWORD=`kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
 echo $ARGOCD_ADMIN_INITIAL_PASSWORD
 ./set-argocd-admin-password-argocd-server.sh $ARGOCD_ADMIN_INITIAL_PASSWORD "Abraca00#1"
+./set-argocd-admin-password-secrets-manager.sh "Abraca00#1" hotelspecials-ci-argocd-admin-password-staging
+./set-argocd-admin-password-secrets-manager.sh "Abraca00#1" flightspecials-ci-argocd-admin-password-staging
+./set-argocd-admin-password-secrets-manager.sh "Abraca00#1" restdoc-openapi-ci-argocd-admin-password-staging
+
+# Production 클러스터로 다시 전환
+kcp
 ```
 
-# 축하합니다! 아마존 EKS 클러스터를 정상적으로 프로비저닝하였습니다.
+# 축하합니다! 아마존 EKS 클러스터를 성공적으로 프로비저닝하였습니다.
 
-진행자와 함께 테라폼 코드와 이를 통해 생성된 자원을 살펴봅니다.
+시간 여유가 있다면 진행자와 함께 테라폼 코드와 이를 통해 생성된 자원을 살펴봅니다.

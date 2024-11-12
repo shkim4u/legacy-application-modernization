@@ -48,7 +48,7 @@ module "aurora" {
   instances = {
     1 = {
       instance_class      = "db.r5.large"
-#      publicly_accessible = false
+      #      publicly_accessible = false
     }
     2 = {
       identifier     = "mysql-static-1"
@@ -71,12 +71,12 @@ module "aurora" {
     vpc_ingress = {
       cidr_blocks = [var.vpc_cidr_block]
     }
-#    kms_vpc_endpoint = {
-#      type                     = "egress"
-#      from_port                = 443
-#      to_port                  = 443
-#      source_security_group_id = module.vpc_endpoints.security_group_id
-#    }
+    #    kms_vpc_endpoint = {
+    #      type                     = "egress"
+    #      from_port                = 443
+    #      to_port                  = 443
+    #      source_security_group_id = module.vpc_endpoints.security_group_id
+    #    }
   }
 
   apply_immediately   = true
@@ -168,27 +168,15 @@ module "aurora" {
 
   enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
 
-#  create_db_cluster_activity_stream     = true
-#  db_cluster_activity_stream_kms_key_id = module.kms.key_id
+  #  create_db_cluster_activity_stream     = true
+  #  db_cluster_activity_stream_kms_key_id = module.kms.key_id
 
-  # manage_master_user_password = true
-
+  manage_master_user_password = false
   master_password = jsondecode(data.aws_secretsmanager_secret_version.current_secrets.secret_string)["password"]
 
   #  manage_master_user_password_rotation              = true
-#  master_user_password_rotation_schedule_expression = "rate(15 days)"
+  #  master_user_password_rotation_schedule_expression = "rate(15 days)"
 
   # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/DBActivityStreams.Overview.html#DBActivityStreams.Overview.sync-mode
-#  db_cluster_activity_stream_mode = "async"
-
-#  tags = local.tags
+  #  db_cluster_activity_stream_mode = "async"
 }
-
-#resource "aws_db_subnet_group" "m2m_general" {
-#  name = "${local.general_service_name}-db-subnet-group"
-#  subnet_ids = var.subnet_ids
-#
-#  tags = {
-#    Purpose = "Database subnet group for ${local.general_service_name}"
-#  }
-#}
