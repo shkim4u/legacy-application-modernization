@@ -12,7 +12,7 @@
 ---
 
 ## 1. Overall Architecture
-![워크샵 아키텍처](./assets/eks-extended-workshop-architecture.png)
+![워크샵 아키텍처](../../images/Architecture/Legacy-Application-Modernization-Architecture.png)
 
 ## 2. Cloud9 통합 환경 (IDE) 생성
 
@@ -84,6 +84,12 @@ docker-compose --version
 
 # JWT CLI 설치
 sudo npm install -g jwt-cli
+
+# Karpenter가 Spot 인스턴스를 정상적으로 생성할 수 있도록 `Service-Linked Role`을 생성합니다.
+aws iam create-service-linked-role --aws-service-name spot.amazonaws.com > /dev/null 2>&1 || true
+
+# EKS Node Viewer 설치
+go install github.com/awslabs/eks-node-viewer/cmd/eks-node-viewer@latest
 ```
 
 ![`Cloud9` 환경 설정](../../images/Environment/Configure-Cloud9-IDE.png)
@@ -98,7 +104,7 @@ git clone https://github.com/shkim4u/legacy-application-modernization legacy-app
 cd legacy-application-modernization
 ```
 
-해당 소스 코드에는 테라폼으로 작성된 IaC 코드도 포함되어 있으며 여기에는 `VPC (Virtual Private Cloud)`와 같은 네트워크 자원,  `쿠버네테스` 클러스터 및 클러스터 자원 들 (`ArgoCD`, `Observability` 등), `데이터베이스`, 그리고 간단한 `CI` 파이프라인이 포함되어 있습니다.<br>
+해당 소스 코드에는 테라폼으로 작성된 IaC 코드도 포함되어 있으며 여기에는 `VPC (Virtual Private Cloud)`와 같은 네트워크 자원, `쿠버네테스` 클러스터 및 클러스터 자원 들 (`ArgoCD`, `Observability` 등), `데이터베이스`, 그리고 간단한 `CI` 파이프라인이 포함되어 있습니다.<br>
 
 우선 이 테라폼 코드를 사용하여 자원을 배포하도록 합니다.
 
@@ -166,12 +172,6 @@ source ~/.bash_profile
 
 # Work with production cluster.
 kcp
-
-# Karpenter가 Spot 인스턴스를 정상적으로 생성할 수 있도록 `Service-Linked Role`을 생성합니다.
-aws iam create-service-linked-role --aws-service-name spot.amazonaws.com > /dev/null 2>&1 || true
-
-# EKS Node Viewer 설치
-go install github.com/awslabs/eks-node-viewer/cmd/eks-node-viewer@latest
 ```
 
 또한 이후 작업의 편의를 위해 아래와 같이 ArgoCD Admin 암호를 설정합니다.<br>

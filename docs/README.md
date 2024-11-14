@@ -4,15 +4,23 @@
 
 ## 목차
 
-* [마이크로서비스 아키텍처 및 워크샵의 목적](README.md)
-* [환경 설정](setup-environment/Setup-Environment-README.md)
-  * [공통 설정](setup-environment/Setup-Common-Configuration.md)
-  * [소스 환경 구성](setup-environment/Setup-Source-Environment.md)
-  * [타겟 환경 구성](setup-environment/Setup-Target-Environment.md)
-  * [소스/타겟 연결 구성](setup-environment/Setup-Source-Target-Connectivity.md)
+* [애플리케이션 현대화 및 워크샵의 목적](README.md)
+* [환경 설정](01-Setup-Environment/01-Provision-Workshop-Environment.md)
+* [모놀리스 애플리케이션 배포]
+  * [모놀리스 데이터베이스 구성](02-Deploy-Monolith/01-Configure-Monolith-Database.md)
+  * [모놀리스 배포를 위한 GitOps설정](02-Deploy-Monolith/02-Configure-GitOps.md)
+  * [모놀리스 애플리케이션 빌드 및 배포](02-Deploy-Monolith/03-Build-and-Deploy.md)
+* [마이크로서비스 분리]
+  * [마이크로서비스 배포를 위한 GitOps 설정](03-Deploy-Microservice/01-Configure-GitOps.md)
+  * [마이크로서비스 빌드 및 배포](03-Deploy-Microservice/02-Build-and-Deploy.md)
+* [가시성 (Observability)]
+  * [Jaeger를 이용한 분산 추적](04-Observability/01-Jaeger.md)
+  * [Grafana 대시보드](04-Observability/02-Grafana.md)
+* [API 명세 및 문서화]
+  * [Spring RestDoc과 OpenAPI의 결합](05-API-Documentation/01-Spring-RestDoc-OpenAPI.md)
 
 ---
-## 워크샵의 목적 및 마이크로서비스 아키텍처 소개
+## 애플리케이션 현대화 개요와 워크샵의 목적
 
 이번 워크샵은 애플리케이션의 현대화라는 전사적인 IT 묙표를 달성하기 위한 구현 패턴 중 하나인 마이크로서비스 아키텍처를 살펴볼 예정입니다. 마이크로서비스 아키텍처는 애플리케이션을 여러 작은 서비스로 분할하여 개발, 배포 및 확장을 단순화하고, 서비스 간의 결합도를 낮추어 유연성을 높이는 아키텍처 패턴입니다. 마이크로서비스 아키텍처는 다음과 같은 특징을 가지고 있습니다:  
 
