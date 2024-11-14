@@ -59,13 +59,35 @@ git push --set-upstream origin main
 
 ![모놀리스 애플리케이션 빌드 파이프라인 완료](../../images/Monolith/Monolith-Application-Build-Pipeline-Completed.png)
 
+3. 노드 상태 확인
+
+빌드 파이프라인이 성공적으로 실행되고 `ArgoCD CLI`를 통해 배포가 완료되면 쿠버네테스 노드에 모놀리스 애플리케이션 파드 (Pod)가 스케쥴되어 실해되게 됩니다.
+
+그렇다면 이 파드들은 어느 노드에 위치하게 될까요?
+
+여기에 영향을 주는 요소는 아래와 같이 여러가지가 있습니다.
+
+* Node Affinity 및 Anti-affinity
+* Node Taint 및 Toleration
+* 현재 실행 중인 노드의 유휴 CPU 및 메모리 가용량
+* Pod Deployment의 CPU 및 메모리 Request
+* Pod Deployment의 `toplogySpreadContraint`
+
+`kubectl`, `k9s` 혹은 `eks-node-viewer` 툴을 사용하여 파드의 배포 상태를 살펴봅니다.
+
+```bash
+~/go/bin/eks-node-viewer -resources cpu,memory -node-selector=purpose -node-sort=eks-node-viewer/node-memory-usage=asc --extra-labels topology.kubernetes.io/zone,karpenter.sh/nodepool
+```
+
+![EKS Node Viewer를 통한 노드 상태](../../images/Monolith/EKS-Node-Viewer.png)
+
 ---
 
 ## 2. 모놀리스 애플리케이션 접속
 
 1. 모놀리스 애플리케이션 접속
 
-`ArgoCD`의 모놀리스 애플리케이션 상태도 정상적으로 배포된 것을 확인할 수 있습니다.
+`ArgoCD`의 모놀리스 애플리케이션 상태가 정상적으로 배포된 것을 확인할 수 있습니다.
 
 ![모놀리스 애플리케이션 배포 완료](../../images/Monolith/Monolith-Application-Deployed-in-ArogoCD.png)
 

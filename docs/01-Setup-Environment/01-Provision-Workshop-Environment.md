@@ -201,7 +201,14 @@ echo $ARGOCD_ADMIN_INITIAL_PASSWORD
 
 # Production 클러스터로 다시 전환
 kcp
+
+# k9s 실행
+k9s
 ```
+
+모든 과정이 성공적으로 완료되면 아래와 같이 쿠버네테스 환경이 조회됩니다.
+
+![쿠버네테스 클러스터](../../images/Environment/Kubernetes-Cluster.png)
 
 ---
 

@@ -291,7 +291,18 @@ VALUES (
 
 ![모놀리스 데이터베이스 스키마 생성 및 초기 데이터 입력](../../images/Monolith/Monolith-Schema-and-Initial-Data-Configured.png)
 
-3. `MySQL` 데이터베이스 및 `RDS 배스쳔` 세션 종료
+3. MySQL 데이터베이스 조회
+```sql
+-- Hotel Special 테이블 확인
+SELECT * FROM hotelspecial;
+
+-- Flight Special 테이블 확인
+SELECT * FROM flightspecial;
+```
+
+![모놀리스 테이블 조회](../../images/Monolith/Select-Monolith-Tables.png)
+
+4. `MySQL` 데이터베이스 및 `RDS 배스쳔` 세션 종료
 ```bash
 quit;
 

@@ -874,7 +874,7 @@ kubectl scale deployment hotelspecials --replicas=6 -n hotelspecials
 ## 16. `FlightSpecials` `GitOps` 리포지터리 (`Helm`) 설정
 ```bash
 # 1. 어플리케이션 Helm Artifact 경로로 이동
-cd ~/environment/aws-database-migration/modernization/applications/FlightSpecials/helm
+cd ~/environment/legacy-application-modernization/modernization/applications/FlightSpecials/helm
 
 # 2. git 연결
 git init

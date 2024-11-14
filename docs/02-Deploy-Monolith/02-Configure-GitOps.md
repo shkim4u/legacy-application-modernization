@@ -14,23 +14,24 @@
 cd ~/environment/legacy-application-modernization
 rm -rf .git
 
-# 1. 어플리케이션 Helm Artifact 경로로 이동
+# 어플리케이션 Helm Artifact 경로로 이동
 cd ~/environment/legacy-application-modernization/legacy/applications/TravelBuddy/helm
 
-# 2. git 연결
+# Git 연결
 git init
 git branch -M main
 
+# GitOps 리포지터리 URL 확인
 export HELM_CODECOMMIT_URL=$(aws codecommit get-repository --repository-name hotelspecials-configuration --region ap-northeast-2 | grep -o '"cloneUrlHttp": "[^"]*' | grep -o '[^"]*$')
 echo $HELM_CODECOMMIT_URL
 
-# CodeCommit 배포 리포지터리와 연결
+# GitOps 배포 리포지터리와 연결
 git remote add origin $HELM_CODECOMMIT_URL
 
-# 3. Git 스테이징 영역에 파일을 추가합니다.
+# Git 스테이징 영역에 파일을 추가
 git add .
 
-# 4. Commit 및 배포 리포지터리에 Push합니다.
+# GitOps 리포지터리에 Push
 git commit -am "First commit."
 git push --set-upstream origin main
 ```
@@ -133,7 +134,7 @@ aws iam create-service-specific-credential --user-name argocd --service-name cod
 
 ---
 
-## 4. `ArgoCD` 애플리케이션 생성
+## 4. `ArgoCD` 애플리케이션 생성 (모놀리스)
 
 다음 과정을 통해 `ArgoCD`를 통해 배포될 모놀리스 애플리케이션을 정의합니다.
 
@@ -152,9 +153,9 @@ aws iam create-service-specific-credential --user-name argocd --service-name cod
 * "Helm Parameters" 값이 Populate되는지 확인
 * `Create` 버튼을 클릭하여 애플리케션 정의를 생성합니다.
 
-![ArgoCD 애플리케이션 생성 1](../../images/Monolith/ArgoCD-Create-App1.png)
+![ArgoCD 모놀리스 애플리케이션 생성 1](../../images/Monolith/ArgoCD-Create-App1.png)
 
-![ArgoCD 애플리케이션 생성 2](../../images/Monolith/ArgoCD-Create-App2.png)
+![ArgoCD 모놀리스 애플리케이션 생성 2](../../images/Monolith/ArgoCD-Create-App2.png)
 
 > 📒️ (참고)<br>
 > `ArgoCD`에서 애플리케이션이 생성되면 아직 동기화가 되지 않았으므로 `OutOfSync`로 표시됩니다.<br>
