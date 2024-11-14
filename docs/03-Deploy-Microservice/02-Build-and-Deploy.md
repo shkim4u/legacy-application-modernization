@@ -1,4 +1,4 @@
-# 마이크로서비스 애플리케이션 빌드 및 배포
+# ***마이크로서비스 애플리케이션 빌드 및 배포***
 
 이제 마이크로서비스 애플리케이션을 빌드하고 배포해 보도록 하겠습니다.
 
@@ -143,6 +143,10 @@ Azure에서 AWS EKS의 ALB(Application Load Balancer) Target Group Binding과 �
 
 (Optional) 위 내용을 진행자와 함께 간단하게 둘러봅니다.
 
+궁극적인 취지는 ***핵심 IT 워크로드의 Disruption을 최소화하고 점진적 병행 운영이 가능하도록 구조물***을 만드는 것입니다.
+
+![Legacy Application Displacement Pattern (Strangler Fig)](../../images/Microservices/Legacy-Application-Displacement-Pattern.png)
+
 1. `AWS Application Load Balancer`의 `Path-based Routing`
 
 ![AWS Application Load Balancer의 Path-based Routing](../../images/Microservices/AWS-ALB-Path-Based-Routing.png)
@@ -162,6 +166,10 @@ Azure에서 AWS EKS의 ALB(Application Load Balancer) Target Group Binding과 �
 > 📌 (참고)<br>
 > 우리가 구성한 자원에는 `Istio`의 `Ingress Gateway`로 트래픽을 전달하는 `Ingress` 자원도 포함되어 있습니다.<br>
 > 하지만 `Istio`에 대한 내용을 다루는 것은 이 워크샵의 범위를 벗어나므로 생략하도록 하겠습니다.
+
+> 📕 (참고)<br>
+> 종종 특정 솔루션이나 관리형 서비스만으로는 우리가 원하는 형태로 트래픽 분기 및 관리를 할 수 없는 경우가 있습니다.<br>
+> 이 경우에는 `Spring Cloud Gateway`와 같은 프레임워크를 사용하여 `Ingress` 역할을 수행하는 애플리케이션을 구성할 수 있습니다.<br>
 
 ---
 

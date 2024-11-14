@@ -28,6 +28,7 @@ resource "kubectl_manifest" "opentelemetry_collector" {
 }
 
 resource "helm_release" "opentelemetry_demo" {
+  count = var.deploy_opentelemetry_demo ? 1 : 0
   repository  = "https://open-telemetry.github.io/opentelemetry-helm-charts"
   chart = "opentelemetry-demo"
   name = "opentelemetry-demo"

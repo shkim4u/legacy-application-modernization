@@ -1,4 +1,4 @@
-# `Jaeger`를 통한 분산 추적 (Distributed Tracing) 확인
+# ***`Jaeger`를 통한 분산 추적 (Distributed Tracing) 확인***
 
 `Jaeger`는 분산 추적 시스템으로, 애플리케이션의 성능을 모니터링하고 디버깅하는 데 사용됩니다. `Jaeger`는 OpenTracing API를 준수하며, 여러 언어로 작성된 애플리케이션에서 사용할 수 있습니다. `Jaeger`는 애플리케이션의 각 구성 요소 간의 상호 작용을 추적하고, 각 구성 요소의 성능을 측정하며, 각 구성 요소 간의 의존성을 시각화합니다.
 
