@@ -165,6 +165,6 @@ Azure에서 AWS EKS의 ALB(Application Load Balancer) Target Group Binding과 �
 
 ---
 
-# 🎊🎊🎊 축하합니다! 마이크로 애플리케이션 빌드 및 배포를 완료하였습니다.🎊🎊
+# 🎊🎊🎊 마이크로 애플리케이션 빌드 및 배포를 완료하였습니다.🎊🎊
 
 이제 이 두 서비스 사이의 호출 흐름을 연관지어 (`Correlation`) 트레이싱 (추적)할 수 있는 `Observatility` 도구들을 둘러보도록 하겠습니다.
