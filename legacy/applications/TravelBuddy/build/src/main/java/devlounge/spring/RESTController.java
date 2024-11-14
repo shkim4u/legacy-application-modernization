@@ -68,7 +68,7 @@ public class RESTController {
 		return result;
 	}
 
-//	@RequestMapping(path="/flightspecials-new/{id}", method = RequestMethod.GET)
+//	@RequestMapping(path="/flightspecials-old/{id}", method = RequestMethod.GET)
 //	@ResponseBody
 //	@CrossOrigin("*")
 //	public FlightSpecial flightspecials(@PathVariable("id") int id) {
@@ -91,7 +91,7 @@ public class RESTController {
 //		return result;
 //	}
 
-	@RequestMapping(path="/flightspecials-new/{id}", method = RequestMethod.GET)
+	@RequestMapping(path="/flightspecials-old/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	@CrossOrigin("*")
 	public String flightspecials(@PathVariable("id") int id) {

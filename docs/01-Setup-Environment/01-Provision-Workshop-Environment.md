@@ -95,7 +95,7 @@ sudo npm install -g jwt-cli
 ```bash
 cd ~/environment/
 git clone https://github.com/shkim4u/legacy-application-modernization legacy-application-modernization
-#cd legacy-application-modernization
+cd legacy-application-modernization
 ```
 
 해당 소스 코드에는 테라폼으로 작성된 IaC 코드도 포함되어 있으며 여기에는 `VPC (Virtual Private Cloud)`와 같은 네트워크 자원,  `쿠버네테스` 클러스터 및 클러스터 자원 들 (`ArgoCD`, `Observability` 등), `데이터베이스`, 그리고 간단한 `CI` 파이프라인이 포함되어 있습니다.<br>
@@ -123,12 +123,13 @@ eks_cluster_staging_name = "${TF_VAR_eks_cluster_staging_name}"
 EOF
 ```
 
-위와 같이 수행하면 ACM에 사설 CA가 생성되는데 진행자와 함께 ACM 콘솔로 이동하여 Private CA를 한번 살펴봅니다.<br>
+(Optional) 위와 같이 수행하면 ACM에 사설 CA가 생성되는데 진행자와 함께 ACM 콘솔로 이동하여 Private CA를 한번 살펴봅니다.<br>
 아래와 같이 Private CA가 활성 상태인 것을 확인합니다.<br>
-![Private CA Active](./assets/private-ca-active.png)
+![Private CA Active](../../images/Environment/ACM-Private-CA-Active.png)
 
 > (참고)<br>
-> 현재 리포지터를 통해 공유된 테라폼 코드에는 테라폼 상태 공유 및 공동 작업을 위한 백엔드 (S3, DynamoDB)가 포함되어 있지 않은데, 이에 대해서 궁금하시면 관리자나 과정 진행자에게 문의하세요.
+> 현재 리포지터를 통해 공유된 테라폼 코드에는 테라폼 상태 공유 및 공동 작업을 위한 백엔드 (S3, DynamoDB)가 포함되어 있지 않은데, 이에 대한 자세한 사항은 다음을 참고하세요.<br>
+> - [테라폼 백엔드](https://developer.hashicorp.com/terraform/language/backend) 
 
 ## 5. EKS 클러스터 생성 (테라폼 사용)
 
@@ -145,7 +146,9 @@ terraform plan -out tfplan
 terraform apply -auto-approve tfplan
 ```
 
-모든 자원의 생성이 완료되면 Production과 Staging (테스트 및 검증)을 위한 EKS 클러스터 2개가 생성되며, 우리는 우선 Production 클러스터에서 작업하므로 아래와 같이 환경 변수를 설정합니다.
+![테라폼을 통한 자원 생성](../../images/Environment/Terraform-Apply.png)
+
+모든 자원의 생성이 완료되면 `Production`과 `Staging` (테스트 및 검증)을 위한 EKS 클러스터 2개가 생성되며, 우리는 우선 Production 클러스터에서 작업하므로 아래와 같이 환경 변수를 설정합니다.
 ```bash
 cd ~/environment/legacy-application-modernization/infrastructure/terraform
 
