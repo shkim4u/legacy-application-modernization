@@ -35,7 +35,7 @@ module "eks_cluster_production" {
   # Add the ARN of MSK cluster access policy if "create_msk" is true.
   additional_iam_policy_arns = concat(local.additinal_eks_iam_policy_arns, var.create_msk ? [module.msk.0.msk_cluster_access_policy_arn] : [])
 
-  number_of_large_memory_instances = 0
+  number_of_large_memory_instances = 1
 }
 
 module "eks_cluster_staging" {

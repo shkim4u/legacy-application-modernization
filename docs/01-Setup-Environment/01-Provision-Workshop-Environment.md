@@ -22,11 +22,23 @@
 아래 명령은 ```Cloud9``` 환경을 구성하기 위하여 일련의 작업을 수행하므로 완료될 때까 다소 시간이 걸립니다 (1 ~ 2분)<br>
 ```bash
 export AWS_PAGER=''
-curl -fsSL https://raw.githubusercontent.com/shkim4u/m2m-travelbuddy/main/cloud9/bootstrap-v2-with-admin-user-trust.sh | bash -s -- c5.9xlarge
+curl -fsSL https://raw.githubusercontent.com/shkim4u/m2m-travelbuddy/main/cloud9/bootstrap-v2-with-admin-user-trust.sh | bash -s -- c5.4xlarge
 ```
 
+![`CloudShell`을 통해 `Cloud9` 인스턴스 생성](../../images/Environment/Create-Cloud9-with-CloudShell.png)
+
+`Cloud9` 인스턴스 생성이 정상적으로 완료되면 아래와 같이 표시되고 이제 `CloudShell`은 닫아도 됩니다.
+
+![`CloudShell`에서 `Cloud9` 인스턴스 생성 완료](../../images/Environment/Create-Cloud9-with-CloudShell-Completed.png)
+
 ## 3. Cloud9 통합 환경 (IDE) 설정
-```Cloud9``` 통합 개발 환경에 접속하여 필요한 사항을 사전에 구성한 쉘 스크립트 파일을 아래와 같이 실행합니다.
+```Cloud9``` 통합 개발 환경에 접속하여 필요한 설정을 수행합니다.
+
+![`Cloud9` 서비스로 이동](../../images/Environment/Goto-Cloud9-Service.png)
+
+![`Cloud9` 환경 열기](../../images/Environment/Open-Cloud9-Environment.png)
+
+![`Cloud9` 개발 환경](../../images/Environment/Cloud9-IDE.png)
 
 여기에는 다음 사항이 포함됩니다.
 
@@ -73,6 +85,8 @@ docker-compose --version
 # JWT CLI 설치
 sudo npm install -g jwt-cli
 ```
+
+![`Cloud9` 환경 설정](../../images/Environment/Configure-Cloud9-IDE.png)
 
 ## 4. `Legacy Application Modernization (LegMod) 워크샵` 소스 받기 및 자원 배포를 위한 사전 준비
 ### 4.1. 워크샵 소스 코드 받기
