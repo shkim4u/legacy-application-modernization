@@ -1,7 +1,8 @@
 # 목차
 
 * [애플리케이션 현대화 및 워크샵의 목적](README.md)
-* [환경 설정](01-Setup-Environment/01-Provision-Workshop-Environment.md)
+* [환경 설정 개요](01-Setup-Environment/00-Setup-Environment-README.md)
+  * [환경 설정](01-Setup-Environment/01-Provision-Workshop-Environment.md)
 * [모놀리스 애플리케이션 배포](./02-Deploy-Monolith/00-Monolith-README.md)
   * [모놀리스 데이터베이스 구성](02-Deploy-Monolith/01-Configure-Monolith-Database.md)
   * [모놀리스 배포를 위한 GitOps설정](02-Deploy-Monolith/02-Configure-GitOps.md)
