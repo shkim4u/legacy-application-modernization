@@ -42,4 +42,7 @@ variable "large_memory_instance_type" {
   # Other options: "x2idn.16xlarge"
 }
 
-
+variable "use_amazon_cloudwatch_observability_addon" {
+  description = "Use Amazon CloudWatch observability"
+  default = false
+}

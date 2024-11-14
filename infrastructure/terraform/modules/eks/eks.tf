@@ -140,16 +140,18 @@ module "eks" {
   # Refer to: https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html#workloads-add-ons-available-eks
   # aws eks describe-addon-versions --kubernetes-version 1.30 --query 'addons[].{MarketplaceProductUrl: marketplaceInformation.productUrl, Name: addonName, Owner: owner Publisher: publisher, Type: type}' --output table
   # coredns, kube-proxy, vpc-cni, aws-ebs-csi-driver, aws-efs-csi-driver, amazon-cloudwatch-observability, eks-pod-identity-agent
-  cluster_addons = {
-    # [2024-02-24] Why the hell this has gone?
-    # [2024-10-17] 아마도 OpenTelemetry Auto-Instrumentation과 충돌이 나는 듯
-    amazon-cloudwatch-observability = {
-      most_recent = true
-    }
-    eks-pod-identity-agent = {
-      most_recent = true
-    }
-  }
+  cluster_addons = merge(
+    {
+      eks-pod-identity-agent = {
+        most_recent = true
+      }
+    },
+      var.use_amazon_cloudwatch_observability_addon ? {
+      amazon-cloudwatch-observability = {
+        most_recent = true
+      }
+    } : {}
+  )
 
   vpc_id = var.vpc_id
   subnet_ids = var.private_subnet_ids
