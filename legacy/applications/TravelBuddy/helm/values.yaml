@@ -8,7 +8,7 @@ app:
 deployment:
   name: insurance-planning
   replicas: 2
-  tolerationKey: "workload-type/large-memory-java"
+  tolerationKey: "workload-type/large-memory-workload"
   resources:
     requests:
       memory: "1Gi"

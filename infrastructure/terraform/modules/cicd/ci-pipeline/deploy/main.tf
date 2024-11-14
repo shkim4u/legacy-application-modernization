@@ -93,7 +93,7 @@ data "aws_iam_policy_document" "deploy_role_policy" {
   statement {
     effect = "Allow"
     actions = [
-      "acm:ListCertificates"
+      "acm:*"
     ]
     resources = ["*"]
   }

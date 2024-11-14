@@ -31,7 +31,15 @@ variable "additional_iam_policy_arns" {
   default = []
 }
 
-variable "number_of_x2idn_16xlarge_instances" {
-  description = "Number of x2idn.16xlarge instances used for large instance testing"
+variable "number_of_large_memory_instances" {
+  description = "Number of large memory instances for memory intensive workload (e.g. Elasticsearch) testing"
   default = 1
 }
+
+variable "large_memory_instance_type" {
+  description = "Instance type for large memory instances"
+  default = "r7i.8xlarge" # 32vCPU, 256GB RAM
+  # Other options: "x2idn.16xlarge"
+}
+
+

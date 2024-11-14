@@ -1,7 +1,7 @@
 apiVersion: karpenter.sh/v1
 kind: NodePool
 metadata:
-  name: x2idn-16xlarge-java
+  name: very-large-memory-workload
 spec:
   disruption:
     consolidateAfter: 1m
@@ -21,12 +21,9 @@ spec:
     metadata:
       labels:
         billing: aws-proserve
-        purpose: memory-intensive-system
+        cluster-name: ${cluster_name}
+        workload-type/very-large-memory-workload: "true"
     spec:
-      taints:
-        - key: workload-type/x2idn-16xlarge-java
-          value: "true"
-          effect: NoSchedule
       # See for instance types: https://karpenter.sh/docs/reference/instance-types/
       nodeClassRef:
         group: karpenter.k8s.aws
@@ -35,7 +32,7 @@ spec:
       requirements:
         - key: node.kubernetes.io/instance-type
           operator: In
-          values: ["x2idn.16xlarge"]
+          values: ["r7i.48xlarge"]
         - key: karpenter.k8s.aws/instance-hypervisor
           operator: In
           values:
@@ -53,6 +50,10 @@ spec:
         - key: kubernetes.io/os
           operator: In
           values: ["linux"]
+      taints:
+        - effect: NoSchedule
+          key: workload-type/very-large-memory-workload
+          value: "true"
       kubelet:
         kubeReserved:
           cpu: 200m

@@ -11,8 +11,8 @@ Events:
 
 ---
 Spot Instance
-{"level":"ERROR","time":"2024-09-15T07:09:15.502Z","logger":"controller","message":"Reconciler error","commit":"b897114","controller":"nodeclaim.lifecycle","controllerGroup":"karpenter.sh","controllerKind":"NodeClaim","NodeClaim":{"name":"large-memory-java-9cdpg"
-│ },"namespace":"","name":"large-memory-java-9cdpg","reconcileID":"710bbf79-2d58-4bd1-b780-3453d55dae1c","error":"launching nodeclaim, creating instance, with fleet error(s), AuthFailure.ServiceLinkedRoleCreationNotPermitted: The provided credentials do not have pe
+{"level":"ERROR","time":"2024-09-15T07:09:15.502Z","logger":"controller","message":"Reconciler error","commit":"b897114","controller":"nodeclaim.lifecycle","controllerGroup":"karpenter.sh","controllerKind":"NodeClaim","NodeClaim":{"name":"large-memory-workload-9cdpg"
+│ },"namespace":"","name":"large-memory-workload-9cdpg","reconcileID":"710bbf79-2d58-4bd1-b780-3453d55dae1c","error":"launching nodeclaim, creating instance, with fleet error(s), AuthFailure.ServiceLinkedRoleCreationNotPermitted: The provided credentials do not have pe
 │ rmission to create the service-linked role for EC2 Spot Instances."}
 
 https://karpenter.sh/docs/troubleshooting/#missing-service-linked-role

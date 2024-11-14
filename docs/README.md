@@ -34,20 +34,29 @@
 
 ![마이크로서비스 아키텍처의 구성 요소](../images/Microserivces-Architecture-Components.png "마이크로서비스 아키텍터 구성 요소")
 
-오늘은 특히 이러한 마이크로서비스 아키텍처 중 우리들의 비즈니스 로직과 그 구현체인 이너 아키텍처가 담기게 될 외부 아키텍처를 직접 생성해 보고 접해보고자 합니다.
+오늘은 특히 이러한 마이크로서비스 아키텍처 중 우리들의 비즈니스 로직과 그 구현체인 이너 아키텍처가 담기게 될 외부 아키텍처를 직접 생성하면서 접해보고자 합니다.
 
 구체적으로 다음과 같은 구성 요소를 접하게 됩니다:
 1. 쿠버네테스 및 이미지 레지스트리
-  * 쿠버네테스 클러스터
-  * 노드 오토스케일러 (Karpenter)
-  * `HPA (Horizontal Pod Autoscaler)` 및 `Keda (Kubernetes Event-driven Autoscaler)`
+   * 쿠버네테스 클러스터
+   * 노드 오토스케일러 (Karpenter)
+   * `HPA (Horizontal Pod Autoscaler)` 및 `Keda (Kubernetes Event-driven Autoscaler)`
 2. 데이터베이스 및 이벤트 브로커: MySQL, PostgreSQL, Apache Kafka
-  * (Note) `Apache Kafka`는 시간 관계 상 생성만 되고 사용되지는 않습니다.
+   * (Note) `Apache Kafka`는 시간 관계 상 생성만 되고 사용되지는 않습니다.
 3. 애플리케이션 로드 밸런서
 4. CI/CD: CI 파이프라인 및 GitOps (ArgoCD)
-  * (Note) CI 파이프라인의 경우, 외부 아키텍처를 접하는 워크샵의 목적에 좀 더 집중하고자 별도의 브랜치 전략은 적용되지 않았으며, `main` 브랜치에 직접 푸시하여 애플리케이션이 배포되도록 설정되어 있습니다.
+   * (Note) CI 파이프라인의 경우, 외부 아키텍처를 접하는 워크샵의 목적에 좀 더 집중하고자 별도의 브랜치 전략은 적용되지 않았으며, `main` 브랜치에 직접 푸시하여 애플리케이션이 배포되도록 설정되어 있습니다.
 5. Observability: Prometheus, Grafana, Jaeger
 6. 데모 애플리케이션
 7. 테라폼을 통한 인프라스트럭처 관리
 
 ---
+
+## 자동화와 기계적 공감 (Mechanical Sympathy) 사이의 균형
+
+![Mechanical Sympathy](../images/Mechanical-Sympathy.png "Mechanical Sympathy")
+
+이번 워크샵은 자동화와 기계적 공감 사이의 균형을 맞추는 것을 염두에 두고 제작되었습니다.
+
+* `자동화 (Automation)`: 효율성을 높이기 위해 대부분의 자원을 `IaC` 도구를 사용하여 생성하도록 자동화하였습니다. 이는 시간을 절약하고 입력 오류를 줄이는 데 도움이 됩니다.
+* `기계적 공감 (Mechanical Sympathy)`: 모든 부분을 자동화하면 시스템의 기본 작동 원리를 이해하기가 어렵습니다. 몇몇 부분은 수동으로 조작해 봄으로써 어떤 기술적인 원리가 있는지 살펴볼 수 있는 기회가 되도록 구성해 보았습니다.

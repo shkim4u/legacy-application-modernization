@@ -270,10 +270,10 @@ module "eks" {
 
     "MemoryIntensive" = {
       capacity_type  = "ON_DEMAND"
-      instance_types = ["x2idn.16xlarge"]  # 메모리 집중 시스템 제안용 인스턴스 타입
-      min_size       = var.number_of_x2idn_16xlarge_instances
-      max_size       = var.number_of_x2idn_16xlarge_instances == 0 ? 1 : var.number_of_x2idn_16xlarge_instances
-      desired_size   = var.number_of_x2idn_16xlarge_instances # Currently 2
+      instance_types = [var.large_memory_instance_type]  # 메모리 집중 시스템 제안용 인스턴스 타입
+      min_size       = var.number_of_large_memory_instances
+      max_size       = var.number_of_large_memory_instances == 0 ? 1 : var.number_of_large_memory_instances
+      desired_size   = var.number_of_large_memory_instances # Currently 2
       disk_size = 200
       labels         = {
         billing = "aws-proserve"
@@ -296,7 +296,7 @@ module "eks" {
 
       taints = [
         {
-          key    = "workload-type/x2idn-16xlarge-java"
+          key    = "workload-type/large-memory-workload"
           value  = "true"
           effect = "NO_SCHEDULE"
         }

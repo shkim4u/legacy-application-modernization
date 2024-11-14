@@ -26,9 +26,8 @@ spec:
                 - targets: ['localhost:8888']
     processors:
     exporters:
-      debug: {}
-      logging:
-        loglevel: debug
+      debug:
+        verbosity: normal
       otlp/jaeger: # Jaeger supports OTLP directly. The default port for OTLP/gRPC is 4317
         endpoint: "jaeger-collector.observability:4317"
         tls:
@@ -120,8 +119,7 @@ spec:
         metrics:
           # receivers: [spanmetrics, spanmetrics/tempo, prometheus/otelcol]
           receivers: [spanmetrics, prometheus/otelcol]
-          # exporters: [prometheusremotewrite, logging, debug]
-          exporters: [otlphttp/prometheus, logging, debug]
+          exporters: [otlphttp/prometheus, debug]
       telemetry:
         logs:
           level: "debug"

@@ -1,7 +1,7 @@
 apiVersion: karpenter.sh/v1
 kind: NodePool
 metadata:
-  name: very-large-memory-java
+  name: large-memory-workload
 spec:
   disruption:
     consolidateAfter: 1m
@@ -22,7 +22,7 @@ spec:
       labels:
         billing: aws-proserve
         cluster-name: ${cluster_name}
-        workload-type/very-large-memory-java: "true"
+        workload-type/large-memory-workload: "true"
     spec:
       # See for instance types: https://karpenter.sh/docs/reference/instance-types/
       nodeClassRef:
@@ -32,7 +32,7 @@ spec:
       requirements:
         - key: node.kubernetes.io/instance-type
           operator: In
-          values: ["r7i.48xlarge"]
+          values: ["r7i.8xlarge"]
         - key: karpenter.k8s.aws/instance-hypervisor
           operator: In
           values:
@@ -52,7 +52,7 @@ spec:
           values: ["linux"]
       taints:
         - effect: NoSchedule
-          key: workload-type/very-large-memory-java
+          key: workload-type/large-memory-workload
           value: "true"
       kubelet:
         kubeReserved:

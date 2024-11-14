@@ -149,6 +149,12 @@ source ~/.bash_profile
 
 # Work with production cluster.
 kcp
+
+# Karpenter가 Spot 인스턴스를 정상적으로 생성할 수 있도록 `Service-Linked Role`을 생성합니다.
+aws iam create-service-linked-role --aws-service-name spot.amazonaws.com > /dev/null 2>&1 || true
+
+# EKS Node Viewer 설치
+go install github.com/awslabs/eks-node-viewer/cmd/eks-node-viewer@latest
 ```
 
 또한 이후 작업의 편의를 위해 아래와 같이 ArgoCD Admin 암호를 설정합니다.<br>
@@ -180,6 +186,8 @@ echo $ARGOCD_ADMIN_INITIAL_PASSWORD
 kcp
 ```
 
-# 축하합니다! 아마존 EKS 클러스터를 성공적으로 프로비저닝하였습니다.
+---
+
+# 🎊🎊🎊 축하합니다! 아마존 EKS 클러스터를 성공적으로 프로비저닝하였습니다. 🎊🎊🎊
 
 시간 여유가 있다면 진행자와 함께 테라폼 코드와 이를 통해 생성된 자원을 살펴봅니다.

@@ -8,7 +8,7 @@ app:
 deployment:
   name: insurance-planning
   replicas: 2
-  tolerationKey: "workload-type/large-memory-java"
+  tolerationKey: "workload-type/large-memory-workload"
   resources:
     requests:
       memory: "1Gi"
@@ -31,7 +31,8 @@ ingress:
   certificate_arn: ${CERTIFICATE_ARN}
 istio:
   enabled: true
-  ingressGatewayServiceName: istio-ingressgateway.istio-system
+  ingressGatewayNamespace: istio-system
+  ingressGatewayServiceName: istio-ingressgateway
   ingressGatewayServicePort: 80
 configmap:
   name: insurance-planning-configmap
