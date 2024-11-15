@@ -161,6 +161,37 @@ echo "Swagger UI URL: http://${SWAGGER_UI_URL}/swagger-ui/"
 1. 소스 빌드
 
 ```bash
+export RDS_BASTION_INSTANCE_ID=`aws ec2 describe-instances --filters "Name=tag:Name,Values=RDS-Bastion" --query 'Reservations[*].Instances[*].[InstanceId]' --output text` && echo $RDS_BASTION_INSTANCE_ID
+aws ssm start-session --target $RDS_BASTION_INSTANCE_ID
+
+bash
+cd ~
+
+# 인스턴스에 설치한 패키지 및 패키지 캐시를 업데이트
+sudo yum update -y
+# 최신 Docker Engine 패키지를 설치
+sudo amazon-linux-extras install docker -y
+# Tooling 설치
+sudo yum install -y git
+sudo yum install -y java-17-amazon-corretto-headless
+
+# Docker 서비스를 시작
+sudo service docker start
+
+# 시스템이 재부팅될 때마다 Docker 대몬이 시작되도록 하려면 다음 명령을 실행
+sudo systemctl enable docker
+
+# sudo를 사용하지 않고도 Docker 명령을 실행할 수 있도록 docker 그룹에 ec2-user를 추가
+sudo usermod -a -G docker ec2-user
+sudo usermod -a -G docker ssm-user
+
+# 만일 docker를 실행했을 때 권한 오류가 발생하면 docker 그룹으로 Change
+newgrp docker
+
+docker ps
+
+git clone https://github.com/shkim4u/legacy-application-modernization legacy-application-modernization
+cd legacy-application-modernization/modernization/applications/restdoc-openapi/build
 
 ./gradlew clean copyOasToSwagger
 ./gradlew bootJar --build-cache -x test
@@ -188,7 +219,13 @@ docker run --rm -p 8080:8080 -t restdoc-openapi:latest
 * 로컬에서 접속 시
 http://localhost:8080/swagger-ui/swagger-ui.html
 
+* 클라우드 환경에서 접속 시 (EC2)
+http://[EC2 Public IP]:8080/swagger-ui/swagger-ui.html
+
+
+
 5. `OAS` 파일 로딩
+
 http://localhost:8080/openapi3.json
 
 

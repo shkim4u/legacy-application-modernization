@@ -1,0 +1,6 @@
+EKS 노드에서 다음 경고를 조치할 수 있도록 해주세요.
+
+│   Warning  InvalidDiskCapacity      2m41s                  kubelet                invalid capacity 0 on image filesystem
+https://github.com/aws/karpenter-provider-aws/issues/2385
+
+https://bobcares.com/blog/invalid-capacity-0-on-image-filesystem-kubernetes/

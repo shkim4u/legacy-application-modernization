@@ -19,6 +19,10 @@
   fi
 
   cd deployment/k8s/helm || exit
+
+  export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text) && echo $AWS_ACCOUNT_ID
+  cat chart/values-template.yaml | envsubst > chart/values.yaml
+
   make install
 
   # "gatling-java-http" Job의 상태가 "Completions"가 1이 될 때까지 기다린다.

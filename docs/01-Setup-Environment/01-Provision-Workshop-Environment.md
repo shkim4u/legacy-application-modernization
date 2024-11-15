@@ -131,6 +131,7 @@ EOF
 
 (Optional) 위와 같이 수행하면 ACM에 사설 CA가 생성되는데 진행자와 함께 ACM 콘솔로 이동하여 Private CA를 한번 살펴봅니다.<br>
 아래와 같이 Private CA가 활성 상태인 것을 확인합니다.<br>
+
 ![Private CA Active](../../images/Environment/ACM-Private-CA-Active.png)
 
 > (참고)<br>

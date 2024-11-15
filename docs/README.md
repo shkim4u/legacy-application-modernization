@@ -20,6 +20,13 @@
 * [API 명세 및 문서화](05-API-Documentation/00-API-Documentation-README.md)
     * [Spring RestDoc과 OpenAPI의 결합](05-API-Documentation/01-Spring-RestDoc-OpenAPI.md)
 
+위에 기술되어 있지 않지만 시간 상황에 따라 추가될 수 있는 주제들은 다음과 같습니다:
+* `Gatling`을 이용한 부하 테스트 자동화
+* `KEDA (Kubernetes Event-driven Autoscaler)`를 이용한 이벤트 기반 Pod 자동 스케일 아웃
+* `Groupless Cluster Autoscaler`인 `Karpenter`를 활용한 노드 자동 확장
+  * 스케쥴된 스케일 아웃
+  * 부하 시 스케일 아웃
+
 ---
 
 ## 애플리케이션 현대화 개요와 워크샵의 목적

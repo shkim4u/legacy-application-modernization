@@ -8,7 +8,7 @@ RUN mkdir -m 0755 -p ${APP_HOME}/bin
 
 COPY target/gatling-java-http.jar ${APP_HOME}/bin/
 
-RUN groupadd -r gatling && useradd -r -gatling gatling
+RUN groupadd -r gatling && useradd -r -ggatling gatling
 RUN chown -R gatling:gatling ${APP_HOME}
 
 USER gatling
