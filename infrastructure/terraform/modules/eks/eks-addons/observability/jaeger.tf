@@ -6,7 +6,8 @@ resource "helm_release" "jaeger" {
   namespace = kubernetes_namespace.observability.metadata[0].name
 
   values = [templatefile("${path.module}/jaeger-values.yaml", {
-    certificate_arn = var.certificate_arn
+    certificate_arn = var.certificate_arn,
+    storage_type = var.jaeger_storage_type,
   })]
 
   timeout = 3600

@@ -46,4 +46,4 @@ query:
     prometheus.query.normalize-duration: true
     prometheus.query.namespace: traces_span_metrics
 storage:
-  type: elasticsearch  # Just for testing
+  type: ${storage_type}  # Just for testing
